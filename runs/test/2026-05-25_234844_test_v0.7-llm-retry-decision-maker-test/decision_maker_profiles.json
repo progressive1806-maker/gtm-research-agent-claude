@@ -1,0 +1,147 @@
+{
+  "called": true,
+  "count": 3,
+  "error": "",
+  "records": [
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "삼성SDS Head of Cloud LinkedIn",
+        "삼성SDS Head of Infrastructure LinkedIn",
+        "삼성SDS Data Center LinkedIn",
+        "삼성SDS Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/samsung-sds",
+        "title": "삼성SDS - LinkedIn",
+        "source": "naver_web",
+        "confidence": "LOW",
+        "matched_query": "삼성SDS Head of Cloud LinkedIn",
+        "description_snippet": "한국어 ; 웹사이트 : http://www.samsungsds.com, 업계 : IT 서비스 및 IT 컨설팅, 회사 규모 : 직원 10,001명 이상, 본사 : Seoul, 유형 : 상장기업, 전문 분야 : Cloud Computing, Digital Logistics, Artificial Intelligence, Digital Transformation "
+      },
+      "error": null
+    },
+    {
+      "name": "엘리스그룹",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "엘리스그룹 Head of Cloud LinkedIn",
+        "엘리스그룹 Head of Infrastructure LinkedIn",
+        "엘리스그룹 Data Center LinkedIn",
+        "엘리스그룹 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.venturesquare.net/950953/",
+        "title": "엘리스그룹, 정보통신산업진흥원장상 수상",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "엘리스그룹 Data Center LinkedIn",
+        "description_snippet": "엘리스그룹은 PMDC(Portable Modular Data Center) 방식의 AI 데이터센터를 구축하여 ‘엘리스클라우드’ 서비스를 제공하고 있으며, 국내 서버팜을 활용해 데이터 주권 규정을 준수하고 있다. 또한, 정보보안 국제 인증인 ISO27001과 ISO27701을 보유해 보안 안정성을 입증한 환경에서 기업들이 SaaS 개발에 집중할 수 있도록 지"
+      },
+      "error": null
+    },
+    {
+      "name": "우리은행",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "우리은행 Head of AI LinkedIn",
+        "우리은행 Product AI lead LinkedIn",
+        "우리은행 CTO LinkedIn",
+        "우리은행 Platform lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/stockinsights-ai",
+        "title": "stockinsights.ai",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "우리은행 Head of AI LinkedIn",
+        "description_snippet": "웹사이트 : https://www.stockinsights.ai/ 업계 : 금융 서비스, 회사 규모 : 직원 2-10명, 유형 : 비상장기업, 설립 : 2023, 전문 분야 : Generative AI, Finance, LLMs, Equity Research, Fundamental Analysis, Value Investing, Portfolio Manag"
+      },
+      "error": null
+    },
+    {
+      "name": "한글과컴퓨터",
+      "market": "B2G",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "한글과컴퓨터 procurement LinkedIn",
+        "한글과컴퓨터 정보화 담당관 LinkedIn",
+        "한글과컴퓨터 AI 사업 책임자 LinkedIn",
+        "한글과컴퓨터 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/help/learning/answer/a548627?hcppcid=search",
+        "title": "LinkedIn 제품 페이지 만들기 및 올리기 | 온라인클래스 고객센터",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "한글과컴퓨터 procurement LinkedIn",
+        "description_snippet": "LinkedIn 페이지 슈퍼운영자나 콘텐츠 운영자는 회사의 제품을 LinkedIn 페이지의 제품 탭에서 선보일 수 있는 제품 페이지를 생성할 수 있습니다. 새 제품 페이지를 만들 때는 공개되기 전에 LinkedIn팀이 검토해야 합니다. 회사에서 제품을 두 개 이상 제공하는 경우 추가 제품 페이지를 최대 35개까지 생성할 수 있습니다. 가장 최근에 생성된 제"
+      },
+      "error": null
+    },
+    {
+      "name": "NH농협은행",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "NH농협은행 CIO LinkedIn",
+        "NH농협은행 CTO LinkedIn",
+        "NH농협은행 CISO LinkedIn",
+        "NH농협은행 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.sanctionlab.com/?p=46854",
+        "title": "강태영호 농협은행 첫 조직개편, AX와 생산적 금융에 방점 SanctionLab",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "NH농협은행 CIO LinkedIn",
+        "description_snippet": "신설 NH농협은행이 AX(인공지능 전환)와 생산적 금융에 초점을 맞춘... 테크사업부문(CIO)과 테크솔루션부문(CTO) 부문으로 나눠 실행력을 높인다는 계획이다. 강태영 농협은행장이 취임한 이후 첫 조직개편인..."
+      },
+      "error": null
+    },
+    {
+      "name": "건강보험심사평가원",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "건강보험심사평가원 procurement LinkedIn",
+        "건강보험심사평가원 정보화 담당관 LinkedIn",
+        "건강보험심사평가원 AI 사업 책임자 LinkedIn",
+        "건강보험심사평가원 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.hira.or.kr/",
+        "title": "건강보험심사평가원",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "건강보험심사평가원 procurement LinkedIn",
+        "description_snippet": "건강 보험 소개, 진료비, 약제비 심사, 의료, 요양 기관, 병원 찾기, 요양급여 대상여부 확인 제공."
+      },
+      "error": null
+    },
+    {
+      "name": "전남소방본부",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "전남소방본부 procurement LinkedIn",
+        "전남소방본부 정보화 담당관 LinkedIn",
+        "전남소방본부 AI 사업 책임자 LinkedIn",
+        "전남소방본부 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "http://www.eopennews.com/news/view.php?no=43557",
+        "title": "전남소방본부, 2025년 최강구조대에 화순소방서 선정",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "전남소방본부 procurement LinkedIn",
+        "description_snippet": "전남소방본부는 2025년 국민안전 구조서비스 향상 프로그램의 일환으로, 구조대원 전문성 강화 및 현장 안정성 확보를 위해 추진된 ‘최강구조대’ 선발에서 전남 대표로 화순소방서 구조대가 선정됐다고 8일 밝혔다. 이번 선발은 전국 19개 시ㆍ도 구조대를 대상으로 정량 및 정성평가를 종합 반영하여 진행됐으며, 구조 활동 실적, 훈련 성과, 전문자격 보유 현황, "
+      },
+      "error": null
+    }
+  ]
+}
