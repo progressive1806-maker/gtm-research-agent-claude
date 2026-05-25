@@ -1,0 +1,139 @@
+# FuriosaAI GTM 리서치 — 2026-05-25
+
+## 1. 한 줄 결론
+삼성SDS의 데이터센터 인프라 투자 및 금융권 에이전트 수주, 그리고 한글과컴퓨터와 LG AI연구원의 공공 AX 시장 공동 대응이 주요 비즈니스 시그널이며, 조달 및 채널 경로가 명확한 대상에게 클라우드 연계 및 온프레미스 패키지 제안을 추진해야 합니다.
+
+## 2. 이번 주 우선 연락 Top 3
+| 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | 삼성SDS | CSP 운영 기업 | 미확인 | 구미 데이터센터 투자(출처: S009) 및 동탄 데이터센터 전력 확보(출처: S003)에 따른 하드웨어 공급망 구축 시점 도래 | 신규 AI 데이터센터 구축 일정에 부합하는 하드웨어 납품 벤더 등록 절차 및 SCP NPUaaS 제품군 내 당사 가속기 연동을 위한 정합성 검증 일정 확인 | [출처1](https://www.mt.co.kr/tech/2026/05/23/2026052210211399740) <br> [출처2](https://www.e-science.co.kr/news/articleView.html?idxno=130004) |
+| 2 | 엘리스그룹 | CSP 운영 기업 | 미확인 | 코스닥 상장 추진 및 이동식 모듈형 데이터센터 인프라 확장 본격화로 국산 NPUaaS 협력 가치 증대 | 엘리스그룹 내부의 자체 GPUaaS 인프라 아키텍처에 당사 컨테이너 툴킷 연동 가능 여부 검토 | [출처1](http://www.hansbiz.co.kr/news/articleView.html?idxno=839792) <br> [출처2](http://www.joseilbo.com/news/news_read.php?uid=568639&class=53&grp=) |
+| 3 | 한글과컴퓨터 | CSP 고객 기업 | EXAONE (정확한 버전 지원 미확인) | LG AI연구원과의 연맹을 통한 공공 AX 시장 본격 진출로 온프레미스 망분리 대응 패키지 필요성 증가 | 챗엑사원 및 한컴 AI 에이전트 결합 모델의 당사 엑사원 4.0 전용 서빙 스택 내 정상 가속 여부 사전 확인 | [출처1](http://www.newslock.co.kr/news/articleView.html?idxno=130504) <br> [출처2](https://www.mt.co.kr/tech/2026/05/22/2026052215283358675) |
+
+## 3. 버전 1 — B2B only
+| 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| HIGH | 삼성SDS | CSP 운영 기업 | 미확인 | unknown | MID | HIGH | 구미 AI 데이터센터 투자(출처: S009) 및 동탄 데이터센터 전력 확보(출처: S003)가 공식화되고 금융권 AI 에이전트 구축 사업 우선협상대상자로 선정된 시점 | [출처1](https://www.mt.co.kr/tech/2026/05/23/2026052210211399740) <br> [출처2](https://www.e-science.co.kr/news/articleView.html?idxno=130004) |
+| HIGH | 엘리스그룹 | CSP 운영 기업 | 미확인 | unknown | MID | HIGH | 상장 자금 조달 및 인프라 라인업 리뉴얼 단계에 맞춰 대안 인프라 가치를 제안하기에 적기인 시점 | [출처1](http://www.hansbiz.co.kr/news/articleView.html?idxno=839792) <br> [출처2](http://www.joseilbo.com/news/news_read.php?uid=568639&class=53&grp=) |
+| HIGH | 우리은행 | CSP 고객 기업 | 미확인 | unknown | MID | HIGH | AI 에이전트 구축 사업의 우선협상대상자 선정 직후 솔루션 및 서버 인프라 하드웨어 스택을 확정하는 시점 | [출처1](https://www.sedaily.com/article/20046605?ref=naver) <br> [출처2](https://www.sedaily.com/article/20046505?ref=naver) |
+| HIGH | NHN클라우드 | CSP 운영 기업 | 미확인 | unknown | MID | HIGH | 초거대 GPU 클러스터 사업 확장 선언 및 대대적인 마케팅 행사가 예고되어 공급망 대안 제시가 용이한 시점 | [출처1](https://www.ddaily.co.kr/page/view/2026052017342600376) <br> [출처2](http://www.boannews.com/media/view.asp?idx=143783&kind=3) |
+| MID | 에코아이티 | CSP 고객 기업 | Solar LLM | family_only (정확한 버전 지원 미확인) | MID | MID | 전남소방본부 프로젝트의 실제 RAG 데이터 학습 및 추론 알고리즘 구축 초기 단계에 진입한 시점 | [출처](https://magazine.hankyung.com/business/article/202605196285b) |
+| MID | NH농협은행 | CSP 고객 기업 | EXAONE 3.5 | unknown | MID | MID | 엑사원 3.5 모델 기반 파인튜닝 구축(출처: S019) 후 시범 운영 단계에 해당하여 향후 전용 인프라 전환을 대비한 사전 검토 시점 | [출처](https://www.news2day.co.kr/article/20260522500024) |
+
+## 4. 버전 2 — B2B + B2G
+| 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| HIGH | 삼성SDS | CSP 운영 기업 | 미확인 | unknown | MID | HIGH | 구미 AI 데이터센터 투자(출처: S009) 및 동탄 데이터센터 전력 확보(출처: S003)가 공식화되고 금융권 AI 에이전트 구축 사업 우선협상대상자로 선정된 시점 | [출처1](https://www.mt.co.kr/tech/2026/05/23/2026052210211399740) <br> [출처2](https://www.e-science.co.kr/news/articleView.html?idxno=130004) |
+| HIGH | 엘리스그룹 | CSP 운영 기업 | 미확인 | unknown | MID | HIGH | 상장 자금 조달 및 인프라 라인업 리뉴얼 단계에 맞춰 대안 인프라 가치를 제안하기에 적기인 시점 | [출처1](http://www.hansbiz.co.kr/news/articleView.html?idxno=839792) <br> [출처2](http://www.joseilbo.com/news/news_read.php?uid=568639&class=53&grp=) |
+| HIGH | 한글과컴퓨터 | CSP 고객 기업 | EXAONE | family_only (정확한 버전 지원 미확인) | MID | HIGH | 양사 제휴를 통한 공공 AX 시장 수주전이 개시되는 초기 단계이므로 조달용 온프레미스 RNGD 탑재 패키지를 공동 발굴하기에 최적기 · B2G 근거: 기사/RSS 기반 · 나라장터 확인: 미수행 | [출처1](http://www.newslock.co.kr/news/articleView.html?idxno=130504) <br> [출처2](https://www.mt.co.kr/tech/2026/05/22/2026052215283358675) |
+| HIGH | 우리은행 | CSP 고객 기업 | 미확인 | unknown | MID | HIGH | AI 에이전트 구축 사업의 우선협상대상자 선정 직후 솔루션 및 서버 인프라 하드웨어 스택을 확정하는 시점 | [출처1](https://www.sedaily.com/article/20046605?ref=naver) <br> [출처2](https://www.sedaily.com/article/20046505?ref=naver) |
+| HIGH | NHN클라우드 | CSP 운영 기업 | 미확인 | unknown | MID | HIGH | 초거대 GPU 클러스터 사업 확장 선언 및 대대적인 마케팅 행사가 예고되어 공급망 대안 제시가 용이한 시점 | [출처1](https://www.ddaily.co.kr/page/view/2026052017342600376) <br> [출처2](http://www.boannews.com/media/view.asp?idx=143783&kind=3) |
+| HIGH | 건강보험심사평가원 | 온프레미스 기업 | 미확인 | unknown | MID | HIGH | 디지털클라우드센터를 중심으로 자체 물리 서버 하드웨어 인프라 도입을 기획하는 초기 단계 · B2G 근거: 기사/RSS 기반 · 나라장터 확인: 미수행 | [출처](https://www.etnews.com/20260522000181) |
+| MID | 에코아이티 | CSP 고객 기업 | Solar LLM | family_only (정확한 버전 지원 미확인) | MID | MID | 전남소방본부 프로젝트의 실제 RAG 데이터 학습 및 추론 알고리즘 구축 초기 단계에 진입한 시점 | [출처](https://magazine.hankyung.com/business/article/202605196285b) |
+| MID | NH농협은행 | CSP 고객 기업 | EXAONE 3.5 | unknown | MID | MID | 엑사원 3.5 모델 기반 파인튜닝 구축(출처: S019) 후 시범 운영 단계에 해당하여 향후 전용 인프라 전환을 대비한 사전 검토 시점 | [출처](https://www.news2day.co.kr/article/20260522500024) |
+
+## 5. 우선 연락 후보 상세
+
+### 삼성SDS
+* **확인된 모델 / 모델 매칭 상태**: 지원 모델명은 현재 미확인 상태이며, 모델 매칭 상태 역시 알 수 없습니다(unknown).
+* **RNGD fit / outreach priority**: RNGD 적합성은 중간(MID) 수준이며, 연락 우선순위는 높음(HIGH)입니다.
+* **고객 win**: 삼성 클라우드 플랫폼(SCP) 기반의 NPUaaS 라인업을 보강하여 경쟁력을 높일 수 있으며, 데이터센터 가동에 따른 전력 소모 및 전력망 부족 이슈를 고효율 RNGD 가속기 도입으로 완화할 수 있는지 구조 확인이 필요합니다.
+* **FuriosaAI win**: 국내 대형 IT서비스 및 클라우드 운영사인 삼성SDS의 유통망을 경유하여 엔터프라이즈 및 금융권 타깃의 대량 공급 기회를 타진할 수 있습니다.
+* **컨택 명분**: 구미 신규 AI 데이터센터 인프라 효율성을 높이고 SCP 연계 금융 AI 에이전트 하드웨어 아키텍처 제안을 목적으로 합니다.
+* **제안 토크 트랙**: 최근 경북 구미 지역에 AI 데이터센터 건립 투자 계획(출처: S009)과 동탄 데이터센터 전력 확보(출처: S003) 소식을 전해 들었습니다. 금융권 프라이빗 서빙 및 SCP 클라우드 환경에서 전력 소모 구조를 최적화할 수 있는지 당사의 RNGD 가속기 도입 협력을 제안드립니다.
+* **출처 링크**: [출처1](https://www.mt.co.kr/tech/2026/05/23/2026052210211399740), [출처2](https://www.e-science.co.kr/news/articleView.html?idxno=130004), [출처3](https://www.sedaily.com/article/20046605?ref=naver)
+
+### 엘리스그룹
+* **확인된 모델 / 모델 매칭 상태**: 구체적인 추론 모델명은 미확인 상태이며, 모델 매칭 상태는 알 수 없습니다(unknown).
+* **RNGD fit / outreach priority**: RNGD 적합성은 중간(MID) 수준이며, 연락 우선순위는 높음(HIGH)입니다.
+* **고객 win**: 모듈형 데이터센터 내부의 제한적인 전력 및 냉각 설비 환경 하에서 RNGD 도입을 통해 전력 밀도당 서빙 성능을 개선할 수 있는지 검토 가능하며, 기존 GPU 중심 라인업 외에 NPU 기반의 가성비 서비스를 추가할 수 있습니다.
+* **FuriosaAI win**: 코스닥 상장을 추진 중인 풀스택 AI 기업을 파트너로 영입하여 클라우드 서비스형 가속기 매출 실적을 신속히 확보할 수 있습니다.
+* **컨택 명분**: 모듈형 데이터센터(PMDC) 및 ECI 플랫폼 내 RNGD 탑재를 통한 NPUaaS 서비스 공동 개발을 목적으로 합니다.
+* **제안 토크 트랙**: 코스닥 상장 예비심사 청구서 제출을 축하드립니다. 엘리스그룹이 전개 중이신 이동식 모듈형 데이터센터 인프라에 당사의 저전력 RNGD 가속기를 연동하여, 비용 효율이 높은 NPUaaS 서비스 라인업을 상장 시점에 맞춰 공동 출시할 수 있는지 검토를 제안합니다.
+* **출처 링크**: [출처1](http://www.hansbiz.co.kr/news/articleView.html?idxno=839792), [출처2](http://www.joseilbo.com/news/news_read.php?uid=568639&class=53&grp=), [출처3](https://www.fetv.co.kr/news/articleView.html?idxno=302765)
+
+### 한글과컴퓨터
+* **확인된 모델 / 모델 매칭 상태**: 사용 모델은 EXAONE 계열이나 정확한 버전 지원 여부가 확인되지 않아 패밀리 단위의 기술 검증이 필요합니다(family_only).
+* **RNGD fit / outreach priority**: RNGD 적합성은 중간(MID) 수준이며, 연락 우선순위는 높음(HIGH)입니다.
+* **고객 win**: 공공기관의 망분리 환경에서 AI 에이전트를 가동할 때, 국산 저전력 가속기인 RNGD를 패키징하여 정부 부처의 비용 구조 검토 요구 및 장비 국산화 가점을 충족할 수 있는지 검토 가능합니다.
+* **FuriosaAI win**: 한글과컴퓨터가 보유한 공공 조달 네트워크를 경유하여 공공기관 및 지자체 대상의 서버형 RNGD 패키지 공급 실적을 효과적으로 다져나갈 수 있습니다.
+* **컨택 명분**: 한글과컴퓨터와 LG AI연구원의 공공 AX 문서 솔루션 파트너십에 대응하는 저전력 온프레미스 RNGD 서버 패키징 협력을 제안하고자 합니다.
+* **제안 토크 트랙**: LG AI연구원과의 공공 AX 시장 대응 파트너십 구축 소식을 전해 들었습니다. 공공기관의 망분리 요구사항을 충족하면서 하드웨어 인프라 비용 구조를 조율할 수 있도록, 당사의 국산 저전력 RNGD 가속기를 적용한 서버 패키지 구성을 함께 논의하고 싶습니다.
+* **출처 링크**: [출처1](http://www.newslock.co.kr/news/articleView.html?idxno=130504), [출처2](https://www.mt.co.kr/tech/2026/05/22/2026052215283358675), [출처3](https://www.mk.co.kr/article/12055579)
+
+### 우리은행
+* **확인된 모델 / 모델 매칭 상태**: 구체적인 추론용 모델명은 미확인 상태이며, 모델 매칭 상태는 알 수 없습니다(unknown).
+* **RNGD fit / outreach priority**: RNGD 적합성은 중간(MID) 수준이며, 연락 우선순위는 높음(HIGH)입니다.
+* **고객 win**: 프라이빗 클라우드 내 고객 자산 데이터를 다루는 RAG 서비스 가동 시, RNGD 도입을 통해 장기적인 인프라 운영비 부담의 완화 가능성을 확인할 필요가 있습니다.
+* **FuriosaAI win**: 대형 금융권의 생성형 AI 가속 실적을 확보하고, 인프라 운영 파트너인 삼성SDS와의 공동 성공 사례를 다질 수 있습니다.
+* **컨택 명분**: 삼성SDS 파트너십에 기반한 우리은행 AI 에이전트 전용 금융 인프라 고도화용 RNGD 도입 검토를 제안하고자 합니다.
+* **제안 토크 트랙**: 금융 생성형 AI 에이전트 구축 사업의 우선협상대상자로 삼성SDS를 지정하신 점을 전해 들었습니다. 전용 인프라 상에서 규제와 보안을 충족하면서도 연산 비용 효율성을 개선할 수 있도록, 사업 파트너사와 연동한 RNGD 가속기 검토 방안을 제안해 드리고자 합니다.
+* **출처 링크**: [출처1](https://www.sedaily.com/article/20046605?ref=naver), [출처2](https://www.sedaily.com/article/20046505?ref=naver)
+
+### NHN클라우드
+* **확인된 모델 / 모델 매칭 상태**: 지원 모델명은 미확인 상태이며, 모델 매칭 상태는 알 수 없습니다(unknown).
+* **RNGD fit / outreach priority**: RNGD 적합성은 중간(MID) 수준이며, 연락 우선순위는 높음(HIGH)입니다.
+* **고객 win**: 외산 가속기의 공급망 불안정 및 전력 비용 상승 이슈에 직면한 상황에서, RNGD 가속 카드를 도입하여 비용 효율적인 대안 인프라 포트폴리오를 구성할 수 있는지 검토할 수 있습니다.
+* **FuriosaAI win**: 민간 및 공공 분야를 모두 아우르는 국내 대표 CSP의 서비스 라인업에 당사 칩을 탑재하여 클라우드 서비스형 가속기 매출을 확보할 기회를 가집니다.
+* **컨택 명분**: NHN클라우드 자체 AI 인프라 비용 최적화 및 신규 국산 가속기 기반 NPUaaS 출시 협의를 목적으로 합니다.
+* **제안 토크 트랙**: 초거대 GPU 클러스터 기반 AI 비즈니스 역량 강화 발표를 의미 있게 살펴보았습니다. 인프라 운영비 부담을 줄이고 서비스 가입 고객에게 가성비 높은 추론 환경을 제공할 수 있도록 국산 RNGD 도입 방안의 검토를 제안드립니다.
+* **출처 링크**: [출처1](https://www.ddaily.co.kr/page/view/2026052017342600376), [출처2](http://www.boannews.com/media/view.asp?idx=143783&kind=3), [출처3](https://www.ddaily.co.kr/page/view/2026052216371975959)
+
+### 건강보험심사평가원
+* **확인된 모델 / 모델 매칭 상태**: 사용 모델명은 미확인 상태이며, 모델 매칭 상태는 알 수 없습니다(unknown).
+* **RNGD fit / outreach priority**: RNGD 적합성은 중간(MID) 수준이며, 연락 우선순위는 높음(HIGH)입니다.
+* **고객 win**: 개인 보건의료 데이터를 폐쇄된 기관 데이터센터 내에서 다루면서, 고비용 GPU 의존 인프라를 RNGD로 분산 및 대체하여 예산 효율을 개선할 수 있는지 구조 확인이 필요합니다.
+* **FuriosaAI win**: 공공 보건 의료 인프라 분야에서 상징적인 조달 레퍼런스를 개척하여 타 공공기관 및 의료 시장으로 우회 진출할 수 있는 교두보를 마련합니다.
+* **컨택 명분**: 건강보험심사평가원의 독자적인 AI 통합플랫폼 구축에 따른 GPU 하드웨어 인프라 최적화용 국산 가속기 제안을 추진하고자 합니다.
+* **제안 토크 트랙**: 최근 심평원이 수립한 GPU 서버 기반 AI 통합플랫폼 구축 계획에 대해 전해 들었습니다. 의료 데이터의 강력한 정보주권 보장과 시스템 도입 비용 조율을 함께 충족할 수 있도록 국산 저전력 RNGD를 활용한 서버 사양 검토를 제안드립니다.
+* **출처 링크**: [출처](https://www.etnews.com/20260522000181)
+
+## 6. NPUaaS / CSP 경유 기회
+* **삼성SDS**: AI 데이터센터 인프라 구축 및 동탄 데이터센터의 전력 확보(출처: S003)가 구체화됨에 따라, 자체 클라우드 플랫폼(SCP) 내에 RNGD 가속기를 활용한 신규 NPUaaS 서비스를 제공하고 인프라 용량을 추가로 확보할 수 있는지 확인이 필요합니다.
+* **엘리스그룹**: 코스닥 상장 추진과 이동식 모듈형 데이터센터(AI PMDC) 인프라 확장을 기회로, 자사 인프라 관리 플랫폼인 ECI 하드웨어 스택에 RNGD를 연동하여 가성비 높은 NPUaaS 요금제를 출시할 수 있는지 검토가 가능합니다.
+* **우리은행**: 금융 데이터 보안 준수를 요구하는 전용 프라이빗 아키텍처 환경의 특성을 고려하여, 삼성 클라우드 플랫폼(SCP) 등 사업을 대행하는 CSP의 기구축된 인프라를 우회 경유하여 공급할 수 있는지 방안을 확인해야 합니다.
+* **NHN클라우드**: 독자 대형 데이터센터 인프라를 기반으로 초거대 GPU 클러스터 가동을 추진하고 있으므로, 전력량 부담을 완화하기 위한 보완재로서 국산 추론 칩 기반 NPUaaS 라인업 신설 및 용량 도입을 논의할 수 있습니다.
+* **에코아이티**: 전남소방본부용 재난 대응 솔루션이 쿠버네티스 기반의 가상화 환경에 구축되는 사업 구조를 지니고 있어, 가상화 환경을 지원하는 클라우드 가속 인프라 및 NPUaaS 연계 형태로의 공급 기회가 존재합니다.
+
+## 7. B2G 후보 — 나라장터/RFP 직접 확인 전
+현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다.
+
+* **한글과컴퓨터**
+  * 근거 유형: 기사/RSS 기반
+  * 나라장터 확인 여부: 미수행
+  * 다음 액션: 챗엑사원 결합 모델의 당사 엑사원 4.0 전용 서빙 스택 내 가속 규격 부합 여부 기술 검증 수행 및 나라장터 직접 확인 필요
+  * 출처: [출처1](http://www.newslock.co.kr/news/articleView.html?idxno=130504), [출처2](https://www.mt.co.kr/tech/2026/05/22/2026052215283358675), [출처3](https://www.mk.co.kr/article/12055579)
+
+* **건강보험심사평가원**
+  * 근거 유형: 기사/RSS 기반
+  * 나라장터 확인 여부: 미수행
+  * 다음 액션: 심평원 자체 데이터센터용 하드웨어 규격의 당사 PCIe 적합성 사전 점검 및 나라장터 공고/RFP 직접 확인 필요
+  * 출처: [출처](https://www.etnews.com/20260522000181)
+
+## 8. 담당자 / 컨택 경로
+| 대상 | 담당자 힌트 | 기존 접점 |
+| :--- | :--- | :--- |
+| 삼성SDS | Head of Cloud, Head of Infrastructure, Head of Data Center, platform lead | 확인 필요 |
+| 엘리스그룹 | CTO, Head of Cloud, Head of Infrastructure, platform lead | 확인 필요 |
+| 한글과컴퓨터 | CIO, CTO, Head of Platform, public sector lead | 확인 필요 |
+| 우리은행 | CIO, CDO, Head of AI, Head of Infrastructure, procurement department | 확인 필요 |
+| NHN클라우드 | CIO, CTO, Head of Cloud, Head of Infrastructure, platform lead | 확인 필요 |
+| 건강보험심사평가원 | Head of Infrastructure, Head of Data Center, platform lead, procurement department | 확인 필요 |
+| 에코아이티 | CTO, Head of Platform, public sector lead | 확인 필요 |
+| NH농협은행 | CIO, CDO, Head of AI, Head of Platform | 확인 필요 |
+
+## 9. 경쟁사 GTM 동향
+이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다.
+
+## 10. 주의 사항
+* 건강보험심사평가원 등 B2G 후보군의 비즈니스 시그널은 기사/RSS 수준의 데이터이므로 직접적인 조달 진입 전까지는 관찰 대상군 및 하드웨어 구조 확인 단계로만 해석해 주시기 바랍니다.
+* 모델명이 명확하게 기재되지 않은 후보들에 대해서는 기술적인 모델 적합성을 사전에 단정하지 마시고, 인프라 확장 계획과 채널의 연계 가능성 및 타이밍 관점의 기회 요소로만 영업을 준비해 주십시오.
+* 본 리포트는 candidate의 수치적 요구사항 및 투자 규모가 명시적으로 확인된 일부 대상(삼성SDS 및 NH농협은행 일부 항목)을 제외하고는 비용 최적화 여부, 전력 감축률 및 세부 연산 지표 등 구체적인 수치적 근거를 단정하여 기술하지 않았습니다.
+
+---
+
+debug_run_id: `2026-05-25_220626_test_v0.6.2-pages-test`  
+furiosa_docs_successful: `11`  
+report_writer: `llm`  
+report_writer_retry_count: `1`  
+report_validation_passed: `True`  

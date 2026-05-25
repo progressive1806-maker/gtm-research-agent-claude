@@ -1,0 +1,410 @@
+# LLM Evaluation Notes
+
+## LLM metadata
+
+- provider: `gemini`
+- model: `gemini-3.5-flash`
+- llm_sources_count: `40`
+- max_llm_sources: `40`
+- max_source_chars: `800`
+- max_output_candidates: `12`
+- evaluated_at_kst: `2026-05-25T22:13:13.626625+09:00`
+
+## Run summary
+
+- overall_assessment: 삼성SDS의 대규모 AI 데이터센터 인프라 투자 및 우리은행 AI 에이전트 수주, 한글과컴퓨터와 LG AI연구원의 공공 AX 시장 공동 대응이 이번 주 핵심 비즈니스 시그널입니다. 모델명이 불명확하더라도 대형 인프라 증설 및 조달/채널 경로가 명확한 CSP 운영사 및 공공 파트너를 집중 타깃으로 설정하여 클라우드 연계 및 온프레미스 패키지 제안을 추진해야 합니다.
+- top_priority_names: 삼성SDS, 엘리스그룹, 한글과컴퓨터, 우리은행
+- noise_ratio_comment: 중국 시장의 알리바바 신형 가속기 발표 및 삼성전자의 사내 생성형 AI 허용 정책 등 단순 정책 및 동향성 기사는 직접적인 가속기 GTM 액션과 연관이 없어 노이즈로 처리했습니다.
+- model_compatibility_caution: 농협은행의 엑사원 3.5 및 한글과컴퓨터의 엑사원 모델군은 당사 공식 지원 사양인 엑사원 4.0과 버전 차이가 있으므로 패밀리 단위의 정밀 기술 검증이 요구되며, 에코아이티의 Solar LLM 적용 플랫폼은 vLLM 호환성을 확인해야 합니다.
+
+## Eval notes
+
+- 이번 GTM 분석 결과, 삼성SDS가 대대적인 인프라 강화 투자를 단행하고 금융 대기업 사업(우리은행)의 우선협상자로 지정된 대단히 명확한 채널 확장 신호가 관측되었습니다.
+- B2G 부문에서는 한글과컴퓨터가 LG AI연구원과 손잡고 온프레미스 공공기관 솔루션을 패키지 추진하는 시점이므로, 국산 칩 도입 가점이 있는 공공 부문 전용 패키징 결합을 위한 최적의 파트너로 확인되었습니다.
+- 일부 엑사원 3.5 및 Solar LLM 계열 기반의 고객사는 명확한 버전 호환성 체크를 선제 진행하도록 내부 피드백 채널을 활성화해야 합니다.
+
+## Raw LLM response
+
+```json
+{
+  "run_summary": {
+    "overall_assessment": "삼성SDS의 대규모 AI 데이터센터 인프라 투자 및 우리은행 AI 에이전트 수주, 한글과컴퓨터와 LG AI연구원의 공공 AX 시장 공동 대응이 이번 주 핵심 비즈니스 시그널입니다. 모델명이 불명확하더라도 대형 인프라 증설 및 조달/채널 경로가 명확한 CSP 운영사 및 공공 파트너를 집중 타깃으로 설정하여 클라우드 연계 및 온프레미스 패키지 제안을 추진해야 합니다.",
+    "top_priority_names": ["삼성SDS", "엘리스그룹", "한글과컴퓨터", "우리은행"],
+    "noise_ratio_comment": "중국 시장의 알리바바 신형 가속기 발표 및 삼성전자의 사내 생성형 AI 허용 정책 등 단순 정책 및 동향성 기사는 직접적인 가속기 GTM 액션과 연관이 없어 노이즈로 처리했습니다.",
+    "model_compatibility_caution": "농협은행의 엑사원 3.5 및 한글과컴퓨터의 엑사원 모델군은 당사 공식 지원 사양인 엑사원 4.0과 버전 차이가 있으므로 패밀리 단위의 정밀 기술 검증이 요구되며, 에코아이티의 Solar LLM 적용 플랫폼은 vLLM 호환성을 확인해야 합니다."
+  },
+  "candidates": [
+    {
+      "name": "삼성SDS",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "경북 구미 대규모 AI 데이터센터 구축 투자 및 동탄 데이터센터 전력 확보, 우리은행 AI 에이전트 사업 우선협상대상자 선정",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "모델 호환성은 미확인 상태이나, 경북 구미에 60MW 규모 AI 데이터센터 구축을 추진 중이며 동탄 데이터센터 20MW 전력 확보 등 대규모 인프라 증설이 구체화되었습니다. 또한 금융권 대형 사업인 우리은행 AI 에이전트 우선협상대상자로 선정되는 등 채널 영향력이 극도로 높아 인프라 공급 및 SCP 클라우드 경유 판매 관점에서 최우선순위로 분류합니다.",
+      "hook": "CLOUD",
+      "buying_signal": "동탄 데이터센터 전력 확보 및 경북 구미 4273억원 규모 데이터센터 건립 공식화. 우리은행 AI 에이전트 구축 사업 우선협상대상자 지위 획득.",
+      "infrastructure_signal": "동탄 및 구미 지역 데이터센터 인프라의 전력 및 물리적 설비 대규모 확충 추진 중.",
+      "timing_reason": "신규 데이터센터의 하드웨어 공급망 구축 시점과 금융권 대용량 생성형 AI 인프라 아키텍처를 설계하는 현재 시점이 최적의 영업 진입기입니다.",
+      "customer_win": "삼성 클라우드 플랫폼(SCP) 기반 NPUaaS 라인업을 강화하여 클라우드 서비스 경쟁력을 높일 수 있으며, 대규모 데이터센터 가동에 따른 전력 소모 및 전력망 부족 이슈를 고효율 RNGD 가속기 도입으로 완화할 수 있습니다.",
+      "furiosa_win": "국내 최대 IT서비스 및 클라우드 운영사인 삼성SDS의 유통망을 경유하여 엔터프라이즈 및 금융권 타깃 대량 공급 기회를 선점할 수 있습니다.",
+      "numeric_claims": [
+        {
+          "claim": "경북 구미 AI 데이터센터 4273억원 투자 계획",
+          "source_id": "S009",
+          "source_url": "https://www.mt.co.kr/tech/2026/05/23/2026052210211399740",
+          "evidence_text": "삼성SDS는 경북 구미에 4273억원을 투자해 60MW 규모 AI 데이터센터를 짓기로 했다."
+        },
+        {
+          "claim": "구미 데이터센터 60MW 규모 구축 계획",
+          "source_id": "S009",
+          "source_url": "https://www.mt.co.kr/tech/2026/05/23/2026052210211399740",
+          "evidence_text": "60MW 규모 AI 데이터센터를 짓기로 했다."
+        },
+        {
+          "claim": "동탄 데이터센터 서관 가동용 20MW급 전력 확보",
+          "source_id": "S003",
+          "source_url": "https://www.e-science.co.kr/news/articleView.html?idxno=130004",
+          "evidence_text": "삼성SDS가 경기 동탄 데이터센터 서관 가동을 위해 20MW급 전력을 확보한 사례"
+        }
+      ],
+      "direct_sales_possibility": "MID",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "HIGH",
+      "contact_reason": "구미 신규 AI 데이터센터 인프라 효율성 극대화 및 SCP 연계 금융 AI 에이전트 하드웨어 아키텍처 제안",
+      "outreach_talk_track": "최근 구미 AI 데이터센터 투자 및 우리은행 AI 에이전트 사업 수주 소식을 전해 들었습니다. 대용량 금융권 프라이빗 서빙 및 SCP 클라우드 환경에서 물리적 상면과 전력 소모를 혁신적으로 최적화할 수 있는 당사의 RNGD 가속기 도입 협력을 제안드립니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "Head of Cloud, Head of Infrastructure, Head of Data Center, platform lead",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "신규 AI 데이터센터 구축 일정에 부합하는 하드웨어 납품 벤더 등록 절차 확인 필요",
+        "SCP NPUaaS 제품군 내 당사 가속기 추가를 위한 정합성 검증 일정 확인 필요"
+      ],
+      "source_ids": ["S003", "S009", "S025", "S027"],
+      "source_urls": [
+        "https://www.e-science.co.kr/news/articleView.html?idxno=130004",
+        "https://www.mt.co.kr/tech/2026/05/23/2026052210211399740",
+        "https://www.sedaily.com/article/20046605?ref=naver",
+        "https://www.sedaily.com/article/20046505?ref=naver"
+      ]
+    },
+    {
+      "name": "엘리스그룹",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "코스닥 상장 예비심사 청구서 제출 및 GPUaaS 및 이동식 모듈형 데이터 센터(AI PMDC) 인프라 사업 확장 본격화",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "추론 모델은 미확인 상태이나 상장 예비심사 청구를 계기로 자체 모듈형 데이터 센터(PMDC) 및 대규모 GPUaaS 인프라 사업의 전폭적인 투자가 예견됩니다. 국산 NPU 기반의 서비스 다각화와 상장 포트폴리오 강화 흐름에 맞춰 강력한 채널 가치를 지니고 있어 우선 순위로 평가합니다.",
+      "hook": "CLOUD",
+      "buying_signal": "거래소 코스닥 상장예비심사 청구 완료 및 AI 클라우드 인프라(AI PMDC, ECI) 투자 강화 표명.",
+      "infrastructure_signal": "이동식 모듈형 데이터 센터 및 자체 대규모 인프라 관리 솔루션을 통한 GPUaaS 서비스 전개.",
+      "timing_reason": "상장 자금 조달 및 인프라 라인업 리뉴얼 단계이므로, 기존 GPUaaS의 한계를 개선할 국산 저비용 NPUaaS 협력을 어필하기에 매우 유리한 타이밍입니다.",
+      "customer_win": "모듈형 데이터 센터 내 극히 제한적인 전력 및 냉각 설비 환경에서 RNGD의 고성능 저전력 특성을 통해 전력 밀도당 서빙 성능을 극대화하고, 기존 GPU 위주 라인업에 고효율 NPU 기반 저비용 서비스를 신설할 수 있습니다.",
+      "furiosa_win": "상장을 추진하는 유망 풀스택 AI 기업을 채널 파트너로 선점하여 클라우드 서비스형 가속기 실적을 신속히 확보할 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "LOW",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "HIGH",
+      "contact_reason": "모듈형 데이터센터(PMDC) 및 ECI 플랫폼 내 RNGD 탑재를 통한 NPUaaS 서비스 공동 개발 제안",
+      "outreach_talk_track": "코스닥 상장 예비심사 청구서 제출을 매우 축하드립니다. 엘리스그룹의 고도화된 이동식 모듈형 데이터센터(AI PMDC) 및 AI 클라우드 인프라에 당사의 저전력 고효율 RNGD 가속기를 연동하여 가성비가 극대화된 NPUaaS 서비스 라인업을 상장 시점에 맞춰 함께 선보이기를 제안합니다.",
+      "revenue_timing": "단기",
+      "decision_maker_hint": "CTO, Head of Cloud, Head of Infrastructure, platform lead",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "엘리스그룹 내부의 자체 GPUaaS 인프라 아키텍처에 당사 컨테이너 툴킷 연동 가능 여부 검토 필요"
+      ],
+      "source_ids": ["S012", "S013", "S014", "S015", "S016", "S017"],
+      "source_urls": [
+        "http://www.hansbiz.co.kr/news/articleView.html?idxno=839792",
+        "http://www.joseilbo.com/news/news_read.php?uid=568639&class=53&grp=",
+        "https://www.fetv.co.kr/news/articleView.html?idxno=302765",
+        "https://www.the-stock.kr/news/articleView.html?idxno=32570",
+        "https://www.newspim.com/news/view/20260520000146",
+        "https://www.cstimes.com/news/articleView.html?idxno=706484"
+      ]
+    },
+    {
+      "name": "한글과컴퓨터",
+      "country": "KR",
+      "market": "B2G",
+      "target_type": "CSP 고객 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "LG AI연구원과 전략적 협약을 통한 AI 문서 에이전트 공동 개발 및 공공 AX 조달 시장 본격 진출 선언",
+      "confirmed_model_name": "EXAONE",
+      "model_match_status": "family_only",
+      "model_fit_score": "MID",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "사용 모델이 엑사원 계열로 당사 엑사원 4.0 지원 사양과 패밀리 범주에서 연계 가능합니다. 한컴의 오랜 공공 부문 도메인 권력과 LG AI연구원의 기술력이 결합한 대형 연합체가 탄생했으며, 망분리 및 프라이빗 클라우드를 강력하게 요구하는 B2G 시장 공동 침투를 타깃으로 하므로 GTM 파트너십 가치가 최고 수준입니다.",
+      "hook": "PROCUREMENT",
+      "buying_signal": "한컴의 문서 AI 솔루션과 LG AI연구원의 엑사원(EXAONE) 결합 솔루션을 통한 정부부처, 공공기관, 공기업 대상의 공동 영업망 전개.",
+      "infrastructure_signal": "B2G 타깃의 온프레미스 망분리 인프라 및 전용 하드웨어 서버 환경 대응 요구 증대.",
+      "timing_reason": "양사 제휴를 통한 공공 AX 시장 수주전이 개시되는 초기 단계이므로 조달용 온프레미스 RNGD 탑재 패키지를 공동 발굴하기에 최적기입니다.",
+      "customer_win": "공공기관의 엄격한 보안 지침인 망분리 환경 내에 대용량 AI 에이전트를 도입할 때, 국산 저전력 가속기인 RNGD를 패키징하여 정부 부처의 비용 절감 요구와 장비 국산화 가점을 충족할 수 있습니다.",
+      "furiosa_win": "한컴의 막강한 공공 조달 네트워크를 통해 서버형 RNGD 패키지를 공공기관 및 주요 지자체에 간접 공급하는 고성능 B2G 포트폴리오를 빠르게 구축합니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "MID",
+      "csp_routed_sales_possibility": "MID",
+      "npuaas_adoption_possibility": "MID",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "한컴-LG AI연구원 공공 AX 문서 솔루션 대상 저전력 온프레미스 RNGD 서버 패키징 협력 제안",
+      "outreach_talk_track": "최근 LG AI연구원과의 공공 AX 시장 연맹 결성 소식을 인상 깊게 보았습니다. 정부부처 및 공공기관의 완전 망분리 및 온프레미스 요구사항에 즉시 대응하고 대규모 조달 경쟁력을 선점하실 수 있도록, 당사의 국산 저전력 RNGD 가속기를 결합한 솔루션 패키지 구성을 제안드립니다.",
+      "revenue_timing": "단기",
+      "decision_maker_hint": "CIO, CTO, Head of Platform, public sector lead",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "챗엑사원 및 한컴 AI 에이전트 결합 모델의 당사 엑사원 4.0 전용 서빙 스택 내 정상 가속 여부 사전 확인 필요"
+      ],
+      "source_ids": ["S020", "S021", "S022", "S023", "S024"],
+      "source_urls": [
+        "http://www.newslock.co.kr/news/articleView.html?idxno=130504",
+        "https://www.mt.co.kr/tech/2026/05/22/2026052215283358675",
+        "https://www.mk.co.kr/article/12055579",
+        "https://www.getnews.co.kr/news/articleView.html?idxno=870707",
+        "https://www.newsis.com/view/NISX20260522_0003640664"
+      ]
+    },
+    {
+      "name": "우리은행",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "자산관리 및 기업분석 AI 에이전트 구축 사업의 우선협상대상자로 삼성SDS 선정",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "구체적인 추론용 LLM 버전은 아직 비공개이나, 대형 시중은행의 자산관리 핵심 업무를 처리하기 위한 프라이빗 AI 아키텍처 구축 사업이 본격 가동되었습니다. 우선협상대상자인 삼성SDS와의 긴밀한 파트너십을 매개로 금융 CSP 경유 또는 NPUaaS 도입 시너지가 대단히 높으므로 우선순위 타깃으로 산정합니다.",
+      "hook": "CLOUD",
+      "buying_signal": "자산관리(WM) 및 고객관계관리(CRM) 고도화를 겨냥한 AI 에이전트 시스템 도입 결정을 내리고 우선협상대상자로 삼성SDS 지정.",
+      "infrastructure_signal": "금융권 규제 하에 외부 데이터센터와 분리된 프라이빗 클라우드 혹은 온프레미스 기반의 전용 서빙 서버 요구 가능성 농후.",
+      "timing_reason": "우선협상자 선정 직후 솔루션 및 서버 인프라 하드웨어 스택 확정이 이뤄지는 단계이므로 기술적 컨설팅 진입의 적기입니다.",
+      "customer_win": "대용량 고객 자산 데이터를 프라이빗 클라우드 내에서 항시 서빙하고 RAG 처리를 할 때, 뛰어난 가성비를 자랑하는 RNGD를 도입하여 장기적 시스템 운영비 부담을 혁신적으로 절감할 수 있습니다.",
+      "furiosa_win": "금융권 초거대 AI 서빙의 선도적인 랜드마크 레퍼런스를 개척하며, 파트너사인 삼성SDS와의 성공적인 동반 영업 성공 사례를 확보할 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "LOW",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "MID",
+      "contact_reason": "삼성SDS 파트너십 기반 우리은행 AI 에이전트 인프라 고도화용 RNGD 도입 검토 제안",
+      "outreach_talk_track": "최근 대형 생성형 AI 에이전트 파트너로 삼성SDS를 지정하고 사업을 본궤도에 올리신 점을 축하드립니다. 당사는 사업 수행 파트너인 삼성SDS와 협력하여 은행 내부의 전용 금융 인프라에서 보안을 완벽히 지키면서도 연산 비용을 최적화할 수 있는 RNGD 가속 방안을 제 제안하고자 합니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "CIO, CDO, Head of AI, Head of Infrastructure, procurement department",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "우리은행 시스템의 오프라인 인프라 구축 가능 여부 및 삼성SDS가 구성하는 전용 클라우드 아키텍처 규격 확인 필요"
+      ],
+      "source_ids": ["S025", "S027"],
+      "source_urls": [
+        "https://www.sedaily.com/article/20046605?ref=naver",
+        "https://www.sedaily.com/article/20046505?ref=naver"
+      ]
+    },
+    {
+      "name": "NHN클라우드",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "classification": "priority_outreach",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "모델 호환성은 미확인 상태이나, 이노그리드 인수 이후 첫 단독 간담회에서 '초거대 GPU 클러스터 기반 AI 서비스' 역량을 주요 성장 동력으로 선언했으며, KACI 연대를 기반으로 글로벌 GPU 공급 불안정에 공동 목소리를 내고 있습니다. 국내 대표 CSP 사업자로서 저비용 NPUaaS 라인업 신설 제안 가치가 매우 커 우선 순위로 분류합니다.",
+      "hook": "CLOUD",
+      "buying_signal": "초거대 GPU 클러스터 AI 서비스 공식 선언 및 한국클라우드산업협회(KACI) 파트너들과의 데이터센터 에너지 비용 급등 공동 대응 모색.",
+      "infrastructure_signal": "글로벌 CSP에 대적할 자체 초대형 데이터센터 인프라 및 전용 AI 클라우드 인프라 운용 중.",
+      "timing_reason": "클라우드 조직 확장 선언 및 대대적인 마케팅 행사가 예고된 지금 시점이 공급망 대안으로서의 RNGD 가치를 선제적으로 제시하기 좋은 시기입니다.",
+      "customer_win": "외산 GPU의 불안정한 조달 상황과 천정부지로 치솟는 데이터센터 냉각 전력 비용을 압도적인 고효율 저발열 RNGD 카드를 통해 포트폴리오 차원에서 보완할 수 있습니다.",
+      "furiosa_win": "민간 및 공공 멀티클라우드 시장 전반에 당사 가속기를 연계 공급하여 안정적인 국산 클라우드 가입형 매출 기회를 확보합니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "MID",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "HIGH",
+      "contact_reason": "NHN클라우드 인프라 비용 최적화 및 국산 가속기 기반 NPUaaS 신규 출시 협의 제안",
+      "outreach_talk_track": "최근 이노그리드 인수 이후의 초거대 GPU 클러스터 기반 AI 사업 강화 비전을 뜻깊게 보았습니다. 글로벌 클라우드 기업들에 대응하여 인프라 비용 구조를 혁신하고 가입 기업들에게 뛰어난 가성비의 서빙 환경을 제공하기 위한 국산 RNGD 결합 방안을 적극 검토해 보시길 제안합니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "CIO, CTO, Head of Cloud, Head of Infrastructure, platform lead",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "NHN클라우드가 도입하려는 AI 추론 서비스 스택(vLLM 기반 환경 등)과의 소프트웨어 정합성 확인 필요"
+      ],
+      "source_ids": ["S005", "S008", "S030"],
+      "source_urls": [
+        "https://www.ddaily.co.kr/page/view/2026052017342600376",
+        "http://www.boannews.com/media/view.asp?idx=143783&kind=3",
+        "https://www.ddaily.co.kr/page/view/2026052216371975959"
+      ]
+    },
+    {
+      "name": "건강보험심사평가원",
+      "country": "KR",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "classification": "structure_check",
+      "confirmed_project_or_signal": "GPU 서버 인프라 기반의 AI 통합플랫폼 구축 드라이브 전략 선언",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "사용 모델명은 미확인 상태이나, 정보주권이 강력히 보장되어야 하는 공공 의료 평가기관에서 자체 'GPU 서버 기반 AI 통합플랫폼'을 원스톱 프로세스로 직접 도입 및 구축하겠다는 명확한 바이어 신호가 존재합니다. 공공 온프레미스 인프라 시장 진입을 위한 구조 확인용 최우선 타깃입니다.",
+      "hook": "SOVEREIGN",
+      "buying_signal": "자체 AI 통합플랫폼을 GPU 인프라 바탕으로 구축하여 원스톱 서비스 개발 및 운영 체계를 마련하겠다는 구체적 로드맵 발표.",
+      "infrastructure_signal": "기관 산하 디지털클라우드센터 및 AI융합추진단을 중심으로 자체 물리 서버 하드웨어 인프라 직접 도입 및 관리 예정.",
+      "timing_reason": "실무 책임자인 디지털클라우드센터장이 직접 AI 통합 플랫폼 인프라 가속화를 주관하는 시점이므로, 조기 기획 단계에서 국산 가속기 제안이 유효합니다.",
+      "customer_win": "민감한 개인 보건의료 데이터를 외부 유출 걱정 없이 폐쇄망 온프레미스에서 완벽히 제어하고, 기존 고가 GPU에 의존하던 분석 플랫폼 비용을 국산 RNGD로 대체하여 예산 부담을 대폭 경감할 수 있습니다.",
+      "furiosa_win": "전략적 공공 보건 의료 인프라 레퍼런스를 확보하여 타 국가 공공기관 및 대형 병원군으로의 조달 및 SI 침투 기회를 열 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "HIGH",
+      "csp_routed_sales_possibility": "MID",
+      "npuaas_adoption_possibility": "MID",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "심평원 독자 AI 통합플랫폼 GPU 인프라 최적화를 위한 국산 RNGD 하드웨어 제안",
+      "outreach_talk_track": "최근 건강보험심사평가원이 발표한 자체 GPU 서버 기반 AI 통합플랫폼 추진 전략을 대단히 의미 있게 보았습니다. 보건의료 데이터 보안 준수 및 도입 예산 효율 극대화를 달성하기 위해 당사의 국산 저전력 가속기인 RNGD 기반의 온프레미스 시스템 사양 제안을 논의드리고자 합니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "Head of Infrastructure, Head of Data Center, platform lead, procurement department",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "심평원 자체 데이터센터 내 도입될 서버 아키텍처 규격의 당사 PCIe 적합성 여부 확인 필요",
+        "조달 절차 상 직접 구매 또는 파트너 SI 경유 여부 검증 필요"
+      ],
+      "source_ids": ["S036"],
+      "source_urls": [
+        "https://www.etnews.com/20260522000181"
+      ]
+    },
+    {
+      "name": "에코아이티",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "classification": "cloud_npuaaS_lead",
+      "confirmed_project_or_signal": "전남소방본부 AI 기반 재난 대응 플랫폼 구축 사업 착수 및 Solar LLM 문서 검색 RAG 엔진 도입 진행",
+      "confirmed_model_name": "Solar LLM",
+      "model_match_status": "family_only",
+      "model_fit_score": "MID",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "MID",
+      "fit_vs_priority_explanation": "사용 모델이 당사 호환 범위에 드는 Upstage Solar LLM 계열(family_only)로 명시되어 기술적 정합성이 훌륭합니다. 쿠버네티스 기반의 클라우드 인프라 상에서 소방 RAG 및 문서 AI 플랫폼을 실개발하는 구조이므로 클라우드 기반 가속 가치가 돋보여 NPUaaS 유도 관점에서 중요하게 모니터링합니다.",
+      "hook": "VLLM",
+      "buying_signal": "전남소방본부용 'AI 기반 재난 대응 플랫폼' 구축 계약 수행 및 Solar LLM 학습 데이터를 적용한 RAG 시스템 개발 본격화.",
+      "infrastructure_signal": "쿠버네티스 기반 클라우드 가상화 기술을 적극 도입하여 활용하고 있는 IT 개발 환경.",
+      "timing_reason": "실제 RAG 데이터 학습 및 추론 알고리즘 구축 초기 단계에 진입하였으므로 성능 가속을 담당할 인프라 제안이 통용되는 시기입니다.",
+      "customer_win": "쿠버네티스 가상화 환경에서 대량의 정형/비정형 문서를 RAG 분석 시, vLLM 오픈소스 에코시스템과 호환성이 높은 RNGD를 연계 사용하여 상시 가속화 전력 비용을 극적으로 줄일 수 있습니다.",
+      "furiosa_win": "대민 안전과 직결된 대표적인 공공 재난 시스템에 당사 가속 기술을 녹여내어, Solar LLM 및 RAG 특화용 국산 추론 칩 성과 레퍼런스를 견고히 합니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "MID",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "전남소방본부 재난 대응 RAG 시스템 내 Solar LLM 추론 가속용 RNGD 연동 방안 검토 제안",
+      "outreach_talk_track": "에코아이티가 진행 중이신 전남소방본부 AI 재난 대응 플랫폼의 Solar LLM 및 RAG 구축 프로젝트에 깊은 관심이 있습니다. 쿠버네티스 환경 하에서 해당 생성형 문서 가공 모델의 서빙 지연 시간을 줄이고 인프라 비용 경쟁력을 기여할 당사의 고효율 RNGD 기반 최적화 스택 연동 방안을 제안드립니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "CTO, Head of Platform, public sector lead",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "에코아이티가 전남소방본부 망에서 사용하는 Solar LLM 프레임워크의 상세 버전 및 vLLM 서빙 포트와의 호환 확인 필요"
+      ],
+      "source_ids": ["S028"],
+      "source_urls": [
+        "https://magazine.hankyung.com/business/article/202605196285b"
+      ]
+    },
+    {
+      "name": "NH농협은행",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "classification": "watchlist",
+      "confirmed_project_or_signal": "LG CNS와 농협 전용 생성형 AI(EXAONE 3.5 기반 파인튜닝) 및 RAG 플랫폼 구축 진행 중",
+      "confirmed_model_name": "EXAONE 3.5",
+      "model_match_status": "unknown",
+      "model_fit_score": "LOW",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "MID",
+      "fit_vs_priority_explanation": "사용 모델이 당사 공식 컴파일된 EXAONE-4.0 사양과 버전 정렬이 맞지 않는 EXAONE 3.5 버전을 채택 중이므로 모델 fit_score는 보수적으로 LOW로 책정하나, 금융 프라이빗 AI 대형 프로젝트를 직접 기동하고 있어 장기 협력 채널 및 로드맵 호환성 검토 대상으로 관리해야 합니다.",
+      "hook": "SOVEREIGN",
+      "buying_signal": "LG CNS와 전용 초거대 AI 기반의 플랫폼 구축 착수 및 RAG 활용 내부규정 검색 서비스 기시범 전개.",
+      "infrastructure_signal": "은행 전용 보안 가상화망 구축 요구 및 온프레미스/전용 금융 AI 가상 인프라 구축 지향.",
+      "timing_reason": "현재 사내 행정 및 내부 문서 가공 중심의 시범 운영 단계이므로, 향후 고성능 인프라 전환 단계에 RNGD 검토 가능성을 사전 정지 작업해두기에 알맞은 장기적 접근 시점입니다.",
+      "customer_win": "엄격한 규제와 망분리가 중시되는 시중은행 사내망에서 가벼운 전력 설계와 고출력 가속이 가능한 NPU를 통해, 상시 RAG 탐색 서버 비용을 획기적으로 낮추고 안정적인 금융 보안 처리를 확립합니다.",
+      "furiosa_win": "초거대 엑사원 계열 모델을 변형 활용 중인 시중 금융 대기업에 당사 칩셋의 잠재적 상용 서빙 호환성을 성공적으로 점검하고 간접 영업 파이프라인을 구축합니다.",
+      "numeric_claims": [
+        {
+          "claim": "엑사원 3.5 모델 기반 파인튜닝 구축",
+          "source_id": "S019",
+          "source_url": "https://www.news2day.co.kr/article/20260522500024",
+          "evidence_text": "엑사원 3.5를 파인튜닝하고"
+        }
+      ],
+      "direct_sales_possibility": "LOW",
+      "csp_routed_sales_possibility": "MID",
+      "npuaas_adoption_possibility": "MID",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "농협 전용 금융 생성형 AI 인프라 최적화를 위한 EXAONE 계열 RNGD 서빙 호환성 사전 연구 협력 제안",
+      "outreach_talk_track": "최근 LG CNS와 파트너십 하에 진행 중이신 엑사원 3.5 기반 농협 전용 생성형 AI와 RAG 플랫폼 구축 동향을 인상 깊게 살펴보았습니다. 은행 내부망에서 해당 문서 검색 서비스가 최고 효율로 가동될 수 있도록 엑사원 계열 전용 가속 및 최적화 연동 사전 검토를 파트너사들과 공동 추진해 보시길 제안합니다.",
+      "revenue_timing": "장기",
+      "decision_maker_hint": "CIO, CDO, Head of AI, Head of Platform",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "EXAONE 3.5 모델의 아키텍처적 당사 가속 가능 범위 분석 및 솔루션 파트너사인 LG CNS 개발 부서와의 우회 소통 채널 검토"
+      ],
+      "source_ids": ["S019"],
+      "source_urls": [
+        "https://www.news2day.co.kr/article/20260522500024"
+      ]
+    }
+  ],
+  "noise_examples": [
+    {
+      "source_id": "S006",
+      "title": "[AI의 종목 이야기] 알리바바, 신형 AI 가속기 '전우 M890' 공개",
+      "reason": "중국 현지 기업인 알리바바의 자체 가속기 출시 및 신규 모델 소개 중심의 기사로, 국내 및 일본 중심의 RNGD GTM 영업 기회에 직접 반영되지 않습니다."
+    },
+    {
+      "source_id": "S032",
+      "title": "[단독] 삼성전자, 챗GPT·제미나이 사내 사용 전면 허용 추진",
+      "reason": "삼성전자의 사내 보안 환경 내 범용 SaaS 형태의 인공지능 도구(ChatGPT, 제미나이 등) 이용을 장려하는 내부 정책적 변화에 국한되어 있으며, 당사 하드웨어 가속기 인프라 신규 조달 프로젝트 정보로 해석하기 곤란합니다."
+    }
+  ],
+  "eval_notes": [
+    "이번 GTM 분석 결과, 삼성SDS가 대대적인 인프라 강화 투자를 단행하고 금융 대기업 사업(우리은행)의 우선협상자로 지정된 대단히 명확한 채널 확장 신호가 관측되었습니다.",
+    "B2G 부문에서는 한글과컴퓨터가 LG AI연구원과 손잡고 온프레미스 공공기관 솔루션을 패키지 추진하는 시점이므로, 국산 칩 도입 가점이 있는 공공 부문 전용 패키징 결합을 위한 최적의 파트너로 확인되었습니다.",
+    "일부 엑사원 3.5 및 Solar LLM 계열 기반의 고객사는 명확한 버전 호환성 체크를 선제 진행하도록 내부 피드백 채널을 활성화해야 합니다."
+  ]
+}
+```
