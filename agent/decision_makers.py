@@ -132,11 +132,25 @@ def naver_news_search(query: str, display: int = 5) -> list[dict[str, Any]]:
     return response.json().get("items", [])
 
 
+def is_valid_linkedin_url(url: str) -> bool:
+    """Only linkedin.com/in/<slug> and linkedin.com/company/<slug> count as profile URLs."""
+    if not url:
+        return False
+    lower = url.lower()
+    return "linkedin.com/in/" in lower or "linkedin.com/company/" in lower
+
+
 def classify_result(
     item: dict[str, Any],
     company_name: str,
     role_terms: list[str],
 ) -> str:
+    """
+    HIGH/MID/LOW require a real linkedin.com/in or linkedin.com/company URL.
+    News/blog/article URLs (venturesquare.net, sanctionlab.com, naver.com, …)
+    never reach HIGH/MID/LOW — they return UNKNOWN even if title/desc happen
+    to mention the company and a role.
+    """
     url = (item.get("link") or "").lower()
     title = _strip_html(item.get("title", "")).lower()
     desc = _strip_html(item.get("description", "")).lower()
@@ -146,6 +160,9 @@ def classify_result(
     if not company:
         return "UNKNOWN"
 
+    if not is_valid_linkedin_url(url):
+        return "UNKNOWN"
+
     is_linkedin_profile = "linkedin.com/in/" in url
     is_linkedin_company = "linkedin.com/company/" in url
     company_match = company in blob or company in url
@@ -153,11 +170,9 @@ def classify_result(
 
     if (is_linkedin_profile or is_linkedin_company) and company_match and role_match:
         return "HIGH"
-    if company_match and role_match:
+    if (is_linkedin_profile or is_linkedin_company) and (company_match or role_match):
         return "MID"
-    if is_linkedin_profile or (company_match and (is_linkedin_company or "linkedin" in blob)):
-        return "LOW"
-    return "UNKNOWN"
+    return "LOW"
 
 
 def find_profile_for_candidate(
@@ -256,13 +271,19 @@ def enrich_candidates_with_profiles(
 
         candidate["decision_maker_search_queries"] = queries
 
-        if best and best.get("confidence") in ("HIGH", "MID", "LOW"):
-            candidate["decision_maker_profile_url"] = best.get("url") or "확인 필요"
+        url = (best or {}).get("url") or ""
+        confidence = (best or {}).get("confidence") or "UNKNOWN"
+
+        # Strict URL gate: only real LinkedIn profile/company URLs are surfaced.
+        # Article/news/blog URLs never become decision_maker_profile_url, even
+        # if classify_result somehow returned MID/LOW.
+        if confidence in ("HIGH", "MID", "LOW") and is_valid_linkedin_url(url):
+            candidate["decision_maker_profile_url"] = url
             candidate["decision_maker_profile_title"] = best.get("title") or "확인 필요"
             candidate["decision_maker_profile_source"] = best.get("source") or ""
-            candidate["decision_maker_profile_confidence"] = best.get("confidence")
+            candidate["decision_maker_profile_confidence"] = confidence
         else:
-            candidate["decision_maker_profile_url"] = "확인 필요"
+            candidate["decision_maker_profile_url"] = ""
             candidate["decision_maker_profile_title"] = "확인 필요"
             candidate["decision_maker_profile_source"] = ""
             candidate["decision_maker_profile_confidence"] = "UNKNOWN"

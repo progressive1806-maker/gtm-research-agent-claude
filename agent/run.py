@@ -20,6 +20,7 @@ from google import genai
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from decision_makers import enrich_candidates_with_profiles  # noqa: E402
+import g2b  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -1376,26 +1377,55 @@ NUMERIC_EXPRESSION_PATTERN = re.compile(
 )
 
 
+def _has_strong_gtm_signal(candidate: dict[str, Any]) -> bool:
+    """
+    A candidate may keep outreach_priority=HIGH only if at least one explicit
+    GTM buying signal is set. Pure CSP-operator status alone is not enough.
+    """
+    for field in (
+        "direct_sales_possibility",
+        "npuaas_adoption_possibility",
+        "csp_capacity_expansion_possibility",
+        "csp_routed_sales_possibility",
+    ):
+        if candidate.get(field) == "HIGH":
+            return True
+    if candidate.get("hook_type") in ("PROCUREMENT", "PARTNER"):
+        return True
+    return False
+
+
+def _add_verification_note(candidate: dict[str, Any], note: str) -> None:
+    existing = candidate.get("verification_needed")
+    if not isinstance(existing, list):
+        existing = []
+    if note not in existing:
+        existing.append(note)
+    candidate["verification_needed"] = existing
+
+
 def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
     """
     Structural validation only. Adjusts score fields when they contradict
-    the declared model_match_status / confirmed_model_name. No phrase rewriting.
+    the declared model_match_status / confirmed_model_name, and refuses
+    outreach_priority=HIGH when no concrete GTM buying signal exists.
+    No phrase rewriting.
     """
     model_status = str(candidate.get("model_match_status", "")).lower()
     confirmed_model = str(candidate.get("confirmed_model_name", "")).strip()
-    target_type = str(candidate.get("target_type", ""))
-    deployment_fit = str(candidate.get("deployment_fit_score", ""))
-    channel_fit = str(candidate.get("channel_fit_score", ""))
+    unknown_model = confirmed_model in ["", "미확인"] or model_status == "unknown"
 
-    if confirmed_model in ["", "미확인"] or model_status == "unknown":
+    if unknown_model:
         candidate["model_fit_score"] = "UNKNOWN"
+        if candidate.get("rngd_fit_score") == "HIGH":
+            candidate["rngd_fit_score"] = "MID"
 
-        if target_type == "CSP 운영 기업" and deployment_fit == "HIGH" and channel_fit == "HIGH":
-            if candidate.get("rngd_fit_score") == "HIGH":
-                candidate["rngd_fit_score"] = "MID"
-        else:
-            if candidate.get("rngd_fit_score") == "HIGH":
-                candidate["rngd_fit_score"] = "MID"
+        # CSP-operator-alone or weak news evidence cannot justify HIGH outreach.
+        # Require at least one explicit strong GTM signal.
+        if not _has_strong_gtm_signal(candidate):
+            if candidate.get("outreach_priority") == "HIGH":
+                candidate["outreach_priority"] = "MID"
+                _add_verification_note(candidate, "직접 NPU/가속기 도입 근거 확인 필요")
 
     if model_status == "family_only":
         if candidate.get("model_fit_score") == "HIGH":
@@ -1644,7 +1674,8 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
 
 ## 7. 경쟁사 GTM 동향
-다음 문장만 포함하고 추측 금지: "이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다."
+INPUT.candidates에 경쟁사 GTM(customer win / partnership / NPUaaS·GPUaaS launch / public sector win / hardware deployment) 관련 정보가 없거나 noise뿐이라면, 정확히 다음 한 문장만 출력하세요: "이번 주 확인된 경쟁사 GTM 신호 없음."
+경쟁사 단순 투자/펀딩 뉴스는 절대 포함하지 마세요. 향후 버전 안내 같은 placeholder 문장도 금지합니다.
 
 ## 8. 주의 사항
 - 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
@@ -1657,9 +1688,18 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
             "- 본문에 B2G/공공/나라장터/RFP 관련 섹션이나 문장을 만들지 마세요. 그런 내용은 별도 B2B+B2G 리포트에서 다룹니다."
         )
     else:
-        sections = """
+        g2b_verified = bool(eval_result.get("_g2b_verified"))
+        b2g_evidence_label = (
+            "나라장터/RFP 확인 완료" if g2b_verified else "기사/RSS 기반 · 나라장터 확인 미수행"
+        )
+        b2g_section_intro = (
+            "현재 B2G 후보는 G2B(나라장터) API 데이터로 교차 확인된 상태입니다."
+            if g2b_verified
+            else "현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다."
+        )
+        sections = f"""
 [리포트 구조 — 정확히 이 순서, 이 헤더로 / 이번 리포트는 B2B + B2G 통합입니다]
-# FuriosaAI GTM 리서치 — B2B + B2G — {TODAY}
+# FuriosaAI GTM 리서치 — B2B + B2G — {{TODAY}}
 (TODAY는 INPUT의 today_kst 값을 사용)
 
 ## 1. 한 줄 결론
@@ -1669,13 +1709,12 @@ run_summary.overall_assessment를 보수적인 한 문장으로 정리. 새 사�
 outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
 
-## 3. B2B 후보 표
-market=="B2B" 후보만. 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
+## 3. B2B + B2G 통합 표
+이 페이지에는 통합 표 하나만 둡니다. 별도의 "B2B 후보 표" 섹션을 만들지 마세요.
+모든 비-노이즈 후보. 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
+market=="B2G" 행은 "왜 지금" 칸 끝에 "{b2g_evidence_label}"를 함께 표기.
 
-## 4. B2B + B2G 통합 표
-모든 비-노이즈 후보. 표 헤더는 §3과 동일하되 market=="B2G" 행은 "왜 지금" 칸 끝에 "B2G 근거: 기사/RSS 기반 · 나라장터 확인: 미수행"을 함께 표기.
-
-## 5. 우선 연락 후보 상세
+## 4. 우선 연락 후보 상세
 상위 후보 최대 6개. 후보마다 다음 항목을 한국어 자연문으로 풀어쓰기:
 - 확인된 모델 / 모델 매칭 상태
 - RNGD fit / outreach priority
@@ -1686,30 +1725,31 @@ market=="B2B" 후보만. 표 헤더: 우선순위 | 대상 | 유형 | 확인 모
 - 담당자/LinkedIn 후보 (위 표기 규칙 적용)
 - 출처 링크
 
-## 6. NPUaaS / CSP 경유 기회
+## 5. NPUaaS / CSP 경유 기회
 target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또는 npuaas_adoption_possibility=="HIGH"인 후보 중심.
 후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성과 한 줄 사유.
 
-## 7. B2G 후보 — 나라장터/RFP 직접 확인 전
-섹션 첫 문장에 다음 문장을 그대로 포함: "현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다."
+## 6. B2G 후보 — 나라장터/RFP 직접 확인 전
+섹션 첫 문장에 다음 문장을 그대로 포함: "{b2g_section_intro}"
 market=="B2G" 후보별: 근거 유형, 나라장터 확인 여부, 다음 액션, 출처.
 
-## 8. 담당자 / 컨택 경로
+## 7. 담당자 / 컨택 경로
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
 
-## 9. 경쟁사 GTM 동향
-다음 문장만 포함하고 추측 금지: "이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다."
+## 8. 경쟁사 GTM 동향
+INPUT.candidates에 경쟁사 GTM(customer win / partnership / NPUaaS·GPUaaS launch / public sector win / hardware deployment) 관련 정보가 없거나 noise뿐이라면, 정확히 다음 한 문장만 출력하세요: "이번 주 확인된 경쟁사 GTM 신호 없음."
+경쟁사 단순 투자/펀딩 뉴스는 절대 포함하지 마세요. 향후 버전 안내 같은 placeholder 문장도 금지합니다.
 
-## 10. 주의 사항
+## 9. 주의 사항
 - B2G 후보는 나라장터/RFP 직접 확인 전이므로 watchlist/구조 확인으로 해석.
 - 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
 - 수치 근거가 없는 비용·전력·성능 단정은 포함하지 않았음을 명시.
 """.strip()
         b2g_rules_block = (
             "[B2G 규칙]\n"
-            "- market이 \"B2G\"인 후보는 본문/표에 반드시 \"B2G 근거: 기사/RSS 기반\", \"나라장터 확인: 미수행\"을 함께 노출하세요.\n"
-            "- B2G 섹션 첫 문장은 다음 문장을 그대로 포함하세요: \"현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다.\""
+            f"- market이 \"B2G\"인 후보는 본문/표에 반드시 \"{b2g_evidence_label}\"를 함께 노출하세요.\n"
+            f"- B2G 섹션 첫 문장은 다음 문장을 그대로 포함하세요: \"{b2g_section_intro}\""
         )
 
     return f"""
@@ -2452,15 +2492,11 @@ def build_business_report(
     lines.extend(
         [
             "",
-            "## 3. 버전 1 — B2B only",
-            "",
-            business_candidate_table(candidates_sorted, include_b2g=False),
-            "",
-            "## 4. 버전 2 — B2B + B2G",
+            "## 3. B2B + B2G 통합 표",
             "",
             business_candidate_table(candidates_sorted, include_b2g=True),
             "",
-            "## 5. 우선 연락 후보 상세",
+            "## 4. 우선 연락 후보 상세",
             "",
         ]
     )
@@ -2486,7 +2522,7 @@ def build_business_report(
     lines.extend(
         [
             "",
-            "## 6. NPUaaS / CSP 경유 기회",
+            "## 5. NPUaaS / CSP 경유 기회",
             "",
         ]
     )
@@ -2511,12 +2547,18 @@ def build_business_report(
     else:
         lines.append("- 해당 후보 없음")
 
+    g2b_verified = bool(eval_result.get("_g2b_verified"))
+    b2g_section_intro = (
+        "현재 B2G 후보는 G2B(나라장터) API 데이터로 교차 확인된 상태입니다."
+        if g2b_verified
+        else "현재 B2G 후보는 기사/RSS 기반입니다. 나라장터/RFP 직접 확인 전까지는 우선 연락이 아니라 구조 확인 또는 watchlist로 해석해야 합니다."
+    )
     lines.extend(
         [
             "",
-            "## 7. B2G 후보 — 나라장터/RFP 직접 확인 전",
+            "## 6. B2G 후보 — 나라장터/RFP 직접 확인 전",
             "",
-            "현재 B2G 후보는 기사/RSS 기반입니다. 나라장터/RFP 직접 확인 전까지는 우선 연락이 아니라 구조 확인 또는 watchlist로 해석해야 합니다.",
+            b2g_section_intro,
             "",
         ]
     )
@@ -2536,7 +2578,7 @@ def build_business_report(
     lines.extend(
         [
             "",
-            "## 8. 담당자 / 컨택 경로",
+            "## 7. 담당자 / 컨택 경로",
             "",
             "| 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점 |",
             "|---|---|---|---|---|",
@@ -2546,9 +2588,13 @@ def build_business_report(
     for c in candidates_sorted[:8]:
         confidence = c.get("decision_maker_profile_confidence", "UNKNOWN")
         if confidence in ("HIGH", "MID"):
-            url = c.get("decision_maker_profile_url") or "확인 필요"
-            url_cell = f"[{url}]({url})"
-            confidence_cell = confidence
+            url = c.get("decision_maker_profile_url") or ""
+            if url:
+                url_cell = f"[{url}]({url})"
+                confidence_cell = confidence
+            else:
+                url_cell = "확인 필요"
+                confidence_cell = "확인 필요"
         else:
             url_cell = "확인 필요"
             confidence_cell = "확인 필요"
@@ -2562,6 +2608,10 @@ def build_business_report(
 
     lines.extend(
         [
+            "",
+            "## 8. 경쟁사 GTM 동향",
+            "",
+            "이번 주 확인된 경쟁사 GTM 신호 없음.",
             "",
             "## 9. 오늘/이번 주 액션",
             "",
@@ -2597,18 +2647,13 @@ def build_business_report(
     lines.extend(
         [
             "",
-            "## 10. 경쟁사 / 시장 GTM 동향",
+            "## 10. 주의 사항",
             "",
-            "- 이번 버전에서는 후보 기업 중심으로 평가했으며, 경쟁사 GTM 동향은 별도 구조화가 필요합니다.",
-            "- 다음 버전에서 고객 납품, CSP/MSP 파트너십, NPUaaS/GPUaaS 출시, 공공 수주 중심으로 분리 수집해야 합니다.",
+            "- B2G 후보는 G2B(나라장터) 교차 확인 결과에 따라 라벨이 달라집니다. 교차 확인이 미수행이면 watchlist/구조 확인으로 해석해야 합니다.",
+            "- 담당자/LinkedIn 후보는 공개 검색 결과를 기반으로 한 추정입니다. linkedin.com/in 또는 linkedin.com/company URL이 아닌 경우 \"확인 필요\"로 표시했으며, 뉴스 URL은 담당자 후보로 보여 주지 않습니다.",
+            "- 모델명이 미확인인 후보는 모델 적합성이 아니라 인프라/채널/타이밍 관점의 outreach priority로 해석해야 하며, 강한 GTM 시그널(직접 NPU/GPU 도입, capacity 증설, NPUaaS/GPUaaS 파트너십)이 확인되지 않으면 HIGH로 보지 않습니다.",
             "",
-            "## 11. 주의 사항",
-            "",
-            "- B2G 후보는 아직 나라장터/RFP 직접 확인 전이므로 watchlist 또는 구조 확인 후보로 해석해야 합니다.",
-            "- 담당자/LinkedIn 후보는 공개 검색 결과를 기반으로 한 추정입니다. 신뢰도가 HIGH/MID가 아니면 \"확인 필요\"로 표시했으며, 단정된 담당자가 아닙니다.",
-            "- 모델명이 미확인인 후보는 모델 적합성이 아니라 인프라/채널/타이밍 관점의 outreach priority로 해석해야 합니다.",
-            "",
-            "## 12. 핵심 출처",
+            "## 11. 핵심 출처",
             "",
         ]
     )
@@ -2778,7 +2823,7 @@ def _build_business_report_b2b(
             "",
             "## 7. 경쟁사 GTM 동향",
             "",
-            "- 이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다.",
+            "이번 주 확인된 경쟁사 GTM 신호 없음.",
             "",
             "## 8. 주의 사항",
             "",
@@ -3066,9 +3111,11 @@ def write_metadata(
     llm_error: str | None,
     report_writer_meta: dict[str, Any] | None = None,
     decision_maker_meta: dict[str, Any] | None = None,
+    g2b_meta: dict[str, Any] | None = None,
 ) -> None:
     writer_meta = report_writer_meta or {}
     dm_meta = decision_maker_meta or {}
+    g2b_md = g2b_meta or {}
     metadata = {
         "run_id": run_id,
         "mode": mode,
@@ -3110,7 +3157,12 @@ def write_metadata(
         "max_llm_sources": MAX_LLM_SOURCES,
         "max_source_chars": MAX_SOURCE_CHARS,
         "max_output_candidates": MAX_OUTPUT_CANDIDATES,
-        "g2b_called": False,
+        "g2b_called": bool(g2b_md.get("called", False)),
+        "g2b_sources_count": int(g2b_md.get("total_count", 0)),
+        "g2b_bid_sources_count": int(g2b_md.get("bid_count", 0)),
+        "g2b_spec_sources_count": int(g2b_md.get("spec_count", 0)),
+        "g2b_verified": bool(g2b_md.get("verified", False)),
+        "g2b_error": g2b_md.get("error", "") or "",
         "decision_maker_search_called": bool(dm_meta.get("called", False)),
         "decision_maker_profiles_count": int(dm_meta.get("count", 0)),
         "decision_maker_search_error": dm_meta.get("error", "") or "",
@@ -3297,16 +3349,24 @@ def run_selftest() -> int:
         required_headers = [
             "## 1.",
             "## 2.",
-            "## 3. 버전 1 — B2B only",
-            "## 4. 버전 2 — B2B + B2G",
-            "## 5.",
-            "## 6. NPUaaS / CSP 경유 기회",
-            "## 7. B2G 후보 — 나라장터/RFP 직접 확인 전",
-            "## 8.",
+            "## 3. B2B + B2G 통합 표",
+            "## 4. 우선 연락 후보 상세",
+            "## 5. NPUaaS / CSP 경유 기회",
+            "## 6. B2G 후보 — 나라장터/RFP 직접 확인 전",
+            "## 7. 담당자 / 컨택 경로",
+            "## 8. 경쟁사 GTM 동향",
         ]
         for header in required_headers:
             if header not in markdown:
                 failures.append(f"deterministic gtm_report.md에 필수 섹션이 없다: {header}")
+        if "B2B 후보 표" in markdown:
+            failures.append("b2b_b2g 리포트에 'B2B 후보 표' 섹션이 남아 있다.")
+        if "버전 1 — B2B only" in markdown or "버전 2 — B2B + B2G" in markdown:
+            failures.append("b2b_b2g 리포트에 옛 '버전 1/2' 섹션이 남아 있다.")
+        if "다음 버전에서 추가" in markdown:
+            failures.append("b2b_b2g 리포트에 'placeholder 다음 버전에서 추가' 문구가 남아 있다.")
+        if "이번 주 확인된 경쟁사 GTM 신호 없음." not in markdown:
+            failures.append("b2b_b2g 리포트의 경쟁사 GTM 섹션 기본 문장이 없다.")
     except Exception as exc:
         failures.append(f"deterministic gtm_report.md 빌드가 예외로 실패: {exc}")
 
@@ -3322,10 +3382,12 @@ def run_selftest() -> int:
             failures.append("B2B 전용 리포트에 B2G 섹션이 남아 있다.")
         if "샘플 공공기관" in b2b_md:
             failures.append("B2B 전용 리포트에 B2G 후보가 본문에 노출되었다.")
-        if "버전 2 — B2B + B2G" in b2b_md:
+        if "버전 2 — B2B + B2G" in b2b_md or "B2B + B2G 통합 표" in b2b_md:
             failures.append("B2B 전용 리포트에 B2B+B2G 통합 표가 남아 있다.")
         if "## 3. B2B 후보 표" not in b2b_md:
             failures.append("B2B 전용 리포트에 §3 B2B 후보 표 헤더가 없다.")
+        if "다음 버전에서 추가" in b2b_md:
+            failures.append("B2B 전용 리포트에 'placeholder 다음 버전에서 추가' 문구가 남아 있다.")
     except Exception as exc:
         failures.append(f"build_business_report(scope='b2b')가 예외로 실패: {exc}")
 
@@ -3466,7 +3528,7 @@ def run_selftest() -> int:
     if high != "HIGH":
         failures.append(f"linkedin.com/in + 회사명 + role 조합은 HIGH여야 한다 (got {high}).")
 
-    mid = classify_result(
+    news = classify_result(
         {
             "link": "https://news.example.com/article",
             "title": "샘플 CSP운영사, 신임 Head of Cloud 임명",
@@ -3475,8 +3537,10 @@ def run_selftest() -> int:
         "샘플 CSP운영사",
         ["Head of Cloud"],
     )
-    if mid != "MID":
-        failures.append(f"회사명 + role(뉴스)은 MID여야 한다 (got {mid}).")
+    if news != "UNKNOWN":
+        failures.append(
+            f"뉴스 URL(LinkedIn 아님)은 회사+role이 있어도 UNKNOWN이어야 한다 (got {news})."
+        )
 
     low = classify_result(
         {
@@ -3501,6 +3565,160 @@ def run_selftest() -> int:
     )
     if unknown != "UNKNOWN":
         failures.append(f"매칭이 전혀 없으면 UNKNOWN이어야 한다 (got {unknown}).")
+
+    # Part B: news/article URLs never become profile candidates, even if title/desc
+    # happen to mention the company and a role term.
+    vs = classify_result(
+        {
+            "link": "https://www.venturesquare.net/some-article",
+            "title": "샘플 CSP운영사, Head of Cloud 인터뷰",
+            "description": "샘플 CSP운영사 Head of Cloud가 어쩌고",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if vs != "UNKNOWN":
+        failures.append(f"venturesquare.net URL은 LinkedIn 후보로 분류되면 안 된다 (got {vs}).")
+
+    sl = classify_result(
+        {
+            "link": "https://sanctionlab.com/profile/foo",
+            "title": "샘플 CSP운영사 - Head of Cloud",
+            "description": "샘플 CSP운영사 Head of Cloud",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if sl != "UNKNOWN":
+        failures.append(f"sanctionlab.com URL은 LinkedIn 후보로 분류되면 안 된다 (got {sl}).")
+
+    ln_company = classify_result(
+        {
+            "link": "https://www.linkedin.com/company/sample-co/",
+            "title": "샘플 CSP운영사 — Head of Cloud team",
+            "description": "Head of Cloud 직군",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if ln_company != "HIGH":
+        failures.append(
+            f"linkedin.com/company + 회사명 + role은 HIGH여야 한다 (got {ln_company})."
+        )
+
+    # Part C: conservative outreach_priority — unknown model + no strong GTM signal cannot stay HIGH.
+    kt_like = {
+        "name": "샘플 CSP운영사 2",
+        "country": "KR",
+        "market": "B2B",
+        "target_type": "CSP 운영 기업",
+        "classification": "priority_outreach",
+        "confirmed_model_name": "미확인",
+        "model_match_status": "unknown",
+        "model_fit_score": "HIGH",
+        "deployment_fit_score": "HIGH",
+        "channel_fit_score": "HIGH",
+        "rngd_fit_score": "HIGH",
+        "outreach_priority": "HIGH",
+        "direct_sales_possibility": "LOW",
+        "npuaas_adoption_possibility": "LOW",
+        "csp_capacity_expansion_possibility": "LOW",
+        "csp_routed_sales_possibility": "LOW",
+        "hook_type": "CLOUD",
+        "verification_needed": [],
+    }
+    kt_after = enforce_candidate_fit_rules(json.loads(json.dumps(kt_like)))
+    if kt_after.get("outreach_priority") == "HIGH":
+        failures.append("KT-like CSP 운영사(unknown model, 약한 시그널)는 outreach=HIGH가 되면 안 된다.")
+    if kt_after.get("model_fit_score") != "UNKNOWN":
+        failures.append("KT-like 후보는 model_fit_score=UNKNOWN이어야 한다.")
+    if "직접 NPU/가속기 도입 근거 확인 필요" not in kt_after.get("verification_needed", []):
+        failures.append("downgrade 시 verification_needed에 사유 노트가 추가되어야 한다.")
+
+    csp_only = {
+        "name": "샘플 CSP 단독",
+        "market": "B2B",
+        "target_type": "CSP 운영 기업",
+        "confirmed_model_name": "미확인",
+        "model_match_status": "unknown",
+        "outreach_priority": "HIGH",
+        "rngd_fit_score": "HIGH",
+        "direct_sales_possibility": "MID",
+        "npuaas_adoption_possibility": "MID",
+        "csp_capacity_expansion_possibility": "MID",
+        "csp_routed_sales_possibility": "MID",
+        "hook_type": "NONE",
+    }
+    csp_after = enforce_candidate_fit_rules(json.loads(json.dumps(csp_only)))
+    if csp_after.get("outreach_priority") == "HIGH":
+        failures.append("CSP 운영 기업이라는 사실만으로 outreach=HIGH가 유지되면 안 된다.")
+
+    # Strong-signal candidate keeps HIGH.
+    strong = {
+        "name": "샘플 강한 시그널",
+        "market": "B2B",
+        "target_type": "CSP 운영 기업",
+        "confirmed_model_name": "미확인",
+        "model_match_status": "unknown",
+        "outreach_priority": "HIGH",
+        "rngd_fit_score": "HIGH",
+        "direct_sales_possibility": "HIGH",
+        "npuaas_adoption_possibility": "LOW",
+        "csp_capacity_expansion_possibility": "LOW",
+        "csp_routed_sales_possibility": "LOW",
+        "hook_type": "CLOUD",
+    }
+    strong_after = enforce_candidate_fit_rules(json.loads(json.dumps(strong)))
+    if strong_after.get("outreach_priority") != "HIGH":
+        failures.append("강한 GTM 시그널(직접 도입 HIGH)이 있는 후보는 outreach=HIGH를 유지해야 한다.")
+
+    # Part E: G2B label flip when verified.
+    g2b_off_sample = [
+        {"market": "B2G", "name": "B2G off"},
+        {"market": "B2B", "name": "B2B keep"},
+    ]
+    _apply_g2b_status_to_b2g_candidates(g2b_off_sample, g2b_verified=False)
+    if g2b_off_sample[0].get("g2b_checked") != "미수행":
+        failures.append("G2B 미수행 상태에서 B2G 후보 라벨이 미수행이 아니다.")
+    if g2b_off_sample[0].get("b2g_evidence_type") != "기사/RSS 기반":
+        failures.append("G2B 미수행 상태에서 B2G 후보 evidence_type이 기사/RSS 기반이 아니다.")
+    if "g2b_checked" in g2b_off_sample[1]:
+        failures.append("B2B 후보에는 g2b 라벨을 붙이면 안 된다.")
+
+    g2b_on_sample = [{"market": "B2G", "name": "B2G on"}]
+    _apply_g2b_status_to_b2g_candidates(g2b_on_sample, g2b_verified=True)
+    if g2b_on_sample[0].get("g2b_checked") != "확인 완료":
+        failures.append("G2B 확인 완료 상태인데 라벨이 변경되지 않았다.")
+    if g2b_on_sample[0].get("b2g_evidence_type") != "나라장터/RFP 확인":
+        failures.append("G2B 확인 완료 상태인데 evidence_type이 나라장터/RFP 확인이 아니다.")
+
+    # Part E: g2b module helpers (no network).
+    from g2b import (
+        G2B_KEYWORDS,
+        G2B_PLANNING_FILTERS,
+        DISABLED_MSG,
+        is_enabled,
+        is_planning_only,
+        collect as g2b_collect,
+    )
+    if "나라장터" in " ".join(G2B_KEYWORDS):
+        failures.append("G2B_KEYWORDS에 '나라장터' 토큰이 포함되어 있다.")
+    if "AI 시스템 구축" not in G2B_KEYWORDS:
+        failures.append("G2B_KEYWORDS에 'AI 시스템 구축'이 없다.")
+    if "GPU 서버" not in G2B_KEYWORDS:
+        failures.append("G2B_KEYWORDS에 'GPU 서버'가 없다.")
+    if not is_planning_only("AI 기본계획 수립 용역"):
+        failures.append("is_planning_only가 '기본계획 수립'을 잡지 못했다.")
+    if is_planning_only("AI 추론 서버 도입"):
+        failures.append("is_planning_only가 일반 도입 공고를 잘못 잡았다.")
+    # In selftest the env vars aren't set, so collect() must return the disabled marker.
+    bid, spec, err = g2b_collect()
+    if bid or spec:
+        failures.append("G2B 비활성 상태에서 결과가 비어 있지 않다.")
+    if err != DISABLED_MSG:
+        failures.append(f"G2B 비활성 상태에서 error는 '{DISABLED_MSG}'여야 한다 (got {err}).")
+    if is_enabled():
+        failures.append("selftest 환경에서 ENABLE_G2B가 true로 잡혔다.")
 
     # v0.7.1: Gemini retry helpers — pure logic, no network.
     if _retry_delays(4) != [0, 10, 30, 60]:
@@ -3548,6 +3766,33 @@ def run_selftest() -> int:
     print(f"  candidates validated: {len(result['candidates'])}")
     print(f"  detector violations on sample report: {len(violations)}")
     return 0
+
+
+def _apply_g2b_status_to_b2g_candidates(
+    candidates: list[dict[str, Any]],
+    g2b_verified: bool,
+) -> None:
+    """
+    Flip the B2G evidence labels in place once G2B API data has been collected.
+    When G2B is disabled or returned no data, every B2G candidate stays at
+    "기사/RSS 기반 · 나라장터 확인 미수행".
+    """
+    for c in candidates:
+        if not isinstance(c, dict):
+            continue
+        if (c.get("market") or "").upper() != "B2G":
+            continue
+        if g2b_verified:
+            c["b2g_evidence_type"] = "나라장터/RFP 확인"
+            c["g2b_checked"] = "확인 완료"
+            c["procurement_next_action"] = c.get(
+                "procurement_next_action",
+                "G2B 데이터 교차 확인 완료. 본 사업 RFP 세부 사항 매칭 필요.",
+            )
+        else:
+            c["b2g_evidence_type"] = "기사/RSS 기반"
+            c["g2b_checked"] = "미수행"
+            c.setdefault("procurement_next_action", "나라장터/RFP 직접 확인 필요")
 
 
 def main() -> None:
@@ -3605,6 +3850,27 @@ def main() -> None:
     )
     write_json(run_dir / "furiosa_docs_summary.json", furiosa_docs_summary)
 
+    # Optional G2B integration — disabled by default, never crashes the run.
+    g2b_bid_sources, g2b_spec_sources, g2b_error = g2b.collect()
+    g2b_all_sources = list(g2b_bid_sources) + list(g2b_spec_sources)
+    g2b_called = g2b.is_enabled() and (g2b_error != g2b.DISABLED_MSG)
+    g2b_meta: dict[str, Any] = {
+        "called": g2b_called,
+        "bid_count": len(g2b_bid_sources),
+        "spec_count": len(g2b_spec_sources),
+        "total_count": len(g2b_all_sources),
+        "error": g2b_error,
+        "verified": g2b_called and len(g2b_all_sources) > 0,
+    }
+    write_json(run_dir / "sources_g2b_bid.json", g2b_bid_sources)
+    write_json(run_dir / "sources_g2b_spec.json", g2b_spec_sources)
+    write_json(run_dir / "sources_g2b.json", g2b_all_sources)
+    print(
+        f"G2B: called={g2b_meta['called']} verified={g2b_meta['verified']} "
+        f"bid={g2b_meta['bid_count']} spec={g2b_meta['spec_count']} "
+        f"error={g2b_meta['error'] or 'none'}"
+    )
+
     eval_result: dict[str, Any] | None = None
     raw_llm_text = ""
     llm_error: str | None = None
@@ -3620,6 +3886,13 @@ def main() -> None:
             instructions=instructions,
             sources=merged_sources,
             furiosa_docs_summary=furiosa_docs_summary,
+        )
+
+        # Tag the eval_result so the LLM/deterministic builders pick the right B2G labels.
+        eval_result["_g2b_verified"] = bool(g2b_meta["verified"])
+        _apply_g2b_status_to_b2g_candidates(
+            eval_result.get("candidates", []),
+            g2b_verified=bool(g2b_meta["verified"]),
         )
 
         try:
@@ -3722,6 +3995,7 @@ def main() -> None:
         llm_error=llm_error,
         report_writer_meta=report_writer_meta,
         decision_maker_meta=dm_meta,
+        g2b_meta=g2b_meta,
     )
     update_index(run_id, mode, memo)
 
