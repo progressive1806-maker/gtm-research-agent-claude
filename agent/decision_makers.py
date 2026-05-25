@@ -234,7 +234,7 @@ def find_profile_for_candidate(
 
 def enrich_candidates_with_profiles(
     candidates: list[dict[str, Any]],
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]], str | None]:
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any], str | None]:
     """
     Mutates each non-noise candidate in place. Adds:
       - decision_maker_profile_url
@@ -243,9 +243,18 @@ def enrich_candidates_with_profiles(
       - decision_maker_profile_confidence
       - decision_maker_search_queries
 
-    Returns (candidates, per-candidate records for JSON dump, aggregate_error_or_None).
+    Returns:
+      (candidates, per-candidate records for JSON dump, telemetry dict, aggregate_error_or_None)
+
+    telemetry dict shape:
+      {
+        "valid_count":      candidates with a real linkedin.com/in or linkedin.com/company profile (HIGH/MID)
+        "suppressed_count": candidates whose best search hit was a non-LinkedIn URL (Data Center Map style)
+        "unknown_count":    candidates with no useful search result at all
+      }
     """
     records: list[dict[str, Any]] = []
+    telemetry = {"valid_count": 0, "suppressed_count": 0, "unknown_count": 0}
     aggregate_error: str | None = None
 
     for candidate in candidates:
@@ -274,18 +283,25 @@ def enrich_candidates_with_profiles(
         url = (best or {}).get("url") or ""
         confidence = (best or {}).get("confidence") or "UNKNOWN"
 
-        # Strict URL gate: only real LinkedIn profile/company URLs are surfaced.
-        # Article/news/blog URLs never become decision_maker_profile_url, even
-        # if classify_result somehow returned MID/LOW.
-        if confidence in ("HIGH", "MID", "LOW") and is_valid_linkedin_url(url):
+        # Strict URL gate: only HIGH/MID + real LinkedIn profile/company URLs
+        # are surfaced. Article/news/blog URLs (Data Center Map, IDCA, ...) and
+        # LOW-confidence LinkedIn hits never become decision_maker_profile_url.
+        if confidence in ("HIGH", "MID") and is_valid_linkedin_url(url):
             candidate["decision_maker_profile_url"] = url
             candidate["decision_maker_profile_title"] = best.get("title") or "확인 필요"
             candidate["decision_maker_profile_source"] = best.get("source") or ""
             candidate["decision_maker_profile_confidence"] = confidence
+            telemetry["valid_count"] += 1
         else:
             candidate["decision_maker_profile_url"] = ""
             candidate["decision_maker_profile_title"] = "확인 필요"
             candidate["decision_maker_profile_source"] = ""
             candidate["decision_maker_profile_confidence"] = "UNKNOWN"
+            if best:
+                # We had a search hit but it failed the LinkedIn gate (Data Center
+                # Map, IDCA, news article, LOW-confidence LinkedIn hit, etc.).
+                telemetry["suppressed_count"] += 1
+            else:
+                telemetry["unknown_count"] += 1
 
-    return candidates, records, aggregate_error
+    return candidates, records, telemetry, aggregate_error

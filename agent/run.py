@@ -105,6 +105,51 @@ RSS_FEEDS = [
 ]
 
 
+def _jp_news_feed(name: str, query: str, category: str) -> dict[str, str]:
+    """Helper: Google News JP RSS feed for a Japanese query."""
+    from urllib.parse import quote
+
+    return {
+        "name": f"Google News JP {name}",
+        "url": (
+            "https://news.google.com/rss/search?q="
+            + quote(query)
+            + "&hl=ja&gl=JP&ceid=JP:ja"
+        ),
+        "country": "JP",
+        "category": category,
+    }
+
+
+# Spec-mandated Japan queries — enterprise GTM signals (生成AI 導入 etc.) and
+# Japanese CSP infrastructure signals (さくらインターネット, IIJ, NTTデータ, KDDI, ...).
+JAPAN_ENTERPRISE_QUERIES = [
+    ("生成AI 導入 企業", "japan_enterprise"),
+    ("生成AI 基盤 構築", "japan_enterprise"),
+    ("LLM 基盤 構築", "japan_enterprise"),
+    ("RAG 導入 企業", "japan_enterprise"),
+    ("AIエージェント 導入", "japan_enterprise"),
+    ("プライベートAI", "japan_enterprise"),
+    ("オンプレミス 生成AI", "japan_enterprise"),
+    ("閉域網 AI", "japan_enterprise"),
+]
+JAPAN_CSP_QUERIES = [
+    ("AIデータセンター", "japan_csp"),
+    ("GPUクラウド", "japan_csp"),
+    ("AIクラウド 推論", "japan_csp"),
+    ("さくらインターネット 生成AI", "japan_csp"),
+    ("さくらインターネット GPUクラウド", "japan_csp"),
+    ("IIJ 生成AI 基盤", "japan_csp"),
+    ("NTTデータ 生成AI 基盤", "japan_csp"),
+    ("KDDI 生成AI クラウド", "japan_csp"),
+    ("ソフトバンク 生成AI 基盤", "japan_csp"),
+    ("NEC 生成AI 基盤", "japan_csp"),
+    ("富士通 生成AI 基盤", "japan_csp"),
+]
+for _q, _cat in JAPAN_ENTERPRISE_QUERIES + JAPAN_CSP_QUERIES:
+    RSS_FEEDS.append(_jp_news_feed(_q, _q, _cat))
+
+
 FURIOSA_DOCS = [
     {
         "name": "Supported Models",
@@ -177,7 +222,7 @@ def env_int(name: str, default: int) -> int:
 
 
 MAX_DYNAMIC_MODEL_QUERIES = env_int("MAX_DYNAMIC_MODEL_QUERIES", 300)
-MAX_LLM_SOURCES = env_int("MAX_LLM_SOURCES", 40)
+MAX_LLM_SOURCES = env_int("MAX_LLM_SOURCES", 80)
 MAX_SOURCE_CHARS = env_int("MAX_SOURCE_CHARS", 800)
 MAX_OUTPUT_CANDIDATES = env_int("MAX_OUTPUT_CANDIDATES", 12)
 
@@ -1164,7 +1209,141 @@ def choose_llm_sources(sources: list[dict[str, Any]]) -> list[dict[str, Any]]:
         reverse=True,
     )
 
-    return [item for _, item in scored[:MAX_LLM_SOURCES]]
+    selected, _selected_meta, _suppressed_meta = select_sources_with_quotas(scored)
+    # Stash telemetry on the function for the caller to retrieve (kept simple to
+    # avoid changing the existing function signature mid-pipeline).
+    choose_llm_sources._last_selected_by_category = _selected_meta  # type: ignore[attr-defined]
+    choose_llm_sources._last_suppressed_by_category = _suppressed_meta  # type: ignore[attr-defined]
+    return selected
+
+
+# Spec-mandated category quotas applied BEFORE the global LLM cap.
+CATEGORY_QUOTAS: dict[str, int] = {
+    "b2b_enterprise_csp": 16,
+    "b2g_g2b_procurement": 16,
+    "npuaas_csp_routed": 12,
+    "competitor_gtm": 12,
+    "model_specific_adoption": 10,
+    "japan_enterprise_gtm": 8,
+    "japan_csp_ai_cloud": 6,
+}
+
+_COMPETITOR_TOKENS = [
+    "리벨리온", "rebellion", "rebellions",
+    "사피온", "sapeon",
+    "하이퍼엑셀", "hyperaccel",
+    "딥엑스", "deepx",
+    "nvidia", "엔비디아",
+]
+_JP_CSP_TOKENS = [
+    "さくら", "sakura internet",
+    "iij",
+    "nttデータ", "ntt data", "ntt 데이터",
+    "kddi",
+    "ソフトバンク", "softbank",
+    "nec ",
+    "富士通", "fujitsu",
+]
+_JP_LANG_TOKENS = [
+    "生成ai", "生成AI", "クラウド", "オンプレ", "閉域", "llm",
+    "rag", "aiエージェント", "プライベートai",
+]
+_CSP_ROUTE_TOKENS = [
+    "npuaas", "gpuaas",
+    "삼성sds", "samsung sds", "scp",
+    "csp", "msp",
+    "추론 서비스", "inference service",
+    "ai 클라우드", "클라우드 ai", "ai cloud", "aiクラウド",
+]
+_MODEL_TOKENS = [
+    "exaone", "엑사원", "qwen", "llama", "deepseek", "solar", "qwq", "gpt-oss",
+]
+
+
+def _source_text_blob(item: dict[str, Any]) -> str:
+    return " ".join(
+        str(item.get(field, "") or "")
+        for field in ("title", "description", "query", "feed_name", "matched_query_or_feed", "category", "keyword")
+    ).lower()
+
+
+def categorize_source(item: dict[str, Any]) -> str:
+    """Map a source to a category quota bucket. The priority order matters —
+    competitor and Japan checks run before generic CSP/model checks so the
+    quotas don't get poached by overlapping signals."""
+    src = (item.get("source") or "").lower()
+    if src in ("g2b_bid", "g2b_spec"):
+        return "b2g_g2b_procurement"
+
+    blob = _source_text_blob(item)
+    country = (item.get("country") or "").upper()
+    category_hint = (item.get("category") or "").lower()
+
+    if any(tok in blob for tok in _COMPETITOR_TOKENS):
+        return "competitor_gtm"
+
+    is_japan = country == "JP" or any(tok in blob for tok in _JP_LANG_TOKENS) or "japan" in blob
+    if is_japan:
+        if any(tok in blob for tok in _JP_CSP_TOKENS) or category_hint == "japan_csp":
+            return "japan_csp_ai_cloud"
+        return "japan_enterprise_gtm"
+
+    if "나라장터" in blob or category_hint == "b2g":
+        return "b2g_g2b_procurement"
+
+    if any(tok in blob for tok in _CSP_ROUTE_TOKENS):
+        return "npuaas_csp_routed"
+
+    if any(tok in blob for tok in _MODEL_TOKENS):
+        return "model_specific_adoption"
+
+    return "b2b_enterprise_csp"
+
+
+def select_sources_with_quotas(
+    scored_pairs: list[tuple[int, dict[str, Any]]],
+) -> tuple[list[dict[str, Any]], dict[str, int], dict[str, int]]:
+    """
+    Apply CATEGORY_QUOTAS first, then top up with leftover items up to
+    MAX_LLM_SOURCES. Returns (selected, selected_by_category, suppressed_by_category).
+    Input must already be sorted by score (desc).
+    """
+    selected: dict[str, list[dict[str, Any]]] = {cat: [] for cat in CATEGORY_QUOTAS}
+    suppressed: dict[str, list[dict[str, Any]]] = {cat: [] for cat in CATEGORY_QUOTAS}
+
+    for _score, item in scored_pairs:
+        cat = categorize_source(item)
+        bucket = selected.setdefault(cat, [])
+        quota = CATEGORY_QUOTAS.get(cat, 0)
+        if len(bucket) < quota:
+            bucket.append(item)
+        else:
+            suppressed.setdefault(cat, []).append(item)
+
+    final: list[dict[str, Any]] = []
+    for cat in CATEGORY_QUOTAS:
+        final.extend(selected.get(cat, []))
+
+    # Top up with high-scoring suppressed items until we hit MAX_LLM_SOURCES.
+    if len(final) < MAX_LLM_SOURCES:
+        leftover_seen: set[int] = set()
+        leftover: list[dict[str, Any]] = []
+        for _score, item in scored_pairs:
+            iid = id(item)
+            if iid in leftover_seen:
+                continue
+            if item in final:
+                continue
+            leftover_seen.add(iid)
+            leftover.append(item)
+        remaining = MAX_LLM_SOURCES - len(final)
+        final.extend(leftover[:remaining])
+
+    final = final[:MAX_LLM_SOURCES]
+
+    selected_counts = {cat: len(items) for cat, items in selected.items()}
+    suppressed_counts = {cat: len(items) for cat, items in suppressed.items()}
+    return final, selected_counts, suppressed_counts
 
 def build_llm_payload_sources(sources: list[dict[str, Any]]) -> list[dict[str, Any]]:
     payload = []
@@ -1265,6 +1444,14 @@ Tone rules:
 - Do not promise that RNGD will cut cost, power, rack space, latency, or headcount unless a provided source or Furiosa doc states that exact claim.
 - Korean grammar must be natural. Do not produce awkward direct-translation phrases or broken endings.
 
+Competitor signal rules:
+- Populate the top-level "competitor_signals" array from sources that talk about competitors' GTM moves.
+- Tracked competitors: 리벨리온 (Rebellions), 사피온 (Sapeon), 하이퍼엑셀 (HyperAccel), 딥엑스 (DeepX), NVIDIA Korea / GPUaaS, and domestic CSP GPU/NPU cloud services.
+- Include ONLY GTM-relevant events: customer_deployment, public_sector_win, csp_partnership, npuaas_launch, gpuaas_launch, channel_launch, server_shipment.
+- EXCLUDE pure funding/investment news unless the same source also describes a customer/partnership/launch.
+- Use the exact source_id / source_url from the sources payload. Do not invent.
+- If nothing qualifies, return an empty competitor_signals array (the report writer will note "수집 N건 중 GTM 관련성 기준을 통과한 항목 없음" with the actual collected count).
+
 Output JSON schema:
 {{
   "run_summary": {{
@@ -1315,6 +1502,16 @@ Output JSON schema:
       "verification_needed": ["string"],
       "source_ids": ["S001"],
       "source_urls": ["string"]
+    }}
+  ],
+  "competitor_signals": [
+    {{
+      "competitor": "리벨리온 | 사피온 | 하이퍼엑셀 | 딥엑스 | NVIDIA | 국내 CSP GPU/NPU | 기타",
+      "signal_type": "customer_deployment | public_sector_win | csp_partnership | npuaas_launch | gpuaas_launch | channel_launch | server_shipment",
+      "summary": "string — GTM 관점에서 무엇이 일어났는가",
+      "source_id": "S001",
+      "source_url": "string",
+      "evidence_excerpt": "string"
     }}
   ],
   "noise_examples": [
@@ -1628,11 +1825,21 @@ def build_report_writer_prompt(
     filtered = _filter_candidates_for_scope(eval_result.get("candidates", []), scope)
     candidates = [_trim_candidate_for_report(c) for c in filtered]
 
+    competitor_signals = eval_result.get("competitor_signals") or []
+    if not isinstance(competitor_signals, list):
+        competitor_signals = []
+
+    collected_competitor_source_count = int(
+        eval_result.get("_collected_competitor_source_count", 0)
+    )
+
     payload = {
         "today_kst": now_kst().strftime("%Y-%m-%d"),
         "scope": scope,
         "run_summary": eval_result.get("run_summary", {}),
         "candidates": candidates,
+        "competitor_signals": competitor_signals,
+        "collected_competitor_source_count": collected_competitor_source_count,
         "furiosa_supported_models": furiosa_docs_summary.get("supported_model_entries", [])[:40],
         "furiosa_planned_models": furiosa_docs_summary.get("planned_model_entries", [])[:20],
         "furiosa_precompiled_models": furiosa_docs_summary.get("precompiled_model_entries", [])[:40],
@@ -1647,37 +1854,47 @@ def build_report_writer_prompt(
 ## 1. 한 줄 결론
 run_summary.overall_assessment를 보수적인 한 문장으로 정리. 새 사실 추가 금지.
 
-## 2. 이번 주 우선 연락 Top 3 (B2B)
+## 2. 이번 주 우선 연락 Top 3
 outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
 
-## 3. B2B 후보 표
-INPUT.candidates 전부(이미 B2B만 들어 있음). 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
-
-## 4. 우선 연락 후보 상세
-상위 후보 최대 6개. 후보마다 다음 항목을 한국어 자연문으로 풀어쓰기:
-- 확인된 모델 / 모델 매칭 상태
-- RNGD fit / outreach priority
+## 3. 후보 상세
+상위 후보 최대 6개. 후보마다 ### {대상명}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기. 머신 enum(priority_outreach, family_only, exact_supported, cloud_npuaas_lead, structure_check, unknown 등)을 그대로 노출하지 마세요. 사람이 읽는 라벨로 옮기세요.
+- 왜 지금 연락해야 하는가
 - 고객 win
-- FuriosaAI win
-- 컨택 명분
-- 제안 토크 트랙
-- 담당자/LinkedIn 후보 (위 표기 규칙 적용)
-- 출처 링크
+- Furiosa win
+- 제안 경로: 직접판매 / CSP 경유 / NPUaaS 중 가장 가능성 있는 경로를 1~2개 한국어로 설명
+- 매출화 타이밍: 단기 / 중기 / 장기 중 하나
+- 다음 액션
+- 기존 접점: existing_touchpoint 값이 비어 있지 않으면 "기존 접점: <이름> ✅"로 한 줄 표기, 비어 있으면 생략
+- 출처: source_urls를 마크다운 링크로 1~3개. "링크 1" 같은 표현 금지, "출처 1/기사 1/매체명" 사용
 
-## 5. NPUaaS / CSP 경유 기회
+## 4. CSP/NPUaaS 경로 후보
 target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또는 npuaas_adoption_possibility=="HIGH"인 후보 중심.
-후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성과 한 줄 사유.
+후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성을 한국어로 설명하고 한 줄 사유를 덧붙이세요.
 
-## 6. 담당자 / 컨택 경로
+## 5. 담당자 / 컨택 경로
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+- LinkedIn/공개 프로필 후보 칸은 decision_maker_profile_url을 따릅니다.
+  - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 또는 linkedin.com/company/이면 마크다운 링크로 노출.
+  - 그 외(빈 URL, 뉴스/일반 사이트 URL, LOW/UNKNOWN)는 두 칸 모두 "확인 필요"로 표기.
+- 내부 시스템(Jira 등) 이름은 본문에 절대 노출하지 마세요. 기존 접점은 "기존 접점: <이름> ✅"로 간단히 표현.
 
-## 7. 경쟁사 GTM 동향
-INPUT.candidates에 경쟁사 GTM(customer win / partnership / NPUaaS·GPUaaS launch / public sector win / hardware deployment) 관련 정보가 없거나 noise뿐이라면, 정확히 다음 한 문장만 출력하세요: "이번 주 확인된 경쟁사 GTM 신호 없음."
-경쟁사 단순 투자/펀딩 뉴스는 절대 포함하지 마세요. 향후 버전 안내 같은 placeholder 문장도 금지합니다.
+## 6. 경쟁사 GTM 동향
+INPUT.competitor_signals 배열을 사용하세요. 항목별로 한 줄 요약 + 마크다운 링크 출처. signal_type은 한국어로 변환:
+- customer_deployment → 고객 도입
+- public_sector_win → 공공 수주
+- csp_partnership → CSP 파트너십
+- npuaas_launch → NPUaaS 출시
+- gpuaas_launch → GPUaaS 출시
+- channel_launch → 채널/마켓플레이스 출시
+- server_shipment → 서버 납품
+배열이 비어 있으면 정확히 다음 한 문장만 출력하세요(N은 INPUT.collected_competitor_source_count 값):
+"수집 N건 중 GTM 관련성 기준을 통과한 항목 없음."
+단순 투자/펀딩 뉴스는 절대 포함하지 마세요.
 
-## 8. 주의 사항
+## 7. 주의 사항
 - 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
 - 수치 근거가 없는 비용·전력·성능 단정은 포함하지 않았음을 명시.
 - 이 리포트는 B2B 전용입니다. B2G/공공 후보는 별도 B2B+B2G 리포트에서만 다룹니다.
@@ -1709,40 +1926,56 @@ run_summary.overall_assessment를 보수적인 한 문장으로 정리. 새 사�
 outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
 
-## 3. B2B + B2G 통합 표
-이 페이지에는 통합 표 하나만 둡니다. 별도의 "B2B 후보 표" 섹션을 만들지 마세요.
-모든 비-노이즈 후보. 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
-market=="B2G" 행은 "왜 지금" 칸 끝에 "{b2g_evidence_label}"를 함께 표기.
-
-## 4. 우선 연락 후보 상세
-상위 후보 최대 6개. 후보마다 다음 항목을 한국어 자연문으로 풀어쓰기:
-- 확인된 모델 / 모델 매칭 상태
-- RNGD fit / outreach priority
+## 3. B2B 후보 상세
+market != "B2G"인 후보 중 상위 6개. 후보마다 ### {대상명}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기. 머신 enum(priority_outreach, family_only, exact_supported, cloud_npuaas_lead, structure_check, unknown 등)을 그대로 노출하지 마세요.
+- 왜 지금 연락해야 하는가
 - 고객 win
-- FuriosaAI win
-- 컨택 명분
-- 제안 토크 트랙
-- 담당자/LinkedIn 후보 (위 표기 규칙 적용)
-- 출처 링크
+- Furiosa win
+- 제안 경로: 직접판매 / CSP 경유 / NPUaaS 중 가장 가능성 있는 경로를 1~2개 한국어로 설명
+- 매출화 타이밍: 단기 / 중기 / 장기 중 하나
+- 다음 액션
+- 기존 접점: existing_touchpoint 값이 비어 있지 않으면 "기존 접점: <이름> ✅"로, 비어 있으면 생략
+- 출처: source_urls를 마크다운 링크로 1~3개
 
-## 5. NPUaaS / CSP 경유 기회
+## 4. B2G/Nara 후보 상세
+market == "B2G"인 후보. 후보마다 ### {대상명}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기.
+- 사업/사업명: confirmed_project_or_signal
+- 발주 기관/연결 기관 힌트
+- 왜 지금 — 일정/RFP 단계 등
+- 적합한 Furiosa 솔루션 단서 (RAG/AI CCTV/지능형 관제/추론 서버/AI 플랫폼 등)
+- 다음 액션 (RFP 직접 확인, 사업자 매핑, 컨소시엄 접촉 등)
+- 근거 라벨: "{b2g_evidence_label}"을 한 줄로 그대로 표기
+- 출처: source_urls를 마크다운 링크로 1~3개
+이 섹션 첫 문장에 정확히 다음을 한 줄로 포함하세요: "{b2g_section_intro}"
+relevant한 market="B2G" 후보가 한 건도 없으면 본 섹션은 "이번 주 G2B 교차 확인 기준을 통과한 B2G 후보 없음."만 출력.
+
+## 5. CSP/NPUaaS 경로 후보
 target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또는 npuaas_adoption_possibility=="HIGH"인 후보 중심.
-후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성과 한 줄 사유.
+후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성을 한국어로 설명하고 한 줄 사유를 덧붙이세요.
 
-## 6. B2G 후보 — 나라장터/RFP 직접 확인 전
-섹션 첫 문장에 다음 문장을 그대로 포함: "{b2g_section_intro}"
-market=="B2G" 후보별: 근거 유형, 나라장터 확인 여부, 다음 액션, 출처.
-
-## 7. 담당자 / 컨택 경로
+## 6. 담당자 / 컨택 경로
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+- LinkedIn/공개 프로필 후보 칸은 decision_maker_profile_url을 따릅니다.
+  - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 또는 linkedin.com/company/이면 마크다운 링크로 노출.
+  - 그 외(빈 URL, 뉴스/일반 사이트 URL, LOW/UNKNOWN)는 두 칸 모두 "확인 필요"로 표기.
+- 내부 시스템(Jira 등) 이름은 본문에 절대 노출하지 마세요. 기존 접점은 "기존 접점: <이름> ✅"로 간단히 표현.
 
-## 8. 경쟁사 GTM 동향
-INPUT.candidates에 경쟁사 GTM(customer win / partnership / NPUaaS·GPUaaS launch / public sector win / hardware deployment) 관련 정보가 없거나 noise뿐이라면, 정확히 다음 한 문장만 출력하세요: "이번 주 확인된 경쟁사 GTM 신호 없음."
-경쟁사 단순 투자/펀딩 뉴스는 절대 포함하지 마세요. 향후 버전 안내 같은 placeholder 문장도 금지합니다.
+## 7. 경쟁사 GTM 동향
+INPUT.competitor_signals 배열을 사용하세요. 항목별로 한 줄 요약 + 마크다운 링크 출처. signal_type은 한국어로 변환:
+- customer_deployment → 고객 도입
+- public_sector_win → 공공 수주
+- csp_partnership → CSP 파트너십
+- npuaas_launch → NPUaaS 출시
+- gpuaas_launch → GPUaaS 출시
+- channel_launch → 채널/마켓플레이스 출시
+- server_shipment → 서버 납품
+배열이 비어 있으면 정확히 다음 한 문장만 출력하세요(N은 INPUT.collected_competitor_source_count 값):
+"수집 N건 중 GTM 관련성 기준을 통과한 항목 없음."
+단순 투자/펀딩 뉴스는 절대 포함하지 마세요.
 
-## 9. 주의 사항
-- B2G 후보는 나라장터/RFP 직접 확인 전이므로 watchlist/구조 확인으로 해석.
+## 8. 주의 사항
+- B2G 후보는 G2B(나라장터) 교차 확인 결과에 따라 라벨이 달라집니다.
 - 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
 - 수치 근거가 없는 비용·전력·성능 단정은 포함하지 않았음을 명시.
 """.strip()
@@ -3112,10 +3345,12 @@ def write_metadata(
     report_writer_meta: dict[str, Any] | None = None,
     decision_maker_meta: dict[str, Any] | None = None,
     g2b_meta: dict[str, Any] | None = None,
+    selection_meta: dict[str, Any] | None = None,
 ) -> None:
     writer_meta = report_writer_meta or {}
     dm_meta = decision_maker_meta or {}
     g2b_md = g2b_meta or {}
+    sel_md = selection_meta or {}
     metadata = {
         "run_id": run_id,
         "mode": mode,
@@ -3167,8 +3402,17 @@ def write_metadata(
         "g2b_spec_error_count": int(g2b_md.get("spec_error_count", 0)),
         "g2b_bid_last_error": g2b_md.get("bid_last_error", "") or "",
         "g2b_spec_last_error": g2b_md.get("spec_last_error", "") or "",
+        "g2b_raw_count": int(g2b_md.get("raw_count", 0)),
+        "g2b_relevant_count": int(g2b_md.get("relevant_count", 0)),
+        "g2b_suppressed_count": int(g2b_md.get("suppressed_count", 0)),
+        "g2b_top_suppressed_reasons": g2b_md.get("top_suppressed_reasons", {}) or {},
+        "selected_sources_by_category": sel_md.get("selected_sources_by_category", {}) or {},
+        "suppressed_sources_by_category": sel_md.get("suppressed_sources_by_category", {}) or {},
         "decision_maker_search_called": bool(dm_meta.get("called", False)),
         "decision_maker_profiles_count": int(dm_meta.get("count", 0)),
+        "decision_maker_valid_profiles_count": int(dm_meta.get("valid_count", 0)),
+        "decision_maker_suppressed_profiles_count": int(dm_meta.get("suppressed_count", 0)),
+        "decision_maker_unknown_profiles_count": int(dm_meta.get("unknown_count", 0)),
         "decision_maker_search_error": dm_meta.get("error", "") or "",
     }
 
@@ -3801,6 +4045,161 @@ def run_selftest() -> int:
         if hasattr(_g2b, stale):
             failures.append(f"g2b.{stale}는 더 이상 존재하면 안 된다 (operation 입력은 제거됨).")
 
+    # ---- G2B relevance scoring (Part E) ---------------------------------
+    from g2b import filter_g2b_items, score_relevance
+
+    irrelevant_items = [
+        {"title": "정원 리모델링 가구 구매", "agency": "ABC시"},
+        {"title": "진로박람회 운영 용역", "agency": "DEF군"},
+        {"title": "브랜드 개발 홍보 교육", "agency": "GHI도"},
+        {"title": "차량 임차 입찰", "agency": "JKL공사"},
+        {"title": "AI 기본계획 수립 용역", "agency": "MNO원"},
+    ]
+    kept, suppressed = filter_g2b_items(irrelevant_items)
+    if kept:
+        failures.append(
+            f"G2B 관련성 필터가 무관한 입찰을 통과시켰다: {[k['title'] for k in kept]}"
+        )
+    suppressed_reasons = {s.get("_suppress_reason") for s in suppressed}
+    if not suppressed_reasons:
+        failures.append("G2B 무관 입찰에 대한 suppress reason이 비어 있다.")
+
+    relevant_items = [
+        {"title": "지자체 AI 플랫폼 구축 사업", "agency": "ABC시"},
+        {"title": "공항 지능형 관제 시스템 고도화", "agency": "공항공사"},
+        {"title": "AI CCTV 영상분석 시스템 도입", "agency": "DEF시"},
+        {"title": "GPU 서버 클러스터 도입", "agency": "GHI 데이터센터"},
+        {"title": "공공기관 RAG 기반 AI 에이전트 구축", "agency": "JKL원"},
+    ]
+    kept_rel, suppressed_rel = filter_g2b_items(relevant_items)
+    if len(kept_rel) < 4:
+        failures.append(
+            f"G2B 관련성 필터가 정상 입찰을 너무 많이 제거했다 (kept={len(kept_rel)})."
+        )
+
+    # ---- Category-aware source selection (Part F) -----------------------
+    from run import (
+        CATEGORY_QUOTAS,
+        categorize_source,
+        select_sources_with_quotas,
+    )
+    competitor_item = {"title": "리벨리온 신규 NPUaaS 출시", "description": "삼성SDS와 파트너십"}
+    if categorize_source(competitor_item) != "competitor_gtm":
+        failures.append("경쟁사(리벨리온) 소스가 competitor_gtm 카테고리로 분류되지 않았다.")
+    g2b_item_sample = {"source": "g2b_bid", "title": "AI 시스템 구축 입찰"}
+    if categorize_source(g2b_item_sample) != "b2g_g2b_procurement":
+        failures.append("G2B 소스가 b2g_g2b_procurement 카테고리로 분류되지 않았다.")
+    jp_csp_item = {
+        "country": "JP",
+        "title": "さくらインターネット 生成AI クラウド",
+        "description": "GPUクラウド 추론",
+    }
+    if categorize_source(jp_csp_item) != "japan_csp_ai_cloud":
+        failures.append("Japan CSP 소스가 japan_csp_ai_cloud 카테고리로 분류되지 않았다.")
+
+    # Mix many generic items + a few competitor/japan/G2B/CSP items, confirm each
+    # category survives selection.
+    mixed = []
+    for i in range(50):
+        mixed.append((1, {"title": f"일반 AI 뉴스 {i}", "description": "generic"}))
+    mixed.append((10, {"title": "리벨리온 신규 고객 도입", "description": "customer deploy"}))
+    mixed.append((10, {"source": "g2b_bid", "title": "AI 플랫폼 구축"}))
+    mixed.append((10, {"country": "JP", "title": "さくらインターネット GPUクラウド", "description": ""}))
+    mixed.append((10, {"title": "삼성SDS SCP 생성형 AI 도입", "description": "CSP"}))
+    mixed.append((10, {"title": "EXAONE 4.0 도입", "description": "model"}))
+    selected_list, sel_cats, _supr_cats = select_sources_with_quotas(mixed)
+    if sel_cats.get("competitor_gtm", 0) < 1:
+        failures.append("category-aware selection이 경쟁사 소스를 유지하지 못했다.")
+    if sel_cats.get("japan_csp_ai_cloud", 0) < 1:
+        failures.append("category-aware selection이 Japan CSP 소스를 유지하지 못했다.")
+    if sel_cats.get("b2g_g2b_procurement", 0) < 1:
+        failures.append("category-aware selection이 G2B 소스를 유지하지 못했다.")
+    if CATEGORY_QUOTAS.get("competitor_gtm") != 12:
+        failures.append(
+            f"CATEGORY_QUOTAS.competitor_gtm는 12여야 한다 (got {CATEGORY_QUOTAS.get('competitor_gtm')})."
+        )
+
+    # ---- Markdown table rendering (Part A) ------------------------------
+    from build_pages import (
+        apply_badges,
+        apply_enum_labels,
+        is_table_separator_line,
+        render_markdown,
+    )
+    table_md = (
+        "## 표 테스트\n"
+        "\n"
+        "| 순위 | 대상 | outreach | 출처 |\n"
+        "| --- | --- | --- | --- |\n"
+        "| 1 | 삼성SDS | HIGH | [출처](https://example.com) |\n"
+        "| 2 | KT클라우드 | MID | [기사](https://example.com/2) |\n"
+    )
+    html_table = render_markdown(table_md)
+    if "<table>" not in html_table:
+        failures.append("markdown 파이프 테이블이 <table>로 변환되지 않았다.")
+    if "<th>순위</th>" not in html_table:
+        failures.append("table thead가 만들어지지 않았다.")
+    if "| --- |" in html_table or "|---|" in html_table:
+        failures.append("table separator 행이 본문에 그대로 남았다.")
+    if not is_table_separator_line("| --- | --- | --- |"):
+        failures.append("is_table_separator_line이 표준 separator를 인식하지 못했다.")
+    if is_table_separator_line("| 데이터 | 행 |"):
+        failures.append("is_table_separator_line이 데이터 행을 separator로 잘못 인식했다.")
+
+    # ---- Enum label substitution (Part B) -------------------------------
+    raw_html = (
+        "<p>분류: priority_outreach / 모델 매칭: family_only / "
+        "model_match_status: unknown / 출처: 링크 1</p>"
+    )
+    cleaned = apply_enum_labels(raw_html)
+    if "priority_outreach" in cleaned:
+        failures.append("priority_outreach가 한국어 라벨로 치환되지 않았다.")
+    if "family_only" in cleaned:
+        failures.append("family_only가 한국어 라벨로 치환되지 않았다.")
+    if "unknown" in cleaned:
+        failures.append("unknown(소문자)이 '확인 필요'로 치환되지 않았다.")
+    if "링크 1" in cleaned:
+        failures.append("'링크'가 '출처'로 치환되지 않았다.")
+    # Anchor URL paths containing enum-shaped substrings must stay intact —
+    # the regex split keeps tag attributes out of the text-substitution path.
+    anchor_html = '<a href="https://example.com/unknown-path">상세</a>'
+    cleaned_anchor = apply_enum_labels(anchor_html)
+    if "/unknown-path" not in cleaned_anchor:
+        failures.append("apply_enum_labels이 anchor href URL path를 망가뜨렸다.")
+
+    # ---- Decision-maker URL gate (Part C) -------------------------------
+    bad_dc = classify_result(
+        {
+            "link": "https://www.datacentermap.com/korea/",
+            "title": "Korea Data Center Map",
+            "description": "Data center list",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if bad_dc != "UNKNOWN":
+        failures.append(f"Data Center Map URL은 LinkedIn 후보가 되면 안 된다 (got {bad_dc}).")
+
+    bad_idca = classify_result(
+        {
+            "link": "https://idca.org/asia/korea",
+            "title": "샘플 CSP운영사 Head of Cloud 인터뷰",
+            "description": "Cloud association",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if bad_idca != "UNKNOWN":
+        failures.append(f"IDCA 같은 일반 사이트는 LinkedIn 후보가 되면 안 된다 (got {bad_idca}).")
+
+    # ---- Japan RSS feeds present (Part G) -------------------------------
+    if not any("さくらインターネット" in (f.get("url") or "") or "%E3%81%95%E3%81%8F%E3%82%89" in (f.get("url") or "") for f in RSS_FEEDS):
+        failures.append("Japan さくらインターネット 관련 RSS feed가 추가되지 않았다.")
+    if not any((f.get("category") or "") == "japan_csp" for f in RSS_FEEDS):
+        failures.append("Japan CSP 카테고리 RSS feed가 없다.")
+    if not any((f.get("category") or "") == "japan_enterprise" for f in RSS_FEEDS):
+        failures.append("Japan enterprise 카테고리 RSS feed가 없다.")
+
     # v0.7.1: Gemini retry helpers — pure logic, no network.
     if _retry_delays(4) != [0, 10, 30, 60]:
         failures.append(f"_retry_delays(4)는 [0,10,30,60]이어야 한다 (got {_retry_delays(4)}).")
@@ -3948,6 +4347,10 @@ def main() -> None:
         "spec_called_count": g2b_telemetry.get("spec_called_count", 0),
         "spec_error_count": g2b_telemetry.get("spec_error_count", 0),
         "spec_last_error": g2b_telemetry.get("spec_last_error", ""),
+        "raw_count": g2b_telemetry.get("raw_count", 0),
+        "relevant_count": g2b_telemetry.get("relevant_count", 0),
+        "suppressed_count": g2b_telemetry.get("suppressed_count", 0),
+        "top_suppressed_reasons": g2b_telemetry.get("top_suppressed_reasons", {}),
         "verified": g2b_called and len(g2b_all_sources) > 0,
     }
     write_json(run_dir / "sources_g2b_bid.json", g2b_bid_sources)
@@ -3956,10 +4359,33 @@ def main() -> None:
     print(
         f"G2B: called={g2b_meta['called']} verified={g2b_meta['verified']} "
         f"bid={g2b_meta['bid_count']} spec={g2b_meta['spec_count']} "
+        f"raw={g2b_meta['raw_count']} relevant={g2b_meta['relevant_count']} "
+        f"suppressed={g2b_meta['suppressed_count']} "
         f"bid_errors={g2b_meta['bid_error_count']}/{g2b_meta['bid_called_count']} "
         f"spec_errors={g2b_meta['spec_error_count']}/{g2b_meta['spec_called_count']} "
         f"error={g2b_meta['error'] or 'none'}"
     )
+
+    # Fold G2B items into the merged source pool so the category-aware selector
+    # can route them into the b2g_g2b_procurement quota before LLM evaluation.
+    for g_item in g2b_all_sources:
+        merged_sources.append(
+            {
+                "title": g_item.get("title", ""),
+                "description": (
+                    f"공공기관: {g_item.get('agency', '')} · "
+                    f"마감: {g_item.get('deadline', '')} · "
+                    f"키워드: {g_item.get('keyword', '')}"
+                ),
+                "originallink": g_item.get("url", ""),
+                "link": g_item.get("url", ""),
+                "published_at_kst": g_item.get("deadline") or now_kst().isoformat(),
+                "source": g_item.get("source", "g2b"),
+                "query": g_item.get("keyword", ""),
+                "country": "KR",
+                "category": "b2g",
+            }
+        )
 
     eval_result: dict[str, Any] | None = None
     raw_llm_text = ""
@@ -3968,7 +4394,15 @@ def main() -> None:
     dm_meta: dict[str, Any] = {
         "called": False,
         "count": 0,
+        "valid_count": 0,
+        "suppressed_count": 0,
+        "unknown_count": 0,
         "error": "",
+    }
+
+    selection_meta: dict[str, Any] = {
+        "selected_sources_by_category": {},
+        "suppressed_sources_by_category": {},
     }
 
     try:
@@ -3976,6 +4410,20 @@ def main() -> None:
             instructions=instructions,
             sources=merged_sources,
             furiosa_docs_summary=furiosa_docs_summary,
+        )
+
+        # The selector stashed category breakdowns on the function object.
+        selection_meta["selected_sources_by_category"] = getattr(
+            choose_llm_sources, "_last_selected_by_category", {}
+        )
+        selection_meta["suppressed_sources_by_category"] = getattr(
+            choose_llm_sources, "_last_suppressed_by_category", {}
+        )
+
+        # How many competitor-category sources we put in front of the LLM, so
+        # the report writer can say "수집 N건 중 …" if competitor_signals is empty.
+        eval_result["_collected_competitor_source_count"] = int(
+            selection_meta["selected_sources_by_category"].get("competitor_gtm", 0)
         )
 
         # Tag the eval_result so the LLM/deterministic builders pick the right B2G labels.
@@ -3990,28 +4438,31 @@ def main() -> None:
             (
                 eval_result["candidates"],
                 dm_records,
+                dm_telemetry,
                 dm_error,
             ) = enrich_candidates_with_profiles(
                 eval_result.get("candidates", [])
             )
-            dm_meta["count"] = sum(
-                1
-                for c in eval_result.get("candidates", [])
-                if isinstance(c, dict)
-                and c.get("decision_maker_profile_confidence") in ("HIGH", "MID", "LOW")
-            )
+            dm_meta["valid_count"] = dm_telemetry.get("valid_count", 0)
+            dm_meta["suppressed_count"] = dm_telemetry.get("suppressed_count", 0)
+            dm_meta["unknown_count"] = dm_telemetry.get("unknown_count", 0)
+            dm_meta["count"] = dm_meta["valid_count"]
             dm_meta["error"] = dm_error or ""
             write_json(
                 run_dir / "decision_maker_profiles.json",
                 {
                     "called": True,
-                    "count": dm_meta["count"],
+                    "valid_count": dm_meta["valid_count"],
+                    "suppressed_count": dm_meta["suppressed_count"],
+                    "unknown_count": dm_meta["unknown_count"],
                     "error": dm_meta["error"],
                     "records": dm_records,
                 },
             )
             print(
-                f"Decision-maker discovery: count={dm_meta['count']} "
+                f"Decision-maker discovery: valid={dm_meta['valid_count']} "
+                f"suppressed={dm_meta['suppressed_count']} "
+                f"unknown={dm_meta['unknown_count']} "
                 f"error={dm_meta['error'] or 'none'}"
             )
         except Exception as exc_dm:
@@ -4086,6 +4537,7 @@ def main() -> None:
         report_writer_meta=report_writer_meta,
         decision_maker_meta=dm_meta,
         g2b_meta=g2b_meta,
+        selection_meta=selection_meta,
     )
     update_index(run_id, mode, memo)
 

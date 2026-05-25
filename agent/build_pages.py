@@ -70,27 +70,53 @@ def render_inline(text: str) -> str:
     return text
 
 
+def _is_separator_cell(cell: str) -> bool:
+    return bool(re.fullmatch(r":?-+:?", cell.strip()))
+
+
+def is_table_separator_line(line: str) -> bool:
+    """A markdown table separator: pipes around cells that are runs of dashes
+    optionally with alignment colons. Accept 1+ dashes (some LLM outputs emit
+    only `--` or even `-`) and don't require a leading pipe."""
+    s = line.strip()
+    if "|" not in s or "-" not in s:
+        return False
+    # strip outer pipes
+    s = s.strip("|").strip()
+    if not s:
+        return False
+    cells = s.split("|")
+    return bool(cells) and all(_is_separator_cell(c) for c in cells)
+
+
+def is_table_data_line(line: str) -> bool:
+    """A markdown table row needs to contain at least one pipe."""
+    s = line.strip()
+    return "|" in s and not is_table_separator_line(s)
+
+
 def render_table(table_lines: list[str]) -> str:
     pipe_sentinel = "\x00PIPE\x00"
     rows: list[list[str]] = []
-    for raw in table_lines:
+    sep_idx: int | None = None
+    for idx, raw in enumerate(table_lines):
         line = raw.strip()
-        if not line.startswith("|"):
+        if not line:
             continue
-        line = line.replace(r"\|", pipe_sentinel)
-        line = line.strip("|").strip()
-        cells = [c.strip().replace(pipe_sentinel, "|") for c in line.split("|")]
+        if is_table_separator_line(line) and sep_idx is None:
+            sep_idx = idx
+            continue
+        s = line.replace(r"\|", pipe_sentinel)
+        s = s.strip("|").strip()
+        cells = [c.strip().replace(pipe_sentinel, "|") for c in s.split("|")]
         rows.append(cells)
 
     if not rows:
         return ""
 
-    def is_separator(cells: list[str]) -> bool:
-        return all(re.fullmatch(r":?-{3,}:?", c) for c in cells if c)
-
-    if len(rows) >= 2 and is_separator(rows[1]):
+    if sep_idx is not None and sep_idx >= 1:
         header = rows[0]
-        body = rows[2:]
+        body = rows[1:]
     else:
         header = []
         body = rows
@@ -171,10 +197,22 @@ def render_markdown(md: str) -> str:
             i += 1
             continue
 
-        if line.lstrip().startswith("|"):
+        # Detect a markdown table by lookahead: a data line followed by a
+        # separator line. The previous version only triggered on a leading
+        # pipe, which missed tables that started flush with the column name.
+        next_line = lines[i + 1] if i + 1 < n else ""
+        if (
+            is_table_data_line(line)
+            and is_table_separator_line(next_line)
+        ):
             tbl: list[str] = []
-            while i < n and lines[i].lstrip().startswith("|"):
-                tbl.append(lines[i])
+            while i < n:
+                cand = lines[i]
+                if not cand.strip():
+                    break
+                if not (is_table_data_line(cand) or is_table_separator_line(cand)):
+                    break
+                tbl.append(cand)
                 i += 1
             out.append(render_table(tbl))
             continue
@@ -195,6 +233,53 @@ def render_markdown(md: str) -> str:
 
     close_section()
     return "\n".join(out)
+
+
+# -- Enum / label substitutions ------------------------------------------
+# Machine-side enum values that occasionally leak into the rendered report.
+# These get replaced with manager-readable Korean labels BEFORE badges run.
+ENUM_LABEL_RULES: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"\bpriority_outreach\b"), "우선 연락"),
+    (re.compile(r"\bstructure_check\b"), "구조 확인 필요"),
+    (re.compile(r"\bcloud_npuaaS_lead\b"), "NPUaaS 경로 우선"),
+    (re.compile(r"\bcloud_npuaas_lead\b"), "NPUaaS 경로 우선"),
+    (re.compile(r"\bwatchlist\b"), "관망"),
+    (re.compile(r"\bnoise\b(?!_)"), "노이즈"),
+    (re.compile(r"\bfamily_only\b"), "계열 모델만 확인"),
+    (re.compile(r"\bexact_supported\b"), "지원 모델 확인"),
+    (re.compile(r"\bprecompiled\b"), "사전 컴파일 모델"),
+    (re.compile(r"\bplanned\b"), "향후 지원 예정"),
+    # Lower-case "unknown" (model_match_status) → "확인 필요".
+    # Upper-case "UNKNOWN" (fit score badge) is left alone and styled.
+    (re.compile(r"(?<![A-Za-z_])unknown(?![A-Za-z_])"), "확인 필요"),
+    # Standalone "링크" or "링크 N" outside an anchor → "출처".
+    (re.compile(r"(?<![가-힣A-Za-z])링크(?![가-힣A-Za-z])"), "출처"),
+]
+
+
+def apply_enum_labels(html_text: str) -> str:
+    """Run BEFORE badges. Walks plain-text segments only — tag interiors
+    (which include anchor href attributes) are skipped by the regex split,
+    so URLs are never modified. <pre> contents are also skipped to avoid
+    rewriting code samples.
+    """
+    parts = re.split(r"(<[^>]+>)", html_text)
+    inside_pre = False
+    for idx, part in enumerate(parts):
+        if part.startswith("<"):
+            tag = part.lower()
+            if tag.startswith("<pre"):
+                inside_pre = True
+            elif tag.startswith("</pre"):
+                inside_pre = False
+            continue
+        if inside_pre:
+            continue
+        new_part = part
+        for pattern, replacement in ENUM_LABEL_RULES:
+            new_part = pattern.sub(replacement, new_part)
+        parts[idx] = new_part
+    return "".join(parts)
 
 
 # -- Badge styling --------------------------------------------------------
@@ -580,7 +665,7 @@ def build_report_page(
         )
     else:
         md_text = md_path.read_text(encoding="utf-8")
-        report_html = apply_badges(render_markdown(md_text))
+        report_html = apply_badges(apply_enum_labels(render_markdown(md_text)))
 
     return page_shell(
         f"FuriosaAI GTM Research · {html.escape(title_suffix)}",

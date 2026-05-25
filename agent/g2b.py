@@ -87,6 +87,50 @@ G2B_PLANNING_FILTERS: list[str] = [
     "BPR",
 ]
 
+# Relevance scoring tokens (substring match, case-insensitive on lowered title+agency).
+G2B_POSITIVE_SIGNALS: list[str] = [
+    "ai 플랫폼", "ai플랫폼", "ai 시스템", "ai시스템",
+    "생성형 ai", "생성ai",
+    "llm", "rag",
+    "ai cctv", "영상분석", "지능형 관제", "지능형관제",
+    "gpu 서버", "gpu서버", "gpu 클러스터",
+    "npu", "ai 반도체", "ai반도체",
+    "추론 서버", "추론서버", "추론 가속기", "추론가속기",
+    "폐쇄망 ai", "망분리 ai", "온프레미스 ai", "프라이빗 ai",
+    "데이터센터", "데이터 센터",
+    "클라우드", "인프라",
+    "에이전트",
+    "제안요청서", "과업지시서",
+    "ict 서비스", "sw 및 시스템 개발", "정보화 사업",
+]
+
+G2B_NEGATIVE_SIGNALS: list[str] = [
+    "브랜드 개발", "브랜드개발",
+    "홍보 교육", "홍보교육",
+    "진로박람회",
+    "실태조사",
+    "리모델링",
+    "가구",
+    "차량 임차", "차량임차",
+    "폐기물 처리", "폐기물처리",
+    "체험",
+    "축제",
+    "정원",
+    "건축",
+]
+
+# Tokens that prove the project will actually deploy server-side AI infrastructure.
+# At least one of these must show up alongside positive signals.
+G2B_IMPLEMENTATION_SIGNALS: list[str] = [
+    "구축", "도입", "설치", "공급", "납품",
+    "고도화", "구입",
+    "ai cctv", "지능형 관제", "영상분석",
+    "데이터센터", "데이터 센터",
+    "서버", "가속기", "클러스터", "클라우드",
+    "플랫폼", "시스템",
+    "ict 서비스", "sw 및 시스템 개발", "정보화 사업",
+]
+
 DISABLED_MSG = "disabled or missing config"
 
 
@@ -150,6 +194,76 @@ def is_planning_only(title: str) -> bool:
     if not title:
         return False
     return any(token in title for token in G2B_PLANNING_FILTERS)
+
+
+def score_relevance(item: dict[str, Any]) -> dict[str, Any]:
+    """
+    Returns a dict with keys:
+      score        — int (positive - negative)
+      positives    — list of matched positive tokens
+      negatives    — list of matched negative tokens
+      has_impl     — whether at least one implementation signal is present
+      keep         — bool (passes the relevance gate)
+      reason       — short reason string when not keep
+    """
+    title = (item.get("title") or "").lower()
+    agency = (item.get("agency") or "").lower()
+    blob = f"{title} {agency}"
+
+    positives = [tok for tok in G2B_POSITIVE_SIGNALS if tok in blob]
+    negatives = [tok for tok in G2B_NEGATIVE_SIGNALS if tok in blob]
+    has_impl = any(tok in blob for tok in G2B_IMPLEMENTATION_SIGNALS)
+    planning = is_planning_only(item.get("title", ""))
+
+    score = len(positives) - len(negatives) - (1 if planning else 0)
+
+    # Decision rules:
+    # - Planning-only titles are always dropped.
+    # - Need at least one positive signal AND at least one implementation signal.
+    # - More negatives than positives => drop with reason.
+    reason = ""
+    keep = True
+    if planning:
+        keep = False
+        reason = "planning_only"
+    elif not positives:
+        keep = False
+        reason = "no_positive_signal"
+    elif not has_impl:
+        keep = False
+        reason = "no_implementation_signal"
+    elif len(negatives) >= len(positives):
+        keep = False
+        reason = "negative_outweighs_positive"
+
+    return {
+        "score": score,
+        "positives": positives,
+        "negatives": negatives,
+        "has_impl": has_impl,
+        "keep": keep,
+        "reason": reason,
+    }
+
+
+def filter_g2b_items(
+    items: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Split a list of G2B items into (kept, suppressed) using score_relevance.
+    Each suppressed item gets a `_suppress_reason` field for telemetry."""
+    kept: list[dict[str, Any]] = []
+    suppressed: list[dict[str, Any]] = []
+    for item in items:
+        verdict = score_relevance(item)
+        item["_relevance_score"] = verdict["score"]
+        item["_relevance_positives"] = verdict["positives"]
+        item["_relevance_negatives"] = verdict["negatives"]
+        if verdict["keep"]:
+            kept.append(item)
+        else:
+            item["_suppress_reason"] = verdict["reason"]
+            suppressed.append(item)
+    return kept, suppressed
 
 
 def _extract_items(payload: Any) -> list[dict[str, Any]]:
@@ -310,6 +424,10 @@ def collect() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any
         "spec_called_count": 0,
         "spec_error_count": 0,
         "spec_last_error": "",
+        "raw_count": 0,
+        "relevant_count": 0,
+        "suppressed_count": 0,
+        "top_suppressed_reasons": {},
     }
 
     if not is_enabled():
@@ -318,10 +436,25 @@ def collect() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any
         return [], [], {**empty_telemetry, "error": DISABLED_MSG}
 
     try:
-        bid_items, bid_t = fetch_bid_notices()
-        spec_items, spec_t = fetch_pre_specs()
+        bid_items_raw, bid_t = fetch_bid_notices()
+        spec_items_raw, spec_t = fetch_pre_specs()
     except Exception as exc:
         return [], [], {**empty_telemetry, "error": _short_exc(exc)}
+
+    # Apply relevance scoring AFTER fetching. Drops branding/education/furniture/
+    # vehicle-lease tenders and pure planning notices, even when the keyword matched.
+    bid_kept, bid_suppressed = filter_g2b_items(bid_items_raw)
+    spec_kept, spec_suppressed = filter_g2b_items(spec_items_raw)
+    bid_items = bid_kept
+    spec_items = spec_kept
+
+    suppressed_reasons: dict[str, int] = {}
+    for item in bid_suppressed + spec_suppressed:
+        reason = item.get("_suppress_reason", "unknown")
+        suppressed_reasons[reason] = suppressed_reasons.get(reason, 0) + 1
+    top_reasons = dict(
+        sorted(suppressed_reasons.items(), key=lambda kv: kv[1], reverse=True)[:5]
+    )
 
     parts: list[str] = []
     all_bid_failed = bid_t["called_count"] > 0 and bid_t["error_count"] == bid_t["called_count"]
@@ -345,5 +478,9 @@ def collect() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any
         "spec_called_count": spec_t["called_count"],
         "spec_error_count": spec_t["error_count"],
         "spec_last_error": spec_t["last_error"],
+        "raw_count": len(bid_items_raw) + len(spec_items_raw),
+        "relevant_count": len(bid_items) + len(spec_items),
+        "suppressed_count": len(bid_suppressed) + len(spec_suppressed),
+        "top_suppressed_reasons": top_reasons,
     }
     return bid_items, spec_items, telemetry
