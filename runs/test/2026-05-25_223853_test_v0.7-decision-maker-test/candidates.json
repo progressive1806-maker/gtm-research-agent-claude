@@ -1,0 +1,7 @@
+{
+  "error": "Server disconnected without sending a response.",
+  "candidates": [],
+  "eval_notes": [
+    "LLM evaluation failed."
+  ]
+}
