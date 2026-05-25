@@ -1,0 +1,187 @@
+{
+  "called": true,
+  "count": 8,
+  "error": "",
+  "records": [
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "삼성SDS Head of Cloud LinkedIn",
+        "삼성SDS Head of Infrastructure LinkedIn",
+        "삼성SDS Data Center LinkedIn",
+        "삼성SDS Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/samsung-sds",
+        "title": "삼성SDS - LinkedIn",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "삼성SDS Head of Cloud LinkedIn",
+        "description_snippet": "한국어 ; 웹사이트 : http://www.samsungsds.com, 업계 : IT 서비스 및 IT 컨설팅, 회사 규모 : 직원 10,001명 이상, 본사 : Seoul, 유형 : 상장기업, 전문 분야 : Cloud Computing, Digital Logistics, Artificial Intelligence, Digital Transformation "
+      },
+      "error": null
+    },
+    {
+      "name": "엘리스그룹",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "엘리스그룹 Head of Cloud LinkedIn",
+        "엘리스그룹 Head of Infrastructure LinkedIn",
+        "엘리스그룹 Data Center LinkedIn",
+        "엘리스그룹 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/international-data-center-authority-idca",
+        "title": "International Data Center Authority (IDCA)",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "엘리스그룹 Data Center LinkedIn",
+        "description_snippet": "International Data Center Authority (IDCA) | LinkedIn 팔로워 18,462명 | The Global Authority that Empowers Digital Economies by Enabling Digital Infrastructure, AI & Digital Transformation. | The Inter..."
+      },
+      "error": null
+    },
+    {
+      "name": "한글과컴퓨터",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "한글과컴퓨터 CIO LinkedIn",
+        "한글과컴퓨터 CTO LinkedIn",
+        "한글과컴퓨터 CISO LinkedIn",
+        "한글과컴퓨터 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/pointsharp-ab",
+        "title": "Pointsharp",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "한글과컴퓨터 CIO LinkedIn",
+        "description_snippet": "웹사이트 : http://www.pointsharp.com, 업계 : 컴퓨터 및 네트워크 보안, 회사 규모 : 직원 51-200명, 본사 : Stockholm, 유형 : 비상장기업, 설립 : 2006, 전문 분야 : Multi-factor Authentication 및 User Authentication"
+      },
+      "error": null
+    },
+    {
+      "name": "에코아이티",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "에코아이티 procurement LinkedIn",
+        "에코아이티 정보화 담당관 LinkedIn",
+        "에코아이티 AI 사업 책임자 LinkedIn",
+        "에코아이티 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/wnsprocurement/",
+        "title": "WNS Procurement",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "에코아이티 procurement LinkedIn",
+        "description_snippet": "WNS Procurement | LinkedIn 팔로워 59,578명 | WNS Procurement is a market leader in procurement and supply chain advisory, managed services and digital transformation. It has the combined market differe..."
+      },
+      "error": null
+    },
+    {
+      "name": "우리은행",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "우리은행 Head of AI LinkedIn",
+        "우리은행 Product AI lead LinkedIn",
+        "우리은행 CTO LinkedIn",
+        "우리은행 Platform lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/stockinsights-ai",
+        "title": "stockinsights.ai",
+        "source": "naver_web",
+        "confidence": "LOW",
+        "matched_query": "우리은행 Head of AI LinkedIn",
+        "description_snippet": "웹사이트 : https://www.stockinsights.ai/ 업계 : 금융 서비스, 회사 규모 : 직원 2-10명, 유형 : 비상장기업, 설립 : 2023, 전문 분야 : Generative AI, Finance, LLMs, Equity Research, Fundamental Analysis, Value Investing, Portfolio Manag"
+      },
+      "error": null
+    },
+    {
+      "name": "건강보험심사평가원",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "건강보험심사평가원 procurement LinkedIn",
+        "건강보험심사평가원 정보화 담당관 LinkedIn",
+        "건강보험심사평가원 AI 사업 책임자 LinkedIn",
+        "건강보험심사평가원 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.hira.or.kr/",
+        "title": "건강보험심사평가원",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "건강보험심사평가원 procurement LinkedIn",
+        "description_snippet": "건강 보험 소개, 진료비, 약제비 심사, 의료, 요양 기관, 병원 찾기, 요양급여 대상여부 확인 제공."
+      },
+      "error": null
+    },
+    {
+      "name": "NHN클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "NHN클라우드 Head of Cloud LinkedIn",
+        "NHN클라우드 Head of Infrastructure LinkedIn",
+        "NHN클라우드 Data Center LinkedIn",
+        "NHN클라우드 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/data-center-map/",
+        "title": "Data Center Map",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "NHN클라우드 Data Center LinkedIn",
+        "description_snippet": "Data Center Map | LinkedIn 팔로워 2,468명 | On a Mission to Make the Data Center Industry Transparent. Providing Insight on Colocation, Cloud, and Connectivity! | Data Center Map makes it easy to find..."
+      },
+      "error": null
+    },
+    {
+      "name": "LG AI연구원",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "LG AI연구원 Head of Cloud LinkedIn",
+        "LG AI연구원 Head of Infrastructure LinkedIn",
+        "LG AI연구원 Data Center LinkedIn",
+        "LG AI연구원 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/physical-intelligence",
+        "title": "Physical Intelligence",
+        "source": "naver_web",
+        "confidence": "LOW",
+        "matched_query": "LG AI연구원 Head of Cloud LinkedIn",
+        "description_snippet": "Physical Intelligence is bringing general-purpose AI into the physical world. We are a group of engineers, scientists, roboticists, and company builders developing foundation models and learning algor"
+      },
+      "error": null
+    },
+    {
+      "name": "NH농협은행",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "NH농협은행 CIO LinkedIn",
+        "NH농협은행 CTO LinkedIn",
+        "NH농협은행 CISO LinkedIn",
+        "NH농협은행 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://kr.linkedin.com/company/nonghyup-bank",
+        "title": "Nonghyup Bank",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "NH농협은행 CTO LinkedIn",
+        "description_snippet": "Nonghyup Bank | LinkedIn 팔로워 1,995명 | 사랑받는 일등 민족은행! 삶의 모든 순간이 더 행복한 미래를 만날 수 있도록 당신의 모든 순간에 NH농협은행이 함께합니다. 채용 정보 : https://with.nonghyup.com | Nonghyup Bank is a banking company based out of 120 To..."
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "run_id": "2026-05-26_021258_test_v0.8-g2b-operation-test",
+  "mode": "test",
+  "memo": "v0.8-g2b-operation-test",
+  "executed_at_kst": "2026-05-26T02:30:31.080728+09:00",
+  "agent_version": "v0.7",
+  "prompt_file": "prompts/gtm_agent_instructions.md",
+  "notion_uploaded": false,
+  "google_docs_uploaded": false,
+  "naver_api_called": true,
+  "naver_sources_recent_7d_count": 194,
+  "rss_called": true,
+  "rss_sources_recent_7d_count": 100,
+  "merged_sources_recent_7d_count": 294,
+  "furiosa_docs_called": true,
+  "furiosa_docs_successful": 11,
+  "furiosa_docs_failed": 0,
+  "llm_called": true,
+  "llm_provider": "gemini",
+  "llm_model": "gemini-3.5-flash",
+  "llm_error": "",
+  "report_writer": "llm",
+  "report_writer_llm_error": "",
+  "report_writer_retry_count": 2,
+  "report_validation_passed": true,
+  "report_validation_violations": [],
+  "report_pages_generated": [
+    "gtm_report_b2b.md",
+    "gtm_report_b2b_b2g.md",
+    "gtm_report.md"
+  ],
+  "report_scopes": {
+    "b2b": {
+      "writer": "llm",
+      "validation_passed": true,
+      "violations": [],
+      "retry_count": 1,
+      "llm_error": ""
+    },
+    "b2b_b2g": {
+      "writer": "llm",
+      "validation_passed": true,
+      "violations": [],
+      "retry_count": 1,
+      "llm_error": ""
+    }
+  },
+  "pages_generated": [
+    "docs/index.html",
+    "docs/b2b.html",
+    "docs/b2b-b2g.html"
+  ],
+  "llm_retry_count": 10,
+  "llm_max_retries": 4,
+  "max_llm_sources": 40,
+  "max_source_chars": 800,
+  "max_output_candidates": 12,
+  "g2b_called": true,
+  "g2b_sources_count": 858,
+  "g2b_bid_sources_count": 418,
+  "g2b_spec_sources_count": 440,
+  "g2b_verified": true,
+  "g2b_error": "",
+  "g2b_bid_error_count": 0,
+  "g2b_spec_error_count": 0,
+  "g2b_bid_last_error": "",
+  "g2b_spec_last_error": "",
+  "decision_maker_search_called": true,
+  "decision_maker_profiles_count": 8,
+  "decision_maker_search_error": ""
+}
