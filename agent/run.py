@@ -1544,30 +1544,11 @@ def _trim_candidate_for_report(candidate: dict[str, Any]) -> dict[str, Any]:
     return {field: candidate.get(field) for field in fields}
 
 
-def build_report_writer_prompt(
-    eval_result: dict[str, Any],
-    furiosa_docs_summary: dict[str, Any],
-) -> str:
-    candidates = [
-        _trim_candidate_for_report(c)
-        for c in eval_result.get("candidates", [])
-        if isinstance(c, dict) and c.get("classification") != "noise"
-    ]
+REPORT_SCOPE_B2B = "b2b"
+REPORT_SCOPE_B2B_B2G = "b2b_b2g"
 
-    payload = {
-        "today_kst": now_kst().strftime("%Y-%m-%d"),
-        "run_summary": eval_result.get("run_summary", {}),
-        "candidates": candidates,
-        "furiosa_supported_models": furiosa_docs_summary.get("supported_model_entries", [])[:40],
-        "furiosa_planned_models": furiosa_docs_summary.get("planned_model_entries", [])[:20],
-        "furiosa_precompiled_models": furiosa_docs_summary.get("precompiled_model_entries", [])[:40],
-    }
 
-    return f"""
-당신은 FuriosaAI BD 매니저용 주간 GTM 리포트를 한국어 마크다운으로 작성합니다.
-
-다음 INPUT JSON의 run_summary와 candidates만을 근거로 리포트를 작성하세요. 새 회사, 새 모델, 새 숫자를 발명하지 마세요.
-
+_COMMON_PROMPT_RULES = """
 [톤·문체 규칙]
 - 자연스러운 한국어 문장으로 쓰세요. 직역체나 어색한 어미 결합("확보 가능성하고", "검토할 수 있습니다 명분", "개선 가능성 검토할 수 있습니다"처럼 끊긴 문장)은 금지합니다.
 - 과장 표현 금지: "완벽", "획기적", "독보적", "압도적", "최고", "보장", "선점" 같은 단어와 그 변형을 쓰지 마세요.
@@ -1578,18 +1559,107 @@ def build_report_writer_prompt(
 - numeric_claims가 비어 있는 후보에 대해서는 비용·전력·성능·MW·%·배수·대수·억원 등 숫자를 본문에 쓰지 마세요. 정성적으로만 묘사하세요.
 - numeric_claims에 있는 수치를 인용할 때는 그대로 인용하고, "(출처: source_id)" 형태로 표시하세요.
 
-[모델·B2G 규칙]
+[모델 규칙]
 - confirmed_model_name이 "미확인"이거나 model_match_status가 "unknown"이면 모델 적합성을 단정하지 말고 인프라/채널/타이밍 관점으로만 설명하세요.
 - model_match_status가 "family_only"이면 정확한 버전 지원이 확인되지 않았다고 표기하세요.
-- market이 "B2G"인 후보는 본문/표에 반드시 "B2G 근거: 기사/RSS 기반", "나라장터 확인: 미수행"을 함께 노출하세요.
-- B2G 섹션 첫 문장은 다음 문장을 그대로 포함하세요: "현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다."
 
 [출처 규칙]
 - 각 후보의 source_urls가 있으면 마크다운 링크로 1~3개 노출. 비어 있으면 "출처 미확인"으로 표기.
 - 후보별 표/상세에는 항상 출처 열/항목을 포함하세요.
 
-[리포트 구조 — 정확히 이 순서, 이 헤더로]
-# FuriosaAI GTM 리서치 — {{TODAY}}
+[담당자/LinkedIn 표기 규칙]
+- decision_maker_profile_confidence가 "HIGH" 또는 "MID"이면 decision_maker_profile_url을 마크다운 링크로 노출하고 "후보 — 신뢰도 HIGH" 또는 "후보 — 신뢰도 MID"로 표시. 단정 어조 금지.
+- "LOW" 또는 "UNKNOWN"이면 "확인 필요"라고만 적고 URL을 노출하지 마세요.
+- decision_maker_profile_title이 있고 신뢰도가 HIGH/MID이면 짧은 직함 단서로만 표기. 사람 이름을 발명하지 마세요.
+
+[출력 형식]
+- 마크다운 본문만 출력. 코드펜스(```), JSON, 영문 안내 문장 금지.
+""".strip()
+
+
+def _filter_candidates_for_scope(
+    candidates: list[dict[str, Any]],
+    scope: str,
+) -> list[dict[str, Any]]:
+    cleaned = [
+        c for c in candidates
+        if isinstance(c, dict) and c.get("classification") != "noise"
+    ]
+    if scope == REPORT_SCOPE_B2B:
+        return [c for c in cleaned if (c.get("market") or "").upper() != "B2G"]
+    return cleaned
+
+
+def build_report_writer_prompt(
+    eval_result: dict[str, Any],
+    furiosa_docs_summary: dict[str, Any],
+    scope: str = REPORT_SCOPE_B2B_B2G,
+) -> str:
+    filtered = _filter_candidates_for_scope(eval_result.get("candidates", []), scope)
+    candidates = [_trim_candidate_for_report(c) for c in filtered]
+
+    payload = {
+        "today_kst": now_kst().strftime("%Y-%m-%d"),
+        "scope": scope,
+        "run_summary": eval_result.get("run_summary", {}),
+        "candidates": candidates,
+        "furiosa_supported_models": furiosa_docs_summary.get("supported_model_entries", [])[:40],
+        "furiosa_planned_models": furiosa_docs_summary.get("planned_model_entries", [])[:20],
+        "furiosa_precompiled_models": furiosa_docs_summary.get("precompiled_model_entries", [])[:40],
+    }
+
+    if scope == REPORT_SCOPE_B2B:
+        sections = """
+[리포트 구조 — 정확히 이 순서, 이 헤더로 / 이번 리포트는 B2B 전용입니다]
+# FuriosaAI GTM 리서치 — B2B — {TODAY}
+(TODAY는 INPUT의 today_kst 값을 사용)
+
+## 1. 한 줄 결론
+run_summary.overall_assessment를 보수적인 한 문장으로 정리. 새 사실 추가 금지.
+
+## 2. 이번 주 우선 연락 Top 3 (B2B)
+outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
+표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
+
+## 3. B2B 후보 표
+INPUT.candidates 전부(이미 B2B만 들어 있음). 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
+
+## 4. 우선 연락 후보 상세
+상위 후보 최대 6개. 후보마다 다음 항목을 한국어 자연문으로 풀어쓰기:
+- 확인된 모델 / 모델 매칭 상태
+- RNGD fit / outreach priority
+- 고객 win
+- FuriosaAI win
+- 컨택 명분
+- 제안 토크 트랙
+- 담당자/LinkedIn 후보 (위 표기 규칙 적용)
+- 출처 링크
+
+## 5. NPUaaS / CSP 경유 기회
+target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또는 npuaas_adoption_possibility=="HIGH"인 후보 중심.
+후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성과 한 줄 사유.
+
+## 6. 담당자 / 컨택 경로
+표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
+- decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+
+## 7. 경쟁사 GTM 동향
+다음 문장만 포함하고 추측 금지: "이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다."
+
+## 8. 주의 사항
+- 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
+- 수치 근거가 없는 비용·전력·성능 단정은 포함하지 않았음을 명시.
+- 이 리포트는 B2B 전용입니다. B2G/공공 후보는 별도 B2B+B2G 리포트에서만 다룹니다.
+""".strip()
+        b2g_rules_block = (
+            "[B2G 규칙]\n"
+            "- 이번 리포트는 B2B 전용입니다. INPUT.candidates에는 B2G 후보가 들어 있지 않습니다.\n"
+            "- 본문에 B2G/공공/나라장터/RFP 관련 섹션이나 문장을 만들지 마세요. 그런 내용은 별도 B2B+B2G 리포트에서 다룹니다."
+        )
+    else:
+        sections = """
+[리포트 구조 — 정확히 이 순서, 이 헤더로 / 이번 리포트는 B2B + B2G 통합입니다]
+# FuriosaAI GTM 리서치 — B2B + B2G — {TODAY}
 (TODAY는 INPUT의 today_kst 값을 사용)
 
 ## 1. 한 줄 결론
@@ -1599,11 +1669,11 @@ run_summary.overall_assessment를 보수적인 한 문장으로 정리. 새 사�
 outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
 
-## 3. 버전 1 — B2B only
-market=="B2B" 후보만(노이즈 제외). 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
+## 3. B2B 후보 표
+market=="B2B" 후보만. 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
 
-## 4. 버전 2 — B2B + B2G
-모든 비-노이즈 후보. 표 헤더는 §3과 동일하되 market=="B2G" 행에는 "왜 지금" 칸 끝에 "B2G 근거: 기사/RSS 기반 · 나라장터 확인: 미수행"을 함께 표기.
+## 4. B2B + B2G 통합 표
+모든 비-노이즈 후보. 표 헤더는 §3과 동일하되 market=="B2G" 행은 "왜 지금" 칸 끝에 "B2G 근거: 기사/RSS 기반 · 나라장터 확인: 미수행"을 함께 표기.
 
 ## 5. 우선 연락 후보 상세
 상위 후보 최대 6개. 후보마다 다음 항목을 한국어 자연문으로 풀어쓰기:
@@ -1613,10 +1683,7 @@ market=="B2B" 후보만(노이즈 제외). 표 헤더: 우선순위 | 대상 | �
 - FuriosaAI win
 - 컨택 명분
 - 제안 토크 트랙
-- 담당자/LinkedIn 후보:
-  - decision_maker_profile_confidence가 "HIGH" 또는 "MID"이면 decision_maker_profile_url을 마크다운 링크로 노출하고 "후보 — 신뢰도 HIGH" 또는 "후보 — 신뢰도 MID"로 표시. 단정 어조 금지.
-  - "LOW" 또는 "UNKNOWN"이면 "확인 필요"라고만 적고 URL을 노출하지 마세요.
-  - decision_maker_profile_title이 있고 신뢰도가 HIGH/MID이면 짧은 직함 단서로만 표기. 사람 이름을 발명하지 마세요.
+- 담당자/LinkedIn 후보 (위 표기 규칙 적용)
 - 출처 링크
 
 ## 6. NPUaaS / CSP 경유 기회
@@ -1624,28 +1691,37 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성과 한 줄 사유.
 
 ## 7. B2G 후보 — 나라장터/RFP 직접 확인 전
-섹션 첫 문장에 위에 명시한 고정 문장을 포함.
+섹션 첫 문장에 다음 문장을 그대로 포함: "현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다."
 market=="B2G" 후보별: 근거 유형, 나라장터 확인 여부, 다음 액션, 출처.
 
 ## 8. 담당자 / 컨택 경로
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
-- "LinkedIn/공개 프로필 후보" 칸은 decision_maker_profile_url을 따릅니다.
-  - decision_maker_profile_confidence가 HIGH 또는 MID이면 마크다운 링크로 노출. "신뢰도" 칸에는 HIGH 또는 MID를 그대로 표기.
-  - LOW 또는 UNKNOWN이면 두 칸 모두 "확인 필요"로 적고 URL을 노출하지 마세요.
-- 불확실한 URL을 확정된 담당자로 표현하지 마세요. 항상 "후보"로 분류.
 
 ## 9. 경쟁사 GTM 동향
-이번 버전에서는 구조화 데이터가 없으므로 다음 문장만 포함하세요. 추측 금지.
-"이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다."
+다음 문장만 포함하고 추측 금지: "이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다."
 
 ## 10. 주의 사항
 - B2G 후보는 나라장터/RFP 직접 확인 전이므로 watchlist/구조 확인으로 해석.
 - 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
 - 수치 근거가 없는 비용·전력·성능 단정은 포함하지 않았음을 명시.
+""".strip()
+        b2g_rules_block = (
+            "[B2G 규칙]\n"
+            "- market이 \"B2G\"인 후보는 본문/표에 반드시 \"B2G 근거: 기사/RSS 기반\", \"나라장터 확인: 미수행\"을 함께 노출하세요.\n"
+            "- B2G 섹션 첫 문장은 다음 문장을 그대로 포함하세요: \"현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다.\""
+        )
 
-[출력 형식]
-- 마크다운 본문만 출력. 코드펜스(```), JSON, 영문 안내 문장 금지.
+    return f"""
+당신은 FuriosaAI BD 매니저용 주간 GTM 리포트를 한국어 마크다운으로 작성합니다.
+
+다음 INPUT JSON의 run_summary와 candidates만을 근거로 리포트를 작성하세요. 새 회사, 새 모델, 새 숫자를 발명하지 마세요.
+
+{_COMMON_PROMPT_RULES}
+
+{b2g_rules_block}
+
+{sections}
 
 INPUT:
 {json.dumps(payload, ensure_ascii=False, indent=2)}
@@ -1787,8 +1863,9 @@ def _call_gemini(prompt: str) -> str:
 def write_gtm_report_with_llm(
     eval_result: dict[str, Any],
     furiosa_docs_summary: dict[str, Any],
+    scope: str = REPORT_SCOPE_B2B_B2G,
 ) -> str:
-    return _call_gemini(build_report_writer_prompt(eval_result, furiosa_docs_summary))
+    return _call_gemini(build_report_writer_prompt(eval_result, furiosa_docs_summary, scope=scope))
 
 
 # Category-level risk detectors. Patterns are intentionally small — they only
@@ -1953,24 +2030,30 @@ def write_gtm_report_with_validation(
     eval_result: dict[str, Any],
     furiosa_docs_summary: dict[str, Any],
     max_retries: int = 2,
+    scope: str = REPORT_SCOPE_B2B_B2G,
 ) -> tuple[str, list[dict[str, Any]], int]:
     """
-    Two-step pipeline:
-      1. LLM writes the report from validated candidates.
+    Two-step pipeline (per scope):
+      1. LLM writes the report from validated candidates (filtered by scope).
       2. Category detector scans the rendered markdown.
-      3. If violations remain, ask the LLM to rewrite up to `max_retries` times,
-         feeding the exact (category, candidate, section, evidence) list.
+      3. If violations remain, ask the LLM to rewrite up to `max_retries` times.
 
+    The detector ignores candidates that were filtered out for the scope.
     Returns (text, remaining_violations, retry_count).
     """
-    text = write_gtm_report_with_llm(eval_result, furiosa_docs_summary)
-    violations = detect_report_violations(text, eval_result)
+    scoped_result = dict(eval_result)
+    scoped_result["candidates"] = _filter_candidates_for_scope(
+        eval_result.get("candidates", []), scope
+    )
+
+    text = write_gtm_report_with_llm(scoped_result, furiosa_docs_summary, scope=scope)
+    violations = detect_report_violations(text, scoped_result)
     retry_count = 0
 
     while violations and retry_count < max_retries:
         retry_count += 1
         text = rewrite_report_with_llm(text, violations)
-        violations = detect_report_violations(text, eval_result)
+        violations = detect_report_violations(text, scoped_result)
 
     return text, violations, retry_count
 
@@ -2301,9 +2384,13 @@ def build_business_report(
     run_id: str,
     eval_result: dict[str, Any] | None,
     furiosa_docs_summary: dict[str, Any],
+    scope: str = REPORT_SCOPE_B2B_B2G,
 ) -> str:
     if not eval_result:
         return "# FuriosaAI GTM 리서치\n\nLLM 평가 실패로 실전용 리포트를 생성하지 못했습니다.\n"
+
+    if scope == REPORT_SCOPE_B2B:
+        return _build_business_report_b2b(run_id, eval_result, furiosa_docs_summary)
 
     run_summary = eval_result.get("run_summary", {})
     candidates = eval_result.get("candidates", [])
@@ -2550,6 +2637,208 @@ def build_business_report(
 
     return "\n".join(lines)
 
+def _build_business_report_b2b(
+    run_id: str,
+    eval_result: dict[str, Any],
+    furiosa_docs_summary: dict[str, Any],
+) -> str:
+    """Deterministic fallback for the B2B-only report (no B2G content)."""
+    run_summary = eval_result.get("run_summary", {})
+    candidates = [
+        c for c in eval_result.get("candidates", [])
+        if isinstance(c, dict)
+        and c.get("classification") != "noise"
+        and (c.get("market") or "").upper() != "B2G"
+    ]
+
+    priority_order = {"HIGH": 0, "MID": 1, "LOW": 2, "WATCH": 3}
+    class_order = {
+        "priority_outreach": 0,
+        "cloud_npuaaS_lead": 1,
+        "structure_check": 2,
+        "watchlist": 3,
+    }
+    candidates_sorted = sorted(
+        candidates,
+        key=lambda c: (
+            class_order.get(c.get("classification", "watchlist"), 9),
+            priority_order.get(c.get("outreach_priority", "WATCH"), 9),
+        ),
+    )
+
+    top_candidates = candidates_sorted[:3]
+    today = now_kst().strftime("%Y-%m-%d")
+
+    lines = [
+        f"# FuriosaAI GTM 리서치 — B2B — {today}",
+        "",
+        "## 1. 한 줄 결론",
+        "",
+        short_text(run_summary.get("overall_assessment", ""), 450),
+        "",
+        "## 2. 이번 주 우선 연락 Top 3 (B2B)",
+        "",
+        "| 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처 |",
+        "|---:|---|---|---|---|---|---|",
+    ]
+    for idx, c in enumerate(top_candidates, start=1):
+        lines.append(
+            f"| {idx} "
+            f"| {c.get('name', '미확인')} "
+            f"| {c.get('target_type', '')} "
+            f"| {c.get('confirmed_model_name', '미확인')} "
+            f"| {short_text(c.get('fit_vs_priority_explanation') or c.get('buying_signal'), 120)} "
+            f"| {short_text(c.get('contact_reason'), 120)} "
+            f"| {format_source_links(c.get('source_urls', []), max_links=2)} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## 3. B2B 후보 표",
+            "",
+            business_candidate_table(candidates_sorted, include_b2g=False),
+            "",
+            "## 4. 우선 연락 후보 상세",
+            "",
+        ]
+    )
+    for c in candidates_sorted[:6]:
+        lines.extend(
+            [
+                f"### {c.get('name', '미확인')}",
+                "",
+                f"- **시장/유형**: {c.get('market', '')} / {c.get('target_type', '')}",
+                f"- **확인 모델**: {c.get('confirmed_model_name', '미확인')} / `{c.get('model_match_status', '')}`",
+                f"- **RNGD 종합 Fit / 연락 우선순위**: `{c.get('rngd_fit_score', '')}` / `{c.get('outreach_priority', '')}`",
+                f"- **왜 지금**: {short_text(c.get('timing_reason') or c.get('buying_signal'), 260)}",
+                f"- **고객 win**: {short_text(c.get('customer_win'), 260)}",
+                f"- **FuriosaAI win**: {short_text(c.get('furiosa_win'), 260)}",
+                f"- **컨택 시 사용할 말**: {short_text(c.get('outreach_talk_track'), 260)}",
+                f"- **담당자 힌트**: {short_text(c.get('decision_maker_hint'), 160)}",
+                f"- **출처**: {format_source_links(c.get('source_urls', []), max_links=3)}",
+                "",
+            ]
+        )
+
+    lines.extend(
+        [
+            "",
+            "## 5. NPUaaS / CSP 경유 기회",
+            "",
+        ]
+    )
+    cloud_leads = [
+        c for c in candidates_sorted
+        if c.get("target_type") in ["CSP 운영 기업", "CSP 고객 기업"]
+        or c.get("csp_routed_sales_possibility") == "HIGH"
+        or c.get("npuaas_adoption_possibility") == "HIGH"
+    ]
+    if cloud_leads:
+        for c in cloud_leads[:5]:
+            lines.append(
+                f"- **{c.get('name', '미확인')}**: "
+                f"CSP 경유 `{c.get('csp_routed_sales_possibility', '')}`, "
+                f"NPUaaS `{c.get('npuaas_adoption_possibility', '')}`, "
+                f"capacity 증설 `{c.get('csp_capacity_expansion_possibility', '')}`. "
+                f"{short_text(c.get('fit_vs_priority_explanation'), 160)} "
+                f"{format_source_links(c.get('source_urls', []), max_links=2)}"
+            )
+    else:
+        lines.append("- 해당 후보 없음")
+
+    lines.extend(
+        [
+            "",
+            "## 6. 담당자 / 컨택 경로",
+            "",
+            "| 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점 |",
+            "|---|---|---|---|---|",
+        ]
+    )
+    for c in candidates_sorted[:8]:
+        confidence = c.get("decision_maker_profile_confidence", "UNKNOWN")
+        if confidence in ("HIGH", "MID"):
+            url = c.get("decision_maker_profile_url") or "확인 필요"
+            url_cell = f"[{url}]({url})"
+            confidence_cell = confidence
+        else:
+            url_cell = "확인 필요"
+            confidence_cell = "확인 필요"
+        lines.append(
+            f"| {c.get('name', '미확인')} "
+            f"| {short_text(c.get('decision_maker_hint'), 80)} "
+            f"| {url_cell} "
+            f"| {confidence_cell} "
+            f"| {c.get('existing_touchpoint', '확인 필요')} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## 7. 경쟁사 GTM 동향",
+            "",
+            "- 이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다.",
+            "",
+            "## 8. 주의 사항",
+            "",
+            "- 이 리포트는 B2B 전용입니다. B2G/공공 후보는 별도 B2B+B2G 리포트를 확인하세요.",
+            "- 담당자/LinkedIn 후보는 공개 검색 결과 기반의 추정입니다. 신뢰도가 HIGH/MID가 아니면 \"확인 필요\"로 표시했습니다.",
+            "- 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석해야 합니다.",
+            "",
+            "---",
+            "",
+            f"debug_run_id: `{run_id}`",
+            f"furiosa_docs_successful: `{furiosa_docs_summary.get('docs_successful')}`",
+            "scope: `b2b`",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def build_landing_markdown(
+    eval_result: dict[str, Any] | None,
+    run_id: str,
+) -> str:
+    today = now_kst().strftime("%Y-%m-%d")
+    overall = ""
+    n_b2b = 0
+    n_b2g = 0
+    n_total = 0
+    if eval_result and isinstance(eval_result.get("candidates"), list):
+        cands = [
+            c for c in eval_result["candidates"]
+            if isinstance(c, dict) and c.get("classification") != "noise"
+        ]
+        n_total = len(cands)
+        n_b2g = sum(1 for c in cands if (c.get("market") or "").upper() == "B2G")
+        n_b2b = n_total - n_b2g
+        overall = short_text(eval_result.get("run_summary", {}).get("overall_assessment", ""), 450)
+
+    lines = [
+        f"# FuriosaAI GTM 리서치 — {today}",
+        "",
+        "## 한 줄 결론",
+        "",
+        overall or "이번 실행에서 후보 평가 결과를 확인하지 못했습니다.",
+        "",
+        "## 리포트 페이지",
+        "",
+        "- [B2B 전용 리포트](gtm_report_b2b.md)",
+        "- [B2B + B2G 통합 리포트](gtm_report_b2b_b2g.md)",
+        "",
+        "## 실행 요약",
+        "",
+        f"- run_id: `{run_id}`",
+        f"- agent_version: `{AGENT_VERSION}`",
+        f"- 비-노이즈 후보 수: `{n_total}`",
+        f"- B2B 후보 수: `{n_b2b}`",
+        f"- B2G 후보 수: `{n_b2g}`",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def write_business_report(
     run_dir: Path,
     run_id: str,
@@ -2557,63 +2846,122 @@ def write_business_report(
     eval_result: dict[str, Any] | None,
 ) -> dict[str, Any]:
     """
-    Two-step rendering:
-      1. Ask the LLM to write the manager-facing Korean report from validated candidates.
-      2. If the LLM call fails for any reason, fall back to the deterministic builder
-         so we never silently drop gtm_report.md.
+    Produces three markdown files per run:
+      - gtm_report_b2b.md       (B2B-only)
+      - gtm_report_b2b_b2g.md   (B2B + B2G)
+      - gtm_report.md           (compatibility landing page that links to both)
 
-    Returns a small metadata dict for run-level logging.
+    Each scoped report is written by the LLM (with validation/rewrite loop);
+    failures degrade to the deterministic builder for that scope. The landing
+    page is always generated deterministically from eval_result.
+
+    Returns aggregated metadata for the metadata.json + footer.
     """
     meta: dict[str, Any] = {
         "writer": "deterministic_fallback",
         "llm_error": "",
-        "validation_passed": False,
-        "violations": [],
-        "retry_count": 0,
+        "scopes": {
+            REPORT_SCOPE_B2B: {
+                "writer": "deterministic_fallback",
+                "validation_passed": False,
+                "violations": [],
+                "retry_count": 0,
+                "llm_error": "",
+            },
+            REPORT_SCOPE_B2B_B2G: {
+                "writer": "deterministic_fallback",
+                "validation_passed": False,
+                "violations": [],
+                "retry_count": 0,
+                "llm_error": "",
+            },
+        },
+        "pages_written": [],
     }
 
-    if eval_result and eval_result.get("candidates"):
-        try:
-            llm_report, violations, retry_count = write_gtm_report_with_validation(
-                eval_result=eval_result,
-                furiosa_docs_summary=furiosa_docs_summary,
-            )
-            meta["writer"] = "llm"
-            meta["validation_passed"] = not violations
-            meta["violations"] = violations
-            meta["retry_count"] = retry_count
+    scope_file = {
+        REPORT_SCOPE_B2B: "gtm_report_b2b.md",
+        REPORT_SCOPE_B2B_B2G: "gtm_report_b2b_b2g.md",
+    }
 
-            footer_lines = [
-                "",
-                "---",
-                "",
-                f"debug_run_id: `{run_id}`  ",
-                f"furiosa_docs_successful: `{furiosa_docs_summary.get('docs_successful')}`  ",
-                "report_writer: `llm`  ",
-                f"report_writer_retry_count: `{retry_count}`  ",
-                f"report_validation_passed: `{meta['validation_passed']}`  ",
-            ]
-            if violations:
-                footer_lines.append(
-                    "report_validation_violations: "
-                    + ", ".join(
-                        sorted({v["category"] for v in violations})
-                    )
+    def _write_one(scope: str) -> None:
+        out_path = run_dir / scope_file[scope]
+        scope_meta = meta["scopes"][scope]
+
+        if eval_result and eval_result.get("candidates"):
+            try:
+                text, violations, retry_count = write_gtm_report_with_validation(
+                    eval_result=eval_result,
+                    furiosa_docs_summary=furiosa_docs_summary,
+                    scope=scope,
                 )
-            footer = "\n".join(footer_lines) + "\n"
+                scope_meta["writer"] = "llm"
+                scope_meta["validation_passed"] = not violations
+                scope_meta["violations"] = violations
+                scope_meta["retry_count"] = retry_count
 
-            (run_dir / "gtm_report.md").write_text(llm_report + "\n" + footer, encoding="utf-8")
-            return meta
-        except Exception as exc:
-            meta["llm_error"] = str(exc)
-            print(f"Report-writer LLM FAILED, falling back to deterministic: {exc}")
+                footer_lines = [
+                    "",
+                    "---",
+                    "",
+                    f"debug_run_id: `{run_id}`  ",
+                    f"scope: `{scope}`  ",
+                    f"furiosa_docs_successful: `{furiosa_docs_summary.get('docs_successful')}`  ",
+                    "report_writer: `llm`  ",
+                    f"report_writer_retry_count: `{retry_count}`  ",
+                    f"report_validation_passed: `{scope_meta['validation_passed']}`  ",
+                ]
+                if violations:
+                    footer_lines.append(
+                        "report_validation_violations: "
+                        + ", ".join(sorted({v["category"] for v in violations}))
+                    )
+                out_path.write_text(text + "\n" + "\n".join(footer_lines) + "\n", encoding="utf-8")
+                meta["pages_written"].append(scope_file[scope])
+                return
+            except Exception as exc:
+                scope_meta["llm_error"] = str(exc)
+                if not meta["llm_error"]:
+                    meta["llm_error"] = str(exc)
+                print(f"Report-writer LLM FAILED for scope={scope}, falling back: {exc}")
 
-    business_report = build_business_report(
-        run_id=run_id,
-        eval_result=eval_result,
-        furiosa_docs_summary=furiosa_docs_summary,
+        fallback = build_business_report(
+            run_id=run_id,
+            eval_result=eval_result,
+            furiosa_docs_summary=furiosa_docs_summary,
+            scope=scope,
+        )
+        out_path.write_text(fallback, encoding="utf-8")
+        meta["pages_written"].append(scope_file[scope])
+
+    _write_one(REPORT_SCOPE_B2B)
+    _write_one(REPORT_SCOPE_B2B_B2G)
+
+    # Compatibility landing page (deterministic, links to both scopes).
+    landing = build_landing_markdown(eval_result, run_id)
+    (run_dir / "gtm_report.md").write_text(landing, encoding="utf-8")
+    meta["pages_written"].append("gtm_report.md")
+
+    # Top-level writer label = "llm" if either scope succeeded via LLM.
+    if any(
+        meta["scopes"][s]["writer"] == "llm"
+        for s in (REPORT_SCOPE_B2B, REPORT_SCOPE_B2B_B2G)
+    ):
+        meta["writer"] = "llm"
+
+    # Flat top-level keys for the existing metadata schema (worst-case across scopes).
+    meta["validation_passed"] = all(
+        meta["scopes"][s]["validation_passed"]
+        for s in (REPORT_SCOPE_B2B, REPORT_SCOPE_B2B_B2G)
     )
-    (run_dir / "gtm_report.md").write_text(business_report, encoding="utf-8")
+    meta["violations"] = (
+        list(meta["scopes"][REPORT_SCOPE_B2B]["violations"])
+        + list(meta["scopes"][REPORT_SCOPE_B2B_B2G]["violations"])
+    )
+    meta["retry_count"] = (
+        meta["scopes"][REPORT_SCOPE_B2B]["retry_count"]
+        + meta["scopes"][REPORT_SCOPE_B2B_B2G]["retry_count"]
+    )
     return meta
 
 def write_json(path: Path, data: Any) -> None:
@@ -2747,6 +3095,16 @@ def write_metadata(
         "report_writer_retry_count": writer_meta.get("retry_count", 0),
         "report_validation_passed": writer_meta.get("validation_passed", False),
         "report_validation_violations": writer_meta.get("violations", []),
+        "report_pages_generated": writer_meta.get(
+            "pages_written",
+            ["gtm_report_b2b.md", "gtm_report_b2b_b2g.md", "gtm_report.md"],
+        ),
+        "report_scopes": writer_meta.get("scopes", {}),
+        "pages_generated": [
+            "docs/index.html",
+            "docs/b2b.html",
+            "docs/b2b-b2g.html",
+        ],
         "llm_retry_count": get_llm_retry_count(),
         "llm_max_retries": env_int("LLM_MAX_RETRIES", 4),
         "max_llm_sources": MAX_LLM_SOURCES,
@@ -2779,8 +3137,10 @@ def update_index(run_id: str, mode: str, memo: str | None) -> None:
     run_time = now_kst().strftime("%Y-%m-%d %H:%M:%S KST")
     link = (
         f"- {run_time} / `{mode}` / {memo or ''} "
-        f"— [gtm_report](../runs/{mode}/{run_id}/gtm_report.md) "
-        f"/ [debug_report](../runs/{mode}/{run_id}/report.md) "
+        f"— [B2B](../runs/{mode}/{run_id}/gtm_report_b2b.md) "
+        f"/ [B2B+B2G](../runs/{mode}/{run_id}/gtm_report_b2b_b2g.md) "
+        f"/ [landing](../runs/{mode}/{run_id}/gtm_report.md) "
+        f"/ [debug](../runs/{mode}/{run_id}/report.md) "
         f"/ [candidates](../runs/{mode}/{run_id}/candidates.json) "
         f"/ [merged_sources](../runs/{mode}/{run_id}/sources_merged.json) "
         f"/ [furiosa_docs](../runs/{mode}/{run_id}/furiosa_docs_snapshot.md)\n"
@@ -2949,6 +3309,55 @@ def run_selftest() -> int:
                 failures.append(f"deterministic gtm_report.md에 필수 섹션이 없다: {header}")
     except Exception as exc:
         failures.append(f"deterministic gtm_report.md 빌드가 예외로 실패: {exc}")
+
+    # scope='b2b' must omit B2G content and the §7 B2G section.
+    try:
+        b2b_md = build_business_report(
+            run_id="selftest",
+            eval_result=result,
+            furiosa_docs_summary={"docs_successful": 0, "docs_failed": 0},
+            scope=REPORT_SCOPE_B2B,
+        )
+        if "B2G 후보 — 나라장터" in b2b_md:
+            failures.append("B2B 전용 리포트에 B2G 섹션이 남아 있다.")
+        if "샘플 공공기관" in b2b_md:
+            failures.append("B2B 전용 리포트에 B2G 후보가 본문에 노출되었다.")
+        if "버전 2 — B2B + B2G" in b2b_md:
+            failures.append("B2B 전용 리포트에 B2B+B2G 통합 표가 남아 있다.")
+        if "## 3. B2B 후보 표" not in b2b_md:
+            failures.append("B2B 전용 리포트에 §3 B2B 후보 표 헤더가 없다.")
+    except Exception as exc:
+        failures.append(f"build_business_report(scope='b2b')가 예외로 실패: {exc}")
+
+    # scope='b2b_b2g' must include the B2G candidate.
+    try:
+        bbg_md = build_business_report(
+            run_id="selftest",
+            eval_result=result,
+            furiosa_docs_summary={"docs_successful": 0, "docs_failed": 0},
+            scope=REPORT_SCOPE_B2B_B2G,
+        )
+        if "샘플 공공기관" not in bbg_md:
+            failures.append("B2B+B2G 리포트에 B2G 후보가 노출되지 않았다.")
+        if "B2G 후보 — 나라장터" not in bbg_md:
+            failures.append("B2B+B2G 리포트에 §7 B2G 섹션 헤더가 없다.")
+    except Exception as exc:
+        failures.append(f"build_business_report(scope='b2b_b2g')가 예외로 실패: {exc}")
+
+    # _filter_candidates_for_scope shape check.
+    raw = result.get("candidates", [])
+    filtered_b2b = _filter_candidates_for_scope(raw, REPORT_SCOPE_B2B)
+    if any((c.get("market") or "").upper() == "B2G" for c in filtered_b2b):
+        failures.append("_filter_candidates_for_scope('b2b')가 B2G 후보를 남겼다.")
+    filtered_all = _filter_candidates_for_scope(raw, REPORT_SCOPE_B2B_B2G)
+    if not any((c.get("market") or "").upper() == "B2G" for c in filtered_all):
+        failures.append("_filter_candidates_for_scope('b2b_b2g')가 B2G 후보를 모두 빼버렸다.")
+
+    # Landing markdown links to both reports.
+    landing = build_landing_markdown(result, "selftest-run")
+    for needle in ("gtm_report_b2b.md", "gtm_report_b2b_b2g.md", "B2B 전용 리포트", "B2B + B2G 통합 리포트"):
+        if needle not in landing:
+            failures.append(f"landing markdown에 '{needle}'가 없다.")
 
     sample_report = (
         "# FuriosaAI GTM 리서치 — 2026-05-25\n"
