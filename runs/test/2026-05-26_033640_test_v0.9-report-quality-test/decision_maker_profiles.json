@@ -1,0 +1,149 @@
+{
+  "called": true,
+  "valid_count": 4,
+  "suppressed_count": 3,
+  "unknown_count": 0,
+  "error": "",
+  "records": [
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "삼성SDS Head of Cloud LinkedIn",
+        "삼성SDS Head of Infrastructure LinkedIn",
+        "삼성SDS Data Center LinkedIn",
+        "삼성SDS Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/samsung-sds",
+        "title": "삼성SDS - LinkedIn",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "삼성SDS Head of Cloud LinkedIn",
+        "description_snippet": "한국어 ; 웹사이트 : http://www.samsungsds.com, 업계 : IT 서비스 및 IT 컨설팅, 회사 규모 : 직원 10,001명 이상, 본사 : Seoul, 유형 : 상장기업, 전문 분야 : Cloud Computing, Digital Logistics, Artificial Intelligence, Digital Transformation "
+      },
+      "error": null
+    },
+    {
+      "name": "건강보험심사평가원",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "건강보험심사평가원 procurement LinkedIn",
+        "건강보험심사평가원 정보화 담당관 LinkedIn",
+        "건강보험심사평가원 AI 사업 책임자 LinkedIn",
+        "건강보험심사평가원 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.hira.or.kr/",
+        "title": "건강보험심사평가원",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "건강보험심사평가원 procurement LinkedIn",
+        "description_snippet": "건강 보험 소개, 진료비, 약제비 심사, 의료, 요양 기관, 병원 찾기, 요양급여 대상여부 확인 제공."
+      },
+      "error": null
+    },
+    {
+      "name": "서울아산병원",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "서울아산병원 CIO LinkedIn",
+        "서울아산병원 CTO LinkedIn",
+        "서울아산병원 CISO LinkedIn",
+        "서울아산병원 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://kr.linkedin.com/company/asan-medical-center",
+        "title": "Asan Medical Center (AMC)",
+        "source": "naver_web",
+        "confidence": "LOW",
+        "matched_query": "서울아산병원 CIO LinkedIn",
+        "description_snippet": "Asan Medical Center (AMC) was established by ASAN Chung Ju-yung, the founder of Hyundai Group and Asan Foundation, in 1989. With the founder's mission of \"helping the underprivileged members of our so"
+      },
+      "error": null
+    },
+    {
+      "name": "엘리스그룹",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "엘리스그룹 Head of Cloud LinkedIn",
+        "엘리스그룹 Head of Infrastructure LinkedIn",
+        "엘리스그룹 Data Center LinkedIn",
+        "엘리스그룹 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/international-data-center-authority-idca",
+        "title": "International Data Center Authority (IDCA)",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "엘리스그룹 Data Center LinkedIn",
+        "description_snippet": "International Data Center Authority (IDCA) | LinkedIn 팔로워 18,462명 | The Global Authority that Empowers Digital Economies by Enabling Digital Infrastructure, AI & Digital Transformation. | The Inter..."
+      },
+      "error": null
+    },
+    {
+      "name": "두산",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "두산 Head of AI LinkedIn",
+        "두산 Product AI lead LinkedIn",
+        "두산 CTO LinkedIn",
+        "두산 Platform lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/synthomer",
+        "title": "Synthomer",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "두산 Product AI lead LinkedIn",
+        "description_snippet": "Synthomer plc is a leading supplier of high-performance, highly specialised polymers and ingredients that play vital roles in key sectors such as coatings, construction, adhesives, and health and prot"
+      },
+      "error": null
+    },
+    {
+      "name": "디토닉",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "디토닉 procurement LinkedIn",
+        "디토닉 정보화 담당관 LinkedIn",
+        "디토닉 AI 사업 책임자 LinkedIn",
+        "디토닉 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/wnsprocurement/",
+        "title": "WNS Procurement",
+        "source": "naver_web",
+        "confidence": "MID",
+        "matched_query": "디토닉 procurement LinkedIn",
+        "description_snippet": "WNS Procurement | LinkedIn 팔로워 59,578명 | WNS Procurement is a market leader in procurement and supply chain advisory, managed services and digital transformation. It has the combined market differe..."
+      },
+      "error": null
+    },
+    {
+      "name": "오픈네트웍시스템",
+      "market": "B2G",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "오픈네트웍시스템 procurement LinkedIn",
+        "오픈네트웍시스템 정보화 담당관 LinkedIn",
+        "오픈네트웍시스템 AI 사업 책임자 LinkedIn",
+        "오픈네트웍시스템 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/koreai",
+        "title": "koreai - LinkedIn",
+        "source": "naver_web",
+        "confidence": "LOW",
+        "matched_query": "오픈네트웍시스템 정보화 담당관 LinkedIn",
+        "description_snippet": "코어에이아이(Kore.ai)는 업계 선도의 대화형 AI 플랫폼에 구축된 디지털 가상 비서(digital virtual assistants)를 통해 고객과 직원간의 인터랙션을 자동화함으로써 비즈니스 속도를 높인다. 팔로우"
+      },
+      "error": null
+    }
+  ]
+}

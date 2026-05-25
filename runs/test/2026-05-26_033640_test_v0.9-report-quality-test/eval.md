@@ -1,0 +1,364 @@
+# LLM Evaluation Notes
+
+## LLM metadata
+
+- provider: `gemini`
+- model: `gemini-3.5-flash`
+- llm_sources_count: `40`
+- max_llm_sources: `40`
+- max_source_chars: `800`
+- max_output_candidates: `12`
+- evaluated_at_kst: `2026-05-26T03:42:04.110045+09:00`
+
+## Run summary
+
+- overall_assessment: 최근 7일간 국내 GTM 신호는 금융권 망분리 규제 완화 조치와 의료, 공공 기관의 폐쇄망 AI 도입 흐름이 두드러집니다. 특히 대형 CSP들의 인프라 확장 및 신규 데이터센터 투자 발표가 이어지고 있어, 직접 판매뿐 아니라 CSP를 경유한 NPUaaS 공급 기회를 적극 도모해야 합니다. 모델 정보가 기사 내에 명시되지 않은 경우가 많아 적합도 평가는 보수적으로 진행하되, 인프라 및 바이어 신호가 확실한 타깃 위주로 우선순위를 지정하였습니다.
+- top_priority_names: 삼성SDS, 건강보험심사평가원, 서울아산병원, 엘리스그룹
+- noise_ratio_comment: 수집된 소스 중 선거 공약, 해외 빅테크 단순 인프라 확장, 일반 플랫폼 민원 관련 기사 등 GTM과 무관한 노이즈가 약 15% 수준으로 분류되었습니다.
+- model_compatibility_caution: 대다수 공개 기사에서 구체적인 LLM 모델 버전이 언급되지 않아 모델 매칭 상태를 'unknown'으로 분류하고 보수적인 적합도를 부여하였습니다. 실제 접촉 시 사용 모델(Llama-3.1/3.3, Qwen2.5/3 등 RNGD 지원 모델)에 대한 정밀 확인이 수반되어야 합니다.
+
+## Eval notes
+
+- 이번 주간 데이터에서는 공공기관의 자체 AI 드라이브(심평원)와 병원의 내부 폐쇄망 가동 사례(서울아산병원)가 두드러졌으며, 이들은 고가의 외산 GPU 부족과 보안적 제약을 해결하기 위한 잠재 수요가 큽니다.
+- 모델 미확인 후보들이 많으나, 금융 규제 및 공공 클라우드 인프라 확장이라는 강력한 드라이버가 작동하고 있으므로 맞춤형 온프레미스/클라우드 패키지 제안 위주로 BD 접근을 강화할 필요가 있습니다.
+- 삼성SDS의 4273억원 구미 신규 건립 등의 수치는 RNGD의 저전력 설계(TDP 제어 및 냉각 효율 개선) 포지셔닝을 부각할 수 있는 핵심 지표로 활용될 것입니다.
+
+## Raw LLM response
+
+```json
+{
+  "run_summary": {
+    "overall_assessment": "최근 7일간 국내 GTM 신호는 금융권 망분리 규제 완화 조치와 의료, 공공 기관의 폐쇄망 AI 도입 흐름이 두드러집니다. 특히 대형 CSP들의 인프라 확장 및 신규 데이터센터 투자 발표가 이어지고 있어, 직접 판매뿐 아니라 CSP를 경유한 NPUaaS 공급 기회를 적극 도모해야 합니다. 모델 정보가 기사 내에 명시되지 않은 경우가 많아 적합도 평가는 보수적으로 진행하되, 인프라 및 바이어 신호가 확실한 타깃 위주로 우선순위를 지정하였습니다.",
+    "top_priority_names": ["삼성SDS", "건강보험심사평가원", "서울아산병원", "엘리스그룹"],
+    "noise_ratio_comment": "수집된 소스 중 선거 공약, 해외 빅테크 단순 인프라 확장, 일반 플랫폼 민원 관련 기사 등 GTM과 무관한 노이즈가 약 15% 수준으로 분류되었습니다.",
+    "model_compatibility_caution": "대다수 공개 기사에서 구체적인 LLM 모델 버전이 언급되지 않아 모델 매칭 상태를 'unknown'으로 분류하고 보수적인 적합도를 부여하였습니다. 실제 접촉 시 사용 모델(Llama-3.1/3.3, Qwen2.5/3 등 RNGD 지원 모델)에 대한 정밀 확인이 수반되어야 합니다."
+  },
+  "candidates": [
+    {
+      "name": "삼성SDS",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "경기 동탄 및 경북 구미 AI 데이터센터 인프라 확장 및 GPUaaS/NPUaaS 사업 추진",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "공개 기사 내 구체적인 구동 모델은 미확인 상태이나, 신규 AI 데이터센터 전력 확보 및 대규모 인프라 투자 신호가 매우 강력합니다. SCP 및 NPUaaS 가속기 파트너십 경로를 통한 용량 증설 목적으로 접근하므로 모델 정합성과 무관하게 outreach priority를 최고 등급으로 설정하였습니다.",
+      "hook_type": "CLOUD",
+      "buying_signal": "경북 구미에 대규모 투자를 통한 신규 AI 데이터센터 건립 계획을 발표하였으며 동탄 데이터센터 가동을 위한 추가 전력을 확보하는 등 클라우드 인프라 자원을 지속적으로 확충하고 있습니다.",
+      "infrastructure_signal": "구미 데이터센터의 전력 용량 및 동탄 데이터센터의 가동 전력 확보 등 하이퍼스케일급 데이터센터 인프라를 직접 운영하고 있습니다.",
+      "timing_reason": "최근 AI 데이터센터 투자 확대 분석 및 증권사 호평이 이어지는 시점으로, 전력 수급 및 가속기 비용 효율화가 시급한 시점입니다.",
+      "customer_win": "대규모 전력 인프라 확보에 따른 운영비 부담을 경감할 수 있으며, 고효율 추론용 NPUaaS 라인업을 추가하여 클라우드 서비스 경쟁력을 강화할 수 있습니다.",
+      "furiosa_win": "삼성SDS 클라우드 플랫폼인 SCP에 가속기를 공급하여 엔터프라이즈향 대형 레퍼런스를 확보하고 지속적인 capacity 증설 매출을 기대할 수 있습니다.",
+      "numeric_claims": [
+        {
+          "claim": "동탄 데이터센터 가동을 위한 20MW급 전력 확보",
+          "source_id": "S028",
+          "source_url": "https://www.e-science.co.kr/news/articleView.html?idxno=130004",
+          "evidence_text": "삼성SDS가 경기 동탄 데이터센터 서관 가동을 위해 20MW급 전력을 확보한 사례"
+        },
+        {
+          "claim": "경북 구미 데이터센터 건립을 위한 4273억원 투자 및 60MW 전력 계획",
+          "source_id": "S034",
+          "source_url": "https://www.mt.co.kr/tech/2026/05/23/2026052210211399740",
+          "evidence_text": "삼성SDS는 경북 구미에 4273억원을 투자해 60MW 규모 AI 데이터센터를 짓기로 했다."
+        }
+      ],
+      "direct_sales_possibility": "LOW",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "HIGH",
+      "contact_reason": "동탄 및 구미의 하이퍼스케일급 AI 데이터센터 전력 확보와 인프라 증설 타이밍에 맞추어 저전력 고효율 추론 카드 도입을 제안하기 위함입니다.",
+      "outreach_talk_track": "최근 구미 AI 데이터센터에 대한 4273억원 규모의 투자 및 동탄 데이터센터의 20MW 전력 확보 소식을 접하고 연락드렸습니다. 전력 밀도 최적화가 요구되는 대형 인프라 환경에서 RNGD가 제공하는 전력 대비 고성능 추론 효율성과 가상화 적합성을 바탕으로 SCP의 NPUaaS 경쟁력 확보 방안을 논의하고자 합니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "Head of Cloud, Head of Data Center, 인프라 개발 부서 담당 이사",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "삼성SDS 클라우드 인프라 부서 내 국산 NPUaaS 가속기 검토 현황 분석 필요"
+      ],
+      "source_ids": ["S028", "S030", "S034", "S035", "S038"],
+      "source_urls": [
+        "https://www.e-science.co.kr/news/articleView.html?idxno=130004",
+        "https://www.ddaily.co.kr/page/view/2026052017342600376",
+        "https://www.mt.co.kr/tech/2026/05/23/2026052210211399740",
+        "https://www.thepowernews.co.kr/view.php?ud=202605221116568858de3f0aa1be_7",
+        "http://www.newsroad.co.kr/news/articleView.html?idxno=59549"
+      ]
+    },
+    {
+      "name": "건강보험심사평가원",
+      "country": "KR",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "GPU 서버 기반 자체 AI 통합플랫폼 구축 및 AI·클라우드 도입 가속화",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "기사상 도입 예정 모델은 구체적으로 명시되지 않았으나, 공공 보건의료 영역에서 대형 GPU 인프라를 온프레미스로 직접 도입하여 개발과 운영 체계를 일원화하려는 실질적인 인프라 구축 신호입니다.",
+      "hook_type": "PROCUREMENT",
+      "buying_signal": "자체 AI 통합플랫폼을 GPU 서버 기반으로 구축하여 원스톱 서비스 개발 및 운영 프로세스를 구현하겠다는 계획을 구체적으로 발표하였습니다.",
+      "infrastructure_signal": "자체 디지털클라우드센터 및 GPU 기반 AI 인프라를 원격 혹은 자체 전산실에 직접 구성하려는 인프라 신호가 뚜렷합니다.",
+      "timing_reason": "AI융합추진단 주도의 AI 플랫폼 구축 사업 기획 단계로, 조달 발주 또는 규격 설계 시점에 선제적 대응이 가능합니다.",
+      "customer_win": "정부 예산 한도 내에서 가속기 도입 효율성을 보장하고, 고전력 소모를 방지하여 원내 전력 제약을 완화할 수 있습니다.",
+      "furiosa_win": "공공 의료 분야의 대표적인 대형 GPU/NPU 통합 구축 사례를 선점하여 B2G 시장에서의 입지를 확보할 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "MID",
+      "csp_routed_sales_possibility": "MID",
+      "npuaas_adoption_possibility": "LOW",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "GPU 기반 자체 AI 통합플랫폼 기획에 발맞추어 저전력 고효율 서버형 가속기 설계 규격 반영을 유도하기 위함입니다.",
+      "outreach_talk_track": "최근 심평원의 디지털클라우드센터와 AI융합추진단이 추진하시는 GPU 서버 기반 AI 통합플랫폼 구축 소식을 접하였습니다. 의료 및 행정 서비스 추론 환경에서 비용과 전력 효율성을 균형 있게 확보할 수 있는 국산 NPU 가속기 RNGD 도입 가치를 공유해 드리고자 합니다.",
+      "revenue_timing": "단기",
+      "decision_maker_hint": "김무성 디지털전략실장 겸 AI융합추진단장, 정보화본부 IT 인프라 도입 담당자",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "심평원 자체 인프라 장비 조달 방식 및 선호하는 사업자 정보 확인 필요"
+      ],
+      "source_ids": ["S004"],
+      "source_urls": ["https://www.etnews.com/20260522000181"]
+    },
+    {
+      "name": "서울아산병원",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "classification": "priority_outreach",
+      "confirmed_project_or_signal": "의료 정보 보안 강화를 위한 폐쇄망 환경 AI 시스템 구축",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "사용 모델에 관한 명확한 정보는 없으나 병원 내부 보안 가이드라인에 따른 폐쇄망 온프레미스 AI 가동이 확정된 구조입니다. 컴플라이언스 및 배치 적합성이 우수하므로 우선 지원 대상군으로 설정하였습니다.",
+      "hook_type": "SOVEREIGN",
+      "buying_signal": "폐쇄망 환경에서도 의료 AI 프로토콜을 온전히 가동할 수 있는 시스템을 구축하였음을 공식적으로 확인해 주었습니다.",
+      "infrastructure_signal": "병원 전산망 특성상 외부 연결이 완전 차단된 독립적 온프레미스 서버 인프라를 운용하고 있습니다.",
+      "timing_reason": "폐쇄망 내부 AI 적용 성공 사례를 확보한 상태이므로 타 분과 및 타 의료 플랫폼으로의 추가 장비 확장 영업이 용이합니다.",
+      "customer_win": "민감한 환자 정보 유출 위협이 없는 완벽한 원내 독립형 온프레미스 환경에서 인공지능 연산 장치 비용을 개선할 수 있습니다.",
+      "furiosa_win": "대형 상급종합병원의 대표적인 보안 전술용 추론 플랫폼에 탑재되는 하드웨어 납품 실적을 확보할 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "HIGH",
+      "csp_routed_sales_possibility": "LOW",
+      "npuaas_adoption_possibility": "LOW",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "의료 프라이버시가 엄격한 원내 폐쇄망 인프라 고도화 시점에 저전력 PCIe 서버 카드 도입을 타진하기 위함입니다.",
+      "outreach_talk_track": "아산병원의 디지털정보혁신본부에서 폐쇄망 환경을 기반으로 보안과 인공지능 적용을 양립시킨 성공 사례를 접하였습니다. 고성능 병원 내부 데이터 처리를 외부 클라우드 의존 없이 수행하기 위해 국산 추론 전용 가속기 도입에 관해 협의를 희망합니다.",
+      "revenue_timing": "중기",
+      "decision_maker_hint": "김영학 디지털정보혁신본부장, 의료정보실 인프라 관리 부서",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "현재 폐쇄망 서버에 사용 중인 서버 장비 제조업체 및 추가 증설 계획 존재 여부 검증"
+      ],
+      "source_ids": ["S011"],
+      "source_urls": ["https://www.newsis.com/view/NISX20260518_0003634573"]
+    },
+    {
+      "name": "엘리스그룹",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "classification": "cloud_npuaas_lead",
+      "confirmed_project_or_signal": "코스닥 상장 추진 및 자체 인프라를 활용한 GPUaaS 서비스 라인업 확장",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "HIGH",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "HIGH",
+      "fit_vs_priority_explanation": "자체 AI 클라우드와 GPU 가상화 자원을 적극 운용 중인 하이퍼스케일러형 스타트업으로, 상장 공모 자금을 통한 인프라 투자와 국산 가속기 채택 가능성이 높아 우선 순위가 매우 높습니다.",
+      "hook_type": "CLOUD",
+      "buying_signal": "자체 개발한 AI 클라우드 인프라 솔루션을 토대로 독자적인 GPUaaS 비즈니스를 전개 중이며, 예비심사 청구 등 기업공개 단계에 돌입하였습니다.",
+      "infrastructure_signal": "대규모 AI 클라우드 및 컨테이너 가상화 인프라를 직접 컨트롤하는 역량을 보유하고 있습니다.",
+      "timing_reason": "예비심사 통과 및 대규모 투자 자본 유치로 인프라 확충에 예산 유연성이 확대되는 최적의 기기 검토 구간입니다.",
+      "customer_win": "인프라 운영에 동반되는 전력 설계 및 대규모 가속기 확보 비용을 개선하고, 독자적인 국산 NPUaaS 옵션을 추가 확보할 수 있습니다.",
+      "furiosa_win": "풀스택 클라우드 전문 기업에 당사 칩을 공급하고, 교육 및 기업 연수용 GPUaaS 수요를 국산 가속기로 선점하는 계기가 마련됩니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "HIGH",
+      "csp_routed_sales_possibility": "LOW",
+      "npuaas_adoption_possibility": "HIGH",
+      "csp_capacity_expansion_possibility": "MID",
+      "contact_reason": "기업공개 추진 및 인프라 추가 확충 로드맵에 맞추어 저전력 추론 가속 카드 도입 파트너십을 추진하고자 합니다.",
+      "outreach_talk_track": "최근 예심 청구 등 코스닥 상장 본격화 소식을 무척 축하드립니다. 자체 인프라와 컨테이너 가상화 플랫폼을 적극 운영하시는 단계에서 전력 및 공급 가격 한계를 해결할 수 있는 RNGD 가속기를 새로운 클라우드 서비스 옵션으로 검토 제안 드립니다.",
+      "revenue_timing": "단기",
+      "decision_maker_hint": "김재원 대표이사, 기술 부서 아키텍처 및 클라우드 담당 총괄 리더",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "엘리스그룹의 가상화 컨테이너 환경 내 국산 가속기 소프트웨어 라이브러리 연동 타당성 분석"
+      ],
+      "source_ids": ["S036", "S037"],
+      "source_urls": [
+        "http://www.hansbiz.co.kr/news/articleView.html?idxno=839792",
+        "http://www.joseilbo.com/news/news_read.php?uid=568639&class=53&grp="
+      ]
+    },
+    {
+      "name": "두산",
+      "country": "KR",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "classification": "structure_check",
+      "confirmed_project_or_signal": "엔터프라이즈 멀티클라우드 기반 인프라 운영 및 자체 AI 활용 로드맵 구현",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "MID",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "MID",
+      "fit_vs_priority_explanation": "특정 AI 모델을 단정할 수는 없으나, 복수의 퍼블릭 클라우드 및 외산 가속기를 운영해 본 숙련도 높은 조직으로 향후 비용 효율적 인프라 대체를 위한 구조 검토 단계입니다.",
+      "hook_type": "SCALE",
+      "buying_signal": "과거 세대부터 최근 세대까지 다양한 범위의 인프라를 대기업 엔터프라이즈 스케일에서 다뤄온 연산 자원 관리 경험을 축적하고 있습니다.",
+      "infrastructure_signal": "다각적인 퍼블릭 클라우드 서비스 및 가속 하드웨어 연동을 수행하는 하이브리드 클라우드 형태를 취하고 있습니다.",
+      "timing_reason": "클라우드 서비스 최적화 서밋 등에서 자사 아키텍처를 소개한 만큼, 실질적인 운용 단계의 비효율 개선 방안 수립 시기입니다.",
+      "customer_win": "기존의 외산 가속기 가용성 부담을 경감하고, 자체 생성형 인프라 운영에 들어가는 고정비 지출을 조절할 수 있습니다.",
+      "furiosa_win": "전통 제조 대기업의 IT 계열사 및 공통 전산 환경에 진입할 수 있는 비즈니스 네트워크 통로를 개척할 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "LOW",
+      "csp_routed_sales_possibility": "HIGH",
+      "npuaas_adoption_possibility": "MID",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "대형 인프라 운영 중 발생하는 고정 비용을 개선하기 위하여 가용 대안으로서 저비용 추론 가속기 옵션을 소개하기 위함입니다.",
+      "outreach_talk_track": "귀사의 축적된 고성능 컴퓨팅 및 대규모 인프라 운영 성공 사례를 주의 깊게 분석해 왔습니다. 멀티클라우드 최적화를 수행하시는 여정에서 추론 워크로드 중심의 경제성을 추가로 확보할 수 있도록 당사의 가속 솔루션 검토를 권해 드립니다.",
+      "revenue_timing": "장기",
+      "decision_maker_hint": "인프라사업부 총괄 임원, CIO, 디지털 혁신 실무 총괄 부서장",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "자체 전산망 및 온프레미스 인하우스 AI 모델 도입 방향성에 관한 세부 계획 파악"
+      ],
+      "source_ids": ["S038"],
+      "source_urls": ["http://www.newsroad.co.kr/news/articleView.html?idxno=59549"]
+    },
+    {
+      "name": "디토닉",
+      "country": "KR",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "classification": "structure_check",
+      "confirmed_project_or_signal": "폐쇄망 및 군 전술망 타깃 소버린 국방 AI 인프라 솔루션 개발",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "HIGH",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "MID",
+      "fit_vs_priority_explanation": "특정 모델 탑재 여부는 규명되지 않았으나, 통신 단절 환경 및 특수 안보용 폐쇄망 적용 타깃이므로 하드웨어 보안 및 물리 배치 호환성이 요구되는 구조 검토 대상입니다.",
+      "hook_type": "SOVEREIGN",
+      "buying_signal": "외부 통신 네트워크가 제한된 지휘소나 군용 차량 등 소버린 국방 AI 구동이 가능한 소프트웨어 솔루션을 활발히 제안하고 있습니다.",
+      "infrastructure_signal": "전술망 특화형 소형 하드웨어 장치나 특화 온프레미스 서버 환경 위주로 설계되어 있습니다.",
+      "timing_reason": "전술 통신 환경 제품 라인업을 보강하고 실증 사업을 모색 중인 시점이므로 임베디드 장치 연동 논의에 유리합니다.",
+      "customer_win": "전술망 하부 하드웨어의 엄격한 전력 소모량 한계 및 협소한 공간적 제약을 가속 카드의 우수한 물리적 사양으로 해소할 수 있습니다.",
+      "furiosa_win": "방산 및 군 특수 장비 등 엄밀한 신뢰도가 요구되는 새로운 민관 안보 공급 라인 레퍼런스를 개척하게 됩니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "HIGH",
+      "csp_routed_sales_possibility": "LOW",
+      "npuaas_adoption_possibility": "LOW",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "특수 폐쇄망 전술 통신 장치 내에 저전력 가속 보드를 함께 탑재하는 공동 패키징 가능성을 진단하기 위함입니다.",
+      "outreach_talk_track": "귀사에서 전술 통신 중단 상태를 이겨낼 수 있는 폐쇄망 국방 AI 연구를 진행하신 내역을 접하였습니다. 좁은 공간과 열악한 전력 상황을 견뎌야 하는 군 작전 장비 사양에 맞춘 저전력 소형 가속 카드 파트너십을 의논하고자 연락드렸습니다.",
+      "revenue_timing": "장기",
+      "decision_maker_hint": "대표이사, 소버린 국방 AI 프로젝트 기술 총괄, 방산 사업 제안 담당자",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "군 전술망 인프라 납품 시 요구되는 보안성 평가 표준 절차 및 규범 검토 필요"
+      ],
+      "source_ids": ["S013"],
+      "source_urls": ["https://www.newsis.com/view/NISX20260522_0003640230"]
+    },
+    {
+      "name": "오픈네트웍시스템",
+      "country": "KR",
+      "market": "B2G",
+      "target_type": "CSP 고객 기업",
+      "classification": "watchlist",
+      "confirmed_project_or_signal": "나라장터 대상 AI 에이전트 및 스마트 브리핑 시스템 구축 전개",
+      "confirmed_model_name": "미확인",
+      "model_match_status": "unknown",
+      "model_fit_score": "UNKNOWN",
+      "deployment_fit_score": "MID",
+      "channel_fit_score": "MID",
+      "rngd_fit_score": "MID",
+      "outreach_priority": "MID",
+      "fit_vs_priority_explanation": "사용 언어 모델은 미확인 상태이나 Dify 에이전트 연계를 기반으로 한 조달 타깃 소프트웨어 공급 기업으로, 추후 조달 하드웨어 결합 패키지 판매를 위해 모니터링이 필요합니다.",
+      "hook_type": "PARTNER",
+      "buying_signal": "나라장터 및 공공 행정 분석을 목표로 한 대화형 AI 시스템 도입 제안을 현장에 본격 선보이기 시작했습니다.",
+      "infrastructure_signal": "주로 소프트웨어 및 API 플랫폼 구동에 강하며, 고객 전산 인프라와의 결합이나 클라우드 상의 호스팅 연계가 중심이 될 것입니다.",
+      "timing_reason": "공공용 AI 에이전트 기술 시연을 통한 발주 상담이 지속 진행되는 시장 개척 타이밍입니다.",
+      "customer_win": "에이전트 구동 과정에 수반되는 텍스트 분석 워크로드 비용을 낮추고, 공공 조달 환경에 특화된 국산화 솔루션을 구축할 수 있습니다.",
+      "furiosa_win": "에이전트 오케스트레이션 전문 프레임워크 연계 기회를 창출하고, 공공 조달 시장 내의 기술 동맹을 형성할 수 있습니다.",
+      "numeric_claims": [],
+      "direct_sales_possibility": "LOW",
+      "csp_routed_sales_possibility": "MID",
+      "npuaas_adoption_possibility": "MID",
+      "csp_capacity_expansion_possibility": "LOW",
+      "contact_reason": "에이전트 인공지능 워크로드를 저비용으로 서빙할 수 있도록 소프트웨어-하드웨어 최적화 협력을 설계하기 위함입니다.",
+      "outreach_talk_track": "귀사에서 소개하신 Dify 프레임워크 기반의 지능형 에이전트 구축 기술을 인상적으로 평가하고 있습니다. 공공 및 기업 부서용 API 서빙 단계에서 추론 최적화를 보조해 드릴 수 있는 전용 가속기 시너지 방안에 대해 사전 협의하고자 연락드렸습니다.",
+      "revenue_timing": "장기",
+      "decision_maker_hint": "공공사업본부 이사, 솔루션 개발 총괄 부서 책임자",
+      "existing_touchpoint": "확인 필요",
+      "verification_needed": [
+        "ONS가 활용 중인 클라우드 호스팅 파트너 및 온프레미스 연동 선호 모델 검증"
+      ],
+      "source_ids": ["S020", "S021", "S023"],
+      "source_urls": [
+        "https://www.joongang.co.kr/article/25430014",
+        "https://www.gokorea.kr/news/articleView.html?idxno=866999",
+        "https://www.sentv.co.kr/article/view/sentv202605190084"
+      ]
+    }
+  ],
+  "competitor_signals": [
+    {
+      "competitor": "기타",
+      "signal_type": "public_sector_win",
+      "summary": "모빌린트는 개발한 엣지 및 서버향 추론 NPU 솔루션을 조달청 혁신제품으로 등록 완료하여 중앙부처 및 지자체 공공조달 시장 내 가속기 직접 공급 권한을 획득함.",
+      "source_id": "S017",
+      "source_url": "https://www.mt.co.kr/future/2026/05/22/2026052214135044338",
+      "evidence_excerpt": "모빌린트 'NPU 솔루션' 조달청 혁신제품 등록…\"공공시장 공략\"... 조달청 혁신제품에 등록되면 중앙부처와 지방자치단체, 공공기관은 나라장터를 통해 모빌린트의 AI..."
+    },
+    {
+      "competitor": "국내 CSP GPU/NPU",
+      "signal_type": "csp_partnership",
+      "summary": "국내 주요 6대 클라우드 서비스사(kt cloud, 네이버클라우드, 카카오엔터프라이즈, 가비아, NHN클라우드, 삼성SDS)가 에너지 비용 상승 및 해외 빅테크에 대항하기 위해 연합 협의체 KACI를 구성하고 공동 영업 전선을 구축함.",
+      "source_id": "S030",
+      "source_url": "https://www.ddaily.co.kr/page/view/2026052017342600376",
+      "evidence_excerpt": "kt cloud·네이버클라우드·카카오엔터프라이즈·가비아·NHN클라우드·삼성SDS 등 국내 주요 CSP 6개사가..."
+    }
+  ],
+  "noise_examples": [
+    {
+      "source_id": "S003",
+      "title": "머스크, AI 슈퍼컴퓨터 '콜로서스' 확장 승부수…xAI, 초대형 GPU 전쟁 본...",
+      "reason": "해외 대형 빅테크의 독자 인프라 자본 증설에 관한 단순 번역형 기사로, 한국과 일본 시장을 대상으로 하는 FuriosaAI의 직접적인 GTM 후보 도출이나 협업 제안과는 연관성이 매우 희박하여 제외하였습니다."
+    },
+    {
+      "source_id": "S006",
+      "title": "이원택 민주당 전북도지사 후보 \"군산에 '전북성장공사' 설립\"",
+      "reason": "지방선거 출마 후보의 지역 개발 전제형 선거 공약 사항 및 경제 구상 발표 기사로, 실질적인 인프라 구축 발주나 예산이 공식 확보된 단계가 아니기 때문에 노이즈로 분류하였습니다."
+    },
+    {
+      "source_id": "S022",
+      "title": "\"수수료는 챙기고 민원은 나몰라라?\"...당근·번개장터 등 중고거래 플...",
+      "reason": "중고거래 플랫폼 내 소비자 민원 관리 실태 및 결제 처리 지연에 관한 경영상의 소비자 고발 보도자료로, AI 추론 가속 성능이나 인프라 수요 검토 등 기술적인 연관성이 전혀 없어 제외하였습니다."
+    }
+  ],
+  "eval_notes": [
+    "이번 주간 데이터에서는 공공기관의 자체 AI 드라이브(심평원)와 병원의 내부 폐쇄망 가동 사례(서울아산병원)가 두드러졌으며, 이들은 고가의 외산 GPU 부족과 보안적 제약을 해결하기 위한 잠재 수요가 큽니다.",
+    "모델 미확인 후보들이 많으나, 금융 규제 및 공공 클라우드 인프라 확장이라는 강력한 드라이버가 작동하고 있으므로 맞춤형 온프레미스/클라우드 패키지 제안 위주로 BD 접근을 강화할 필요가 있습니다.",
+    "삼성SDS의 4273억원 구미 신규 건립 등의 수치는 RNGD의 저전력 설계(TDP 제어 및 냉각 효율 개선) 포지셔닝을 부각할 수 있는 핵심 지표로 활용될 것입니다."
+  ]
+}
+```
