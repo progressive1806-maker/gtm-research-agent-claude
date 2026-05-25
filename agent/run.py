@@ -18,6 +18,9 @@ import requests
 from bs4 import BeautifulSoup
 from google import genai
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from decision_makers import enrich_candidates_with_profiles  # noqa: E402
+
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS_DIR = ROOT / "runs"
@@ -26,7 +29,7 @@ PROMPT_PATH = ROOT / "prompts" / "gtm_agent_instructions.md"
 
 NAVER_NEWS_URL = "https://openapi.naver.com/v1/search/news.json"
 
-AGENT_VERSION = "v0.6"
+AGENT_VERSION = "v0.7"
 
 
 BASE_NAVER_QUERIES = [
@@ -1404,7 +1407,9 @@ def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
 
 
 def enrich_candidate_defaults(candidate: dict[str, Any]) -> dict[str, Any]:
-    candidate.setdefault("decision_maker_profile_url", "미확인 — v0.6 담당자 검색 필요")
+    # 담당자 디스커버리(v0.7)가 실행되기 전 단계의 기본값.
+    candidate.setdefault("decision_maker_profile_url", "확인 필요")
+    candidate.setdefault("decision_maker_profile_confidence", "UNKNOWN")
 
     # B2G는 G2B 직접 확인 구현 전까지 항상 보수 라벨로 강제한다.
     if candidate.get("market") == "B2G":
@@ -1543,6 +1548,11 @@ def _trim_candidate_for_report(candidate: dict[str, Any]) -> dict[str, Any]:
         "b2g_evidence_type",
         "g2b_checked",
         "procurement_next_action",
+        "decision_maker_profile_url",
+        "decision_maker_profile_title",
+        "decision_maker_profile_source",
+        "decision_maker_profile_confidence",
+        "decision_maker_search_queries",
     ]
     return {field: candidate.get(field) for field in fields}
 
@@ -1616,6 +1626,10 @@ market=="B2B" 후보만(노이즈 제외). 표 헤더: 우선순위 | 대상 | �
 - FuriosaAI win
 - 컨택 명분
 - 제안 토크 트랙
+- 담당자/LinkedIn 후보:
+  - decision_maker_profile_confidence가 "HIGH" 또는 "MID"이면 decision_maker_profile_url을 마크다운 링크로 노출하고 "후보 — 신뢰도 HIGH" 또는 "후보 — 신뢰도 MID"로 표시. 단정 어조 금지.
+  - "LOW" 또는 "UNKNOWN"이면 "확인 필요"라고만 적고 URL을 노출하지 마세요.
+  - decision_maker_profile_title이 있고 신뢰도가 HIGH/MID이면 짧은 직함 단서로만 표기. 사람 이름을 발명하지 마세요.
 - 출처 링크
 
 ## 6. NPUaaS / CSP 경유 기회
@@ -1627,8 +1641,12 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 market=="B2G" 후보별: 근거 유형, 나라장터 확인 여부, 다음 액션, 출처.
 
 ## 8. 담당자 / 컨택 경로
-표 헤더: 대상 | 담당자 힌트 | 기존 접점
+표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+- "LinkedIn/공개 프로필 후보" 칸은 decision_maker_profile_url을 따릅니다.
+  - decision_maker_profile_confidence가 HIGH 또는 MID이면 마크다운 링크로 노출. "신뢰도" 칸에는 HIGH 또는 MID를 그대로 표기.
+  - LOW 또는 UNKNOWN이면 두 칸 모두 "확인 필요"로 적고 URL을 노출하지 마세요.
+- 불확실한 URL을 확정된 담당자로 표현하지 마세요. 항상 "후보"로 분류.
 
 ## 9. 경쟁사 GTM 동향
 이번 버전에서는 구조화 데이터가 없으므로 다음 문장만 포함하세요. 추측 금지.
@@ -1890,6 +1908,10 @@ def write_candidates_csv(path: Path, candidates: list[dict[str, Any]]) -> None:
         "revenue_timing",
         "decision_maker_hint",
         "decision_maker_profile_url",
+        "decision_maker_profile_title",
+        "decision_maker_profile_source",
+        "decision_maker_profile_confidence",
+        "decision_maker_search_queries",
         "existing_touchpoint",
         "b2g_evidence_type",
         "g2b_checked",
@@ -2331,16 +2353,25 @@ def build_business_report(
             "",
             "## 8. 담당자 / 컨택 경로",
             "",
-            "| 대상 | 담당자 힌트 | 공개 프로필 URL | 기존 접점 |",
-            "|---|---|---|---|",
+            "| 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점 |",
+            "|---|---|---|---|---|",
         ]
     )
 
     for c in candidates_sorted[:8]:
+        confidence = c.get("decision_maker_profile_confidence", "UNKNOWN")
+        if confidence in ("HIGH", "MID"):
+            url = c.get("decision_maker_profile_url") or "확인 필요"
+            url_cell = f"[{url}]({url})"
+            confidence_cell = confidence
+        else:
+            url_cell = "확인 필요"
+            confidence_cell = "확인 필요"
         lines.append(
             f"| {c.get('name', '미확인')} "
             f"| {short_text(c.get('decision_maker_hint'), 80)} "
-            f"| {c.get('decision_maker_profile_url', '미확인 — v0.6 담당자 검색 필요')} "
+            f"| {url_cell} "
+            f"| {confidence_cell} "
             f"| {c.get('existing_touchpoint', '확인 필요')} |"
         )
 
@@ -2389,7 +2420,7 @@ def build_business_report(
             "## 11. 주의 사항",
             "",
             "- B2G 후보는 아직 나라장터/RFP 직접 확인 전이므로 watchlist 또는 구조 확인 후보로 해석해야 합니다.",
-            "- 공개 프로필 URL은 아직 자동 검색하지 않았습니다. v0.6에서 담당자/LinkedIn 또는 공식 프로필 탐색을 추가해야 합니다.",
+            "- 담당자/LinkedIn 후보는 공개 검색 결과를 기반으로 한 추정입니다. 신뢰도가 HIGH/MID가 아니면 \"확인 필요\"로 표시했으며, 단정된 담당자가 아닙니다.",
             "- 모델명이 미확인인 후보는 모델 적합성이 아니라 인프라/채널/타이밍 관점의 outreach priority로 해석해야 합니다.",
             "",
             "## 12. 핵심 출처",
@@ -2588,8 +2619,10 @@ def write_metadata(
     eval_result: dict[str, Any] | None,
     llm_error: str | None,
     report_writer_meta: dict[str, Any] | None = None,
+    decision_maker_meta: dict[str, Any] | None = None,
 ) -> None:
     writer_meta = report_writer_meta or {}
+    dm_meta = decision_maker_meta or {}
     metadata = {
         "run_id": run_id,
         "mode": mode,
@@ -2620,6 +2653,9 @@ def write_metadata(
         "max_source_chars": MAX_SOURCE_CHARS,
         "max_output_candidates": MAX_OUTPUT_CANDIDATES,
         "g2b_called": False,
+        "decision_maker_search_called": bool(dm_meta.get("called", False)),
+        "decision_maker_profiles_count": int(dm_meta.get("count", 0)),
+        "decision_maker_search_error": dm_meta.get("error", "") or "",
     }
 
     write_json(run_dir / "metadata.json", metadata)
@@ -2878,6 +2914,85 @@ def run_selftest() -> int:
     if not any(v["category"] == "hype_language" for v in gated):
         failures.append("hype_language는 numeric_claims와 무관하게 항상 잡혀야 한다.")
 
+    # v0.7: decision-maker discovery — 네트워크 없이 순수 로직만 검증.
+    from decision_makers import (
+        B2G_ROLE_TERMS,
+        ROLE_TERMS_BY_TARGET,
+        build_queries_for_candidate,
+        classify_result,
+        roles_for_candidate,
+    )
+
+    csp_roles = roles_for_candidate({"target_type": "CSP 운영 기업", "market": "B2B"})
+    if "Head of Cloud" not in csp_roles:
+        failures.append("CSP 운영 기업 후보의 role 목록에 Head of Cloud가 없다.")
+
+    b2g_roles = roles_for_candidate({"target_type": "온프레미스 기업", "market": "B2G"})
+    if b2g_roles != B2G_ROLE_TERMS:
+        failures.append("B2G 후보는 market=B2G일 때 B2G 전용 role 목록을 사용해야 한다.")
+
+    onprem_roles = roles_for_candidate({"target_type": "온프레미스 기업", "market": "B2B"})
+    if onprem_roles != ROLE_TERMS_BY_TARGET["온프레미스 기업"]:
+        failures.append("온프레미스 기업 role 목록이 ROLE_TERMS_BY_TARGET과 다르다.")
+
+    queries = build_queries_for_candidate(
+        {"name": "샘플 CSP운영사", "target_type": "CSP 운영 기업", "market": "B2B"}
+    )
+    if not queries:
+        failures.append("build_queries_for_candidate가 빈 리스트를 반환했다.")
+    elif not all("샘플 CSP운영사" in q and "LinkedIn" in q for q in queries):
+        failures.append("쿼리에 회사명과 LinkedIn이 모두 포함되어야 한다.")
+    elif len(queries) > 4:
+        failures.append(f"쿼리 수가 4를 초과했다: {len(queries)}")
+
+    high = classify_result(
+        {
+            "link": "https://www.linkedin.com/in/janedoe",
+            "title": "Jane Doe – Head of AI at 샘플 CSP운영사",
+            "description": "Head of AI at 샘플 CSP운영사",
+        },
+        "샘플 CSP운영사",
+        ["Head of AI"],
+    )
+    if high != "HIGH":
+        failures.append(f"linkedin.com/in + 회사명 + role 조합은 HIGH여야 한다 (got {high}).")
+
+    mid = classify_result(
+        {
+            "link": "https://news.example.com/article",
+            "title": "샘플 CSP운영사, 신임 Head of Cloud 임명",
+            "description": "샘플 CSP운영사가 신임 Head of Cloud로 김 모씨를 임명했다",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if mid != "MID":
+        failures.append(f"회사명 + role(뉴스)은 MID여야 한다 (got {mid}).")
+
+    low = classify_result(
+        {
+            "link": "https://www.linkedin.com/in/unrelated-person",
+            "title": "Unrelated Profile",
+            "description": "",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if low not in ("LOW", "UNKNOWN"):
+        failures.append(f"LinkedIn URL만 있고 회사·role 매칭 없으면 LOW 이하여야 한다 (got {low}).")
+
+    unknown = classify_result(
+        {
+            "link": "https://blog.example.com/random",
+            "title": "다른 회사 이야기",
+            "description": "전혀 관련 없는 내용",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if unknown != "UNKNOWN":
+        failures.append(f"매칭이 전혀 없으면 UNKNOWN이어야 한다 (got {unknown}).")
+
     if failures:
         print("SELFTEST FAILED")
         for f in failures:
@@ -2947,12 +3062,60 @@ def main() -> None:
     raw_llm_text = ""
     llm_error: str | None = None
 
+    dm_meta: dict[str, Any] = {
+        "called": False,
+        "count": 0,
+        "error": "",
+    }
+
     try:
         eval_result, raw_llm_text = evaluate_candidates_with_gemini(
             instructions=instructions,
             sources=merged_sources,
             furiosa_docs_summary=furiosa_docs_summary,
         )
+
+        try:
+            dm_meta["called"] = True
+            (
+                eval_result["candidates"],
+                dm_records,
+                dm_error,
+            ) = enrich_candidates_with_profiles(
+                eval_result.get("candidates", [])
+            )
+            dm_meta["count"] = sum(
+                1
+                for c in eval_result.get("candidates", [])
+                if isinstance(c, dict)
+                and c.get("decision_maker_profile_confidence") in ("HIGH", "MID", "LOW")
+            )
+            dm_meta["error"] = dm_error or ""
+            write_json(
+                run_dir / "decision_maker_profiles.json",
+                {
+                    "called": True,
+                    "count": dm_meta["count"],
+                    "error": dm_meta["error"],
+                    "records": dm_records,
+                },
+            )
+            print(
+                f"Decision-maker discovery: count={dm_meta['count']} "
+                f"error={dm_meta['error'] or 'none'}"
+            )
+        except Exception as exc_dm:
+            dm_meta["error"] = str(exc_dm)
+            print(f"Decision-maker discovery FAILED: {exc_dm}")
+            write_json(
+                run_dir / "decision_maker_profiles.json",
+                {
+                    "called": True,
+                    "count": 0,
+                    "error": dm_meta["error"],
+                    "records": [],
+                },
+            )
 
         write_json(run_dir / "candidates.json", eval_result)
         write_candidates_csv(
@@ -3011,6 +3174,7 @@ def main() -> None:
         eval_result=eval_result,
         llm_error=llm_error,
         report_writer_meta=report_writer_meta,
+        decision_maker_meta=dm_meta,
     )
     update_index(run_id, mode, memo)
 
