@@ -1471,13 +1471,7 @@ def evaluate_candidates_with_gemini(
     sources: list[dict[str, Any]],
     furiosa_docs_summary: dict[str, Any],
 ) -> tuple[dict[str, Any], str]:
-    api_key = os.getenv("GEMINI_API_KEY", "")
     model = os.getenv("LLM_MODEL", "gemini-3.5-flash")
-
-    if not api_key:
-        raise RuntimeError(
-            "GEMINI_API_KEY is missing. Add it in GitHub Settings > Secrets and variables > Actions."
-        )
 
     llm_sources = build_llm_payload_sources(choose_llm_sources(sources))
     prompt = build_llm_prompt(
@@ -1486,17 +1480,10 @@ def evaluate_candidates_with_gemini(
         furiosa_docs_summary=furiosa_docs_summary,
     )
 
-    client = genai.Client(api_key=api_key)
-
-    response = client.models.generate_content(
-        model=model,
-        contents=prompt,
-    )
-
-    raw_text = response.text or ""
+    raw_text = gemini_generate_with_retry(prompt)
     result = extract_json_from_text(raw_text)
     result = postprocess_eval_result(result)
-    
+
     result["_llm_metadata"] = {
         "provider": "gemini",
         "model": model,
@@ -1673,16 +1660,127 @@ def _strip_code_fence(text: str) -> str:
     return text
 
 
-def _call_gemini(prompt: str) -> str:
+# Transport-level retry counter for Gemini calls. Surfaced in metadata.json as
+# llm_retry_count. Reset at the start of each main() run.
+_LLM_TRANSPORT_RETRY_COUNT = 0
+
+_TRANSIENT_ERROR_TOKENS = (
+    "503",
+    "504",
+    "unavailable",
+    "high demand",
+    "server disconnected",
+    "remote end closed",
+    "remote disconnected",
+    "connection reset",
+    "connectionreseterror",
+    "timeout",
+    "timed out",
+    "deadline exceeded",
+    "deadlineexceeded",
+    "429",
+    "too many requests",
+    "rate limit",
+    "resource exhausted",
+    "resourceexhausted",
+    "temporarily unavailable",
+    "serviceunavailable",
+)
+
+
+def _is_transient_llm_error(exc: BaseException) -> bool:
+    msg = str(exc).lower()
+    cls = exc.__class__.__name__.lower()
+    blob = f"{cls} {msg}"
+    return any(token in blob for token in _TRANSIENT_ERROR_TOKENS)
+
+
+def _retry_delays(max_attempts: int) -> list[int]:
+    """
+    Returns the delay (in seconds) to sleep *before* each attempt.
+    Defaults follow the spec: 0, 10, 30, 60. Extra attempts double the last.
+    """
+    base = [0, 10, 30, 60]
+    if max_attempts <= len(base):
+        return base[:max_attempts]
+    out = list(base)
+    while len(out) < max_attempts:
+        out.append(out[-1] * 2)
+    return out
+
+
+def _short_exc(exc: BaseException | None) -> str:
+    if exc is None:
+        return ""
+    first_line = str(exc).strip().splitlines()[0] if str(exc).strip() else exc.__class__.__name__
+    return first_line[:200]
+
+
+def reset_llm_retry_count() -> None:
+    global _LLM_TRANSPORT_RETRY_COUNT
+    _LLM_TRANSPORT_RETRY_COUNT = 0
+
+
+def get_llm_retry_count() -> int:
+    return _LLM_TRANSPORT_RETRY_COUNT
+
+
+def gemini_generate_with_retry(prompt: str) -> str:
+    """
+    Single chokepoint for every Gemini generate_content call.
+    Retries transient errors (503/429/UNAVAILABLE/timeout/disconnected/...) with
+    exponential-ish backoff. Non-transient errors are raised on the first failure.
+    """
+    global _LLM_TRANSPORT_RETRY_COUNT
+
     api_key = os.getenv("GEMINI_API_KEY", "")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is missing.")
     model = os.getenv("LLM_MODEL", "gemini-3.5-flash")
+
+    max_attempts = env_int("LLM_MAX_RETRIES", 4)
+    if max_attempts < 1:
+        max_attempts = 1
+    delays = _retry_delays(max_attempts)
+
     client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(model=model, contents=prompt)
-    text = _strip_code_fence(response.text or "")
+
+    last_exc: BaseException | None = None
+    for attempt in range(1, max_attempts + 1):
+        delay = delays[attempt - 1]
+        if delay > 0:
+            print(
+                f"Gemini retry: attempt {attempt}/{max_attempts} after {delay}s "
+                f"(last: {_short_exc(last_exc)})"
+            )
+            time.sleep(delay)
+            _LLM_TRANSPORT_RETRY_COUNT += 1
+
+        try:
+            response = client.models.generate_content(model=model, contents=prompt)
+            text = (response.text or "").strip()
+            if not text:
+                raise RuntimeError("Gemini returned empty response text.")
+            return text
+        except Exception as exc:
+            last_exc = exc
+            is_last = attempt >= max_attempts
+            transient = _is_transient_llm_error(exc)
+            if is_last or not transient:
+                if transient:
+                    print(
+                        f"Gemini transient error after {attempt}/{max_attempts} attempts: "
+                        f"{_short_exc(exc)}"
+                    )
+                raise
+
+    raise last_exc if last_exc is not None else RuntimeError("Gemini call failed without error")
+
+
+def _call_gemini(prompt: str) -> str:
+    text = _strip_code_fence(gemini_generate_with_retry(prompt))
     if not text:
-        raise RuntimeError("Report-writer LLM returned empty text.")
+        raise RuntimeError("Report-writer LLM returned empty text after strip.")
     return text
 
 
@@ -2649,6 +2747,8 @@ def write_metadata(
         "report_writer_retry_count": writer_meta.get("retry_count", 0),
         "report_validation_passed": writer_meta.get("validation_passed", False),
         "report_validation_violations": writer_meta.get("violations", []),
+        "llm_retry_count": get_llm_retry_count(),
+        "llm_max_retries": env_int("LLM_MAX_RETRIES", 4),
         "max_llm_sources": MAX_LLM_SOURCES,
         "max_source_chars": MAX_SOURCE_CHARS,
         "max_output_candidates": MAX_OUTPUT_CANDIDATES,
@@ -2993,6 +3093,42 @@ def run_selftest() -> int:
     if unknown != "UNKNOWN":
         failures.append(f"매칭이 전혀 없으면 UNKNOWN이어야 한다 (got {unknown}).")
 
+    # v0.7.1: Gemini retry helpers — pure logic, no network.
+    if _retry_delays(4) != [0, 10, 30, 60]:
+        failures.append(f"_retry_delays(4)는 [0,10,30,60]이어야 한다 (got {_retry_delays(4)}).")
+    if _retry_delays(1) != [0]:
+        failures.append(f"_retry_delays(1)는 [0]이어야 한다 (got {_retry_delays(1)}).")
+    five = _retry_delays(5)
+    if len(five) != 5 or five[:4] != [0, 10, 30, 60] or five[4] <= 60:
+        failures.append(f"_retry_delays(5)는 4개 기본값 뒤로 더 큰 값이 추가되어야 한다 (got {five}).")
+
+    transient_samples = [
+        Exception("503 UNAVAILABLE The service is currently unavailable."),
+        Exception("Server disconnected without sending a response"),
+        RuntimeError("Read timed out after 30s"),
+        Exception("429 Too Many Requests"),
+        ConnectionResetError("Connection reset by peer"),
+        Exception("ServiceUnavailable: model is overloaded due to high demand"),
+        Exception("DeadlineExceeded: 504"),
+    ]
+    for exc in transient_samples:
+        if not _is_transient_llm_error(exc):
+            failures.append(
+                f"_is_transient_llm_error가 transient 예외를 잡지 못했다: {type(exc).__name__}: {exc}"
+            )
+
+    non_transient_samples = [
+        ValueError("invalid prompt"),
+        KeyError("missing field"),
+        Exception("PERMISSION_DENIED: invalid API key"),
+        Exception("INVALID_ARGUMENT: prompt too long"),
+    ]
+    for exc in non_transient_samples:
+        if _is_transient_llm_error(exc):
+            failures.append(
+                f"_is_transient_llm_error가 non-transient를 잘못 transient로 판정했다: {exc}"
+            )
+
     if failures:
         print("SELFTEST FAILED")
         for f in failures:
@@ -3008,6 +3144,8 @@ def run_selftest() -> int:
 def main() -> None:
     mode = os.getenv("RUN_MODE", "test")
     memo = os.getenv("RUN_MEMO", "manual-test")
+
+    reset_llm_retry_count()
 
     run_id = build_run_id(mode, memo)
 
