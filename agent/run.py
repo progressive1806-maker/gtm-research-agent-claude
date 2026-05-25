@@ -1647,29 +1647,216 @@ INPUT:
 """.strip()
 
 
+def _strip_code_fence(text: str) -> str:
+    text = text.strip()
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:markdown|md)?", "", text).strip()
+        text = re.sub(r"```$", "", text).strip()
+    return text
+
+
+def _call_gemini(prompt: str) -> str:
+    api_key = os.getenv("GEMINI_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is missing.")
+    model = os.getenv("LLM_MODEL", "gemini-3.5-flash")
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(model=model, contents=prompt)
+    text = _strip_code_fence(response.text or "")
+    if not text:
+        raise RuntimeError("Report-writer LLM returned empty text.")
+    return text
+
+
 def write_gtm_report_with_llm(
     eval_result: dict[str, Any],
     furiosa_docs_summary: dict[str, Any],
 ) -> str:
-    api_key = os.getenv("GEMINI_API_KEY", "")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is missing.")
+    return _call_gemini(build_report_writer_prompt(eval_result, furiosa_docs_summary))
 
-    model = os.getenv("LLM_MODEL", "gemini-3.5-flash")
-    prompt = build_report_writer_prompt(eval_result, furiosa_docs_summary)
 
-    client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(model=model, contents=prompt)
-    text = (response.text or "").strip()
+# Category-level risk detectors. Patterns are intentionally small — they only
+# label the *category* of a risky claim. They never rewrite Korean text.
+RISK_CATEGORIES: dict[str, list[str]] = {
+    "unsupported_cost_reduction_claim": [
+        r"비용\s*절감",
+        r"원가\s*절감",
+        r"단가\s*절감",
+        r"비용을?\s*줄(?:이|여|인|일)",
+        r"반값",
+    ],
+    "unsupported_power_reduction_claim": [
+        r"전력\s*절감",
+        r"전력\s*소모를?\s*줄(?:이|여|인|일)",
+        r"전력을?\s*낮(?:추|춰|춤)",
+        r"초저전력",
+        r"\d+\s*MW\b",
+    ],
+    "unsupported_performance_guarantee": [
+        r"\d+\s*배\s*(?:빠|향상|개선)",
+        r"성능을?\s*보장",
+        r"최고\s*성능",
+        r"성능\s*우위\s*확정",
+    ],
+    "unsupported_revenue_guarantee": [
+        r"수주\s*(?:확정|보장)",
+        r"수주율을?\s*(?:높이|개선|향상)",
+        r"매출\s*(?:확대|보장|증가)\s*(?:확정|보장)?",
+        r"수익\s*보장",
+    ],
+    "unsupported_scale_claim": [
+        r"대규모",
+        r"수백\s*(?:대|장|건|곳|개)",
+        r"수천\s*(?:대|장|건|곳|개)",
+    ],
+    "hype_language": [
+        r"완벽(?:한|히|하게)",
+        r"획기적",
+        r"독보적",
+        r"압도적",
+        r"보장(?:합니다|한다|된다|됩니다|되는)",
+        r"선점",
+        r"돌파(?:합니다|한다|된다|됩니다)",
+    ],
+}
 
-    if text.startswith("```"):
-        text = re.sub(r"^```(?:markdown|md)?", "", text).strip()
-        text = re.sub(r"```$", "", text).strip()
+NUMERIC_GATED_CATEGORIES = {
+    "unsupported_cost_reduction_claim",
+    "unsupported_power_reduction_claim",
+    "unsupported_performance_guarantee",
+    "unsupported_revenue_guarantee",
+    "unsupported_scale_claim",
+}
 
-    if not text:
-        raise RuntimeError("Report-writer LLM returned empty text.")
+MAX_VIOLATIONS_RECORDED = 30
 
-    return text
+
+def detect_report_violations(
+    report_text: str,
+    eval_result: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    """
+    Walk the rendered markdown line by line, attribute each match to the
+    closest ## section / ### candidate, and return a list of violation
+    descriptors. Numeric-gated categories are suppressed for candidates
+    whose numeric_claims is non-empty.
+
+    The detector only labels categories. It does not rewrite Korean.
+    """
+    candidates_by_name: dict[str, dict[str, Any]] = {}
+    if eval_result and isinstance(eval_result.get("candidates"), list):
+        for c in eval_result["candidates"]:
+            if isinstance(c, dict) and c.get("name"):
+                candidates_by_name[c["name"]] = c
+
+    violations: list[dict[str, Any]] = []
+    current_section = ""
+    current_candidate = ""
+
+    for line in report_text.splitlines():
+        stripped = line.strip()
+
+        if stripped.startswith("## "):
+            current_section = stripped.lstrip("#").strip()
+            current_candidate = ""
+            continue
+        if stripped.startswith("### "):
+            current_candidate = stripped.lstrip("#").strip()
+            continue
+        if stripped.startswith("#"):
+            continue
+
+        cand_data = candidates_by_name.get(current_candidate)
+        cand_has_numeric = bool(
+            cand_data
+            and isinstance(cand_data.get("numeric_claims"), list)
+            and cand_data["numeric_claims"]
+        )
+
+        for category, patterns in RISK_CATEGORIES.items():
+            if category in NUMERIC_GATED_CATEGORIES and cand_has_numeric:
+                continue
+            for pattern in patterns:
+                for match in re.finditer(pattern, line):
+                    violations.append(
+                        {
+                            "category": category,
+                            "section": current_section or "(상단/머리말)",
+                            "candidate": current_candidate or "(전역)",
+                            "match": match.group(0),
+                            "evidence": stripped[:240],
+                        }
+                    )
+                    if len(violations) >= MAX_VIOLATIONS_RECORDED:
+                        return violations
+
+    return violations
+
+
+def build_report_rewrite_prompt(
+    current_report: str,
+    violations: list[dict[str, Any]],
+) -> str:
+    return f"""
+당신은 직전에 작성한 한국어 GTM 리포트를 보수적으로 다시 작성합니다.
+
+[유지해야 하는 것]
+- 섹션 구조와 헤더(§1~§10) 그대로 유지.
+- 모든 후보, 표 행, 출처 링크 그대로 유지. 새로 만들지도, 지우지도 마세요.
+- 후보의 source_urls 링크는 마크다운 링크 형태로 그대로 유지.
+
+[금지]
+- 새 회사, 새 모델, 새 숫자 발명 금지.
+- 코드펜스(```), JSON, 영문 안내 문장 출력 금지.
+- 직역체나 어색한 어미 결합("확보 가능성하고", "검토할 수 있습니다 명분" 같은 끊긴 문장) 금지.
+
+[수정 지침]
+- 아래 위반 사항을 모두 해소하세요. 각 위반은 (카테고리, 후보, 섹션, 근거 문장)으로 보고됩니다.
+- 위반 표현을 같은 의미의 보수적 한국어로 자연스럽게 다시 쓰세요. 예: "비용 절감" 류는 "비용 구조 확인 필요"·"비용 구조 검토 가능"으로, "압도적" 같은 과장 어휘는 정성적 표현으로.
+- 후보의 numeric_claims에 없는 수치(%, 배, MW, 억, 대, 장 등)는 본문에서 제거하고 정성적으로 표현하세요.
+- 의미를 잃지 마세요. 위반된 문장이 전하던 사실(예: 인프라/CSP/타이밍 관점)은 보수적 표현으로 다시 전달하세요.
+
+[위반 사항]
+{json.dumps(violations, ensure_ascii=False, indent=2)}
+
+[현재 리포트]
+{current_report}
+
+마크다운 본문만 출력하세요.
+""".strip()
+
+
+def rewrite_report_with_llm(
+    current_report: str,
+    violations: list[dict[str, Any]],
+) -> str:
+    return _call_gemini(build_report_rewrite_prompt(current_report, violations))
+
+
+def write_gtm_report_with_validation(
+    eval_result: dict[str, Any],
+    furiosa_docs_summary: dict[str, Any],
+    max_retries: int = 2,
+) -> tuple[str, list[dict[str, Any]], int]:
+    """
+    Two-step pipeline:
+      1. LLM writes the report from validated candidates.
+      2. Category detector scans the rendered markdown.
+      3. If violations remain, ask the LLM to rewrite up to `max_retries` times,
+         feeding the exact (category, candidate, section, evidence) list.
+
+    Returns (text, remaining_violations, retry_count).
+    """
+    text = write_gtm_report_with_llm(eval_result, furiosa_docs_summary)
+    violations = detect_report_violations(text, eval_result)
+    retry_count = 0
+
+    while violations and retry_count < max_retries:
+        retry_count += 1
+        text = rewrite_report_with_llm(text, violations)
+        violations = detect_report_violations(text, eval_result)
+
+    return text, violations, retry_count
 
 
 def write_candidates_csv(path: Path, candidates: list[dict[str, Any]]) -> None:
@@ -2251,19 +2438,42 @@ def write_business_report(
     meta: dict[str, Any] = {
         "writer": "deterministic_fallback",
         "llm_error": "",
+        "validation_passed": False,
+        "violations": [],
+        "retry_count": 0,
     }
 
     if eval_result and eval_result.get("candidates"):
         try:
-            llm_report = write_gtm_report_with_llm(eval_result, furiosa_docs_summary)
-            footer = (
-                "\n\n---\n\n"
-                f"debug_run_id: `{run_id}`  \n"
-                f"furiosa_docs_successful: `{furiosa_docs_summary.get('docs_successful')}`  \n"
-                "report_writer: `llm`\n"
+            llm_report, violations, retry_count = write_gtm_report_with_validation(
+                eval_result=eval_result,
+                furiosa_docs_summary=furiosa_docs_summary,
             )
-            (run_dir / "gtm_report.md").write_text(llm_report + footer, encoding="utf-8")
             meta["writer"] = "llm"
+            meta["validation_passed"] = not violations
+            meta["violations"] = violations
+            meta["retry_count"] = retry_count
+
+            footer_lines = [
+                "",
+                "---",
+                "",
+                f"debug_run_id: `{run_id}`  ",
+                f"furiosa_docs_successful: `{furiosa_docs_summary.get('docs_successful')}`  ",
+                "report_writer: `llm`  ",
+                f"report_writer_retry_count: `{retry_count}`  ",
+                f"report_validation_passed: `{meta['validation_passed']}`  ",
+            ]
+            if violations:
+                footer_lines.append(
+                    "report_validation_violations: "
+                    + ", ".join(
+                        sorted({v["category"] for v in violations})
+                    )
+                )
+            footer = "\n".join(footer_lines) + "\n"
+
+            (run_dir / "gtm_report.md").write_text(llm_report + "\n" + footer, encoding="utf-8")
             return meta
         except Exception as exc:
             meta["llm_error"] = str(exc)
@@ -2403,6 +2613,9 @@ def write_metadata(
         "llm_error": llm_error or "",
         "report_writer": writer_meta.get("writer", ""),
         "report_writer_llm_error": writer_meta.get("llm_error", ""),
+        "report_writer_retry_count": writer_meta.get("retry_count", 0),
+        "report_validation_passed": writer_meta.get("validation_passed", False),
+        "report_validation_violations": writer_meta.get("violations", []),
         "max_llm_sources": MAX_LLM_SOURCES,
         "max_source_chars": MAX_SOURCE_CHARS,
         "max_output_candidates": MAX_OUTPUT_CANDIDATES,
@@ -2601,6 +2814,70 @@ def run_selftest() -> int:
     except Exception as exc:
         failures.append(f"deterministic gtm_report.md 빌드가 예외로 실패: {exc}")
 
+    sample_report = (
+        "# FuriosaAI GTM 리서치 — 2026-05-25\n"
+        "\n"
+        "## 1. 한 줄 결론\n"
+        "샘플.\n"
+        "\n"
+        "## 5. 우선 연락 후보 상세\n"
+        "\n"
+        "### 샘플 CSP운영사\n"
+        "- 압도적 비용 절감 가능\n"
+        "- 전력 절감 확실\n"
+        "- 2배 빠른 추론을 보장합니다\n"
+        "- 대규모 도입 예상\n"
+        "- 출처: [출처1](https://example.com)\n"
+        "\n"
+        "### 샘플 금융사\n"
+        "- 비용 구조 확인 필요\n"
+        "- 출처: [출처1](https://example.com)\n"
+    )
+
+    violations = detect_report_violations(sample_report, result)
+    found = {(v["category"], v["candidate"]) for v in violations}
+    expected_pairs = [
+        ("hype_language", "샘플 CSP운영사"),
+        ("unsupported_cost_reduction_claim", "샘플 CSP운영사"),
+        ("unsupported_power_reduction_claim", "샘플 CSP운영사"),
+        ("unsupported_performance_guarantee", "샘플 CSP운영사"),
+        ("unsupported_scale_claim", "샘플 CSP운영사"),
+    ]
+    for cat, cand in expected_pairs:
+        if (cat, cand) not in found:
+            failures.append(f"detector가 {cand} 섹션의 {cat}를 잡지 못했다.")
+
+    for v in violations:
+        if v["candidate"] == "샘플 금융사":
+            failures.append(
+                f"detector가 보수적 표현인 '샘플 금융사' 섹션을 잘못 잡았다: {v['category']} / {v['match']}"
+            )
+
+    result_with_numeric = json.loads(json.dumps(result))
+    for c in result_with_numeric["candidates"]:
+        if c["name"] == "샘플 CSP운영사":
+            c["numeric_claims"] = [
+                {
+                    "claim": "도입 규모 명시",
+                    "source_id": "S001",
+                    "source_url": "https://example.com",
+                    "evidence_text": "샘플 근거",
+                }
+            ]
+    gated = detect_report_violations(sample_report, result_with_numeric)
+    numeric_categories_under_csp = {
+        v["category"]
+        for v in gated
+        if v["candidate"] == "샘플 CSP운영사" and v["category"] in NUMERIC_GATED_CATEGORIES
+    }
+    if numeric_categories_under_csp:
+        failures.append(
+            "numeric_claims가 있는 후보의 섹션에서 수치-게이팅 카테고리가 여전히 잡혔다: "
+            + ", ".join(sorted(numeric_categories_under_csp))
+        )
+    if not any(v["category"] == "hype_language" for v in gated):
+        failures.append("hype_language는 numeric_claims와 무관하게 항상 잡혀야 한다.")
+
     if failures:
         print("SELFTEST FAILED")
         for f in failures:
@@ -2609,6 +2886,7 @@ def run_selftest() -> int:
 
     print("SELFTEST OK")
     print(f"  candidates validated: {len(result['candidates'])}")
+    print(f"  detector violations on sample report: {len(violations)}")
     return 0
 
 
