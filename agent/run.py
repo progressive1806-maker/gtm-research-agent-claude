@@ -5,6 +5,7 @@ import html
 import json
 import os
 import re
+import sys
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -24,6 +25,8 @@ DOCS_DIR = ROOT / "docs"
 PROMPT_PATH = ROOT / "prompts" / "gtm_agent_instructions.md"
 
 NAVER_NEWS_URL = "https://openapi.naver.com/v1/search/news.json"
+
+AGENT_VERSION = "v0.6"
 
 
 BASE_NAVER_QUERIES = [
@@ -1248,22 +1251,15 @@ Important model compatibility rules:
 
 
 Numeric evidence rules:
-- Do not generate numeric claims unless the number appears explicitly in the provided sources or Furiosa docs summary.
-- This includes percentages, multipliers, cost reduction, power consumption, GPU counts, server counts, budgets, MW, timelines, performance claims, server counts, data center capacity, and procurement amounts.
-- If the source does not provide a number, write qualitative language only.
-- Do not write "2배", "60% 절감", "반값", "75W", "최고", "압도적", "24시간", "수백", "수천", "대규모", "대폭", "크게 절감", "MW", "억원", "장", "대" unless directly supported by source text.
-- Every numeric claim in buying_signal, infrastructure_signal, customer_win, furiosa_win, contact_reason, outreach_talk_track, or timing_reason must also appear in numeric_claims with source_id and evidence_text.
-- If numeric_claims is empty, do not include numeric-looking expressions in candidate narrative, including "24시간", "수백", "수천", "%", "MW", "억원", "장", "대", "배", "반값", "절감률", "전력량", or "서버 수".
-- If the evidence text only supports a customer's announced number, do not convert it into an RNGD performance claim.
-- Dates from source metadata may be used without numeric_claims, but do not turn dates into performance, budget, or sales claims.
+- Do not invent numbers. Percentages, multipliers, cost/power reductions, GPU/server counts, MW, budgets, timelines, and performance claims must appear verbatim in a provided source or Furiosa doc excerpt.
+- Every numeric expression that appears in any narrative field (buying_signal, infrastructure_signal, timing_reason, customer_win, furiosa_win, contact_reason, outreach_talk_track, fit_vs_priority_explanation) must also appear in numeric_claims with source_id and evidence_text.
+- If numeric_claims is empty, write narrative fields with qualitative language only — no digits, no "수백/수천/대규모/대폭/반값" style proxies for unsupported numbers.
+- A number announced by the customer is not an RNGD performance claim.
 
-
-Anti-hype hard rules:
-- Do not use the following words or close variants in Korean narrative: "완벽", "획기", "독보", "극적", "대대적", "압도", "최고", "최상", "최정상", "막강", "엄청난", "탁월", "보장", "장악", "선점", "돌파".
-- Replace hype language with conservative terms such as "검토 가능", "개선 가능성", "확인 필요", "논의 가치", "구조 확인 필요", "우선 검토 후보".
-- Do not write that RNGD will reduce cost, power, rack space, latency, server count, or budget unless the provided source or Furiosa docs explicitly supports that exact claim.
-- If the evidence is indirect, use "가능성", "확인 필요", or "구조 확인 필요".
-- In outreach_talk_track, use a calm BD tone. Do not use promotional copy.
+Tone rules:
+- Write narrative fields in calm, natural Korean. Do not use promotional, sales-pitch, or hype language. Prefer conservative phrasing such as "검토 가능", "개선 가능성", "확인 필요", "구조 확인 필요".
+- Do not promise that RNGD will cut cost, power, rack space, latency, or headcount unless a provided source or Furiosa doc states that exact claim.
+- Korean grammar must be natural. Do not produce awkward direct-translation phrases or broken endings.
 
 Output JSON schema:
 {{
@@ -1356,76 +1352,6 @@ def extract_json_from_text(text: str) -> dict[str, Any]:
     return json.loads(match.group(0))
 
 
-HYPE_REPLACEMENTS = {
-    "완벽한": "검토 가치가 있는",
-    "완벽히": "보수적으로 검토 가능한",
-    "완벽하게": "보수적으로 검토 가능한 수준으로",
-    "획기적으로": "개선 가능성이 있는 방향으로",
-    "획기적인": "개선 가능성이 있는",
-    "독보적": "중요한",
-    "극적으로": "유의미하게",
-    "대대적인": "상당한",
-    "대대적으로": "상당한 수준으로",
-    "압도적": "강한",
-    "최고 수준": "높은 수준",
-    "최상위": "우선 검토",
-    "최정상급": "우선 검토 가능한",
-    "막강한": "중요한",
-    "엄청난": "큰",
-    "탁월하게": "개선 가능성이 있게",
-    "탁월한": "검토 가치가 있는",
-    "보장된": "확인 필요한",
-    "보장하는": "확인 필요한",
-    "장악": "진입",
-    "선점": "확보 가능성",
-    "돌파": "완화 가능성 검토",
-    "저에너지 고출력": "전력 효율 개선 가능성이 있는",
-    "초저전력": "전력 효율 개선 가능성이 있는",
-    "가성비": "비용 효율",
-    "무수히 많은": "다수의",
-    "최적의": "검토 가능한",
-    "최적화된": "검토 가능한",
-    "최적화": "개선 가능성 검토",
-    "최소화": "완화 가능성 검토",
-    "저비용": "비용 효율 개선 가능성이 있는",
-    "고효율": "효율 개선 가능성이 있는",
-    "신뢰성 높은": "안정성 확인이 필요한",
-    "실시간 추론": "추론 처리",
-    "수주율 개선": "제안 경쟁력 개선 가능성",
-    "매력적인": "검토 가능한",
-    "연쇄적으로 공급": "확대 공급 가능성 검토",
-    "대규모 납품": "공급 가능성 검토",
-    "과감히": "보수적으로",
-    "핵심적인 방향타": "중요한 참고 신호",
-    "확보 가능성해야": "확보할 수 있는지 검토해야",
-    "저전력 효율 개선 가능성이 있는": "전력 효율 개선 가능성을 검토할 수 있는",
-    "효율 개선 가능성이 있는로": "효율 개선 가능성을 검토하며",
-    "비용 효율성이 확인된": "비용 구조를 검토할 수 있는",
-    "국산 고성능 가속기": "국산 가속기",
-    "시너지를 극대화": "협력 가능성을 검토",
-    "상당한 규모의 가속기": "가속기",
-    "안정적인 호환이 검증된": "호환성 검토가 필요한",
-    "수익성을 추가 제고": "수익성 개선 가능성을 검토",
-    "공급 레퍼런스를 공고히": "공급 레퍼런스 가능성을 검토",
-    "경쟁력을 증명": "경쟁력 검토 근거를 마련",
-    "실적을 단기에 축적": "실적 확보 가능성을 검토",
-    "상징성 높은 활용 사례를 획득": "공공 활용 사례 가능성을 검토",
-    "대표적인 AI 통합 플랫폼 레퍼런스를 확보": "AI 통합 플랫폼 레퍼런스 가능성을 검토",
-    "확실한 표적 기회": "구조 확인 가치가 있는 후보",
-    "명확한 기회": "구조 확인 가치가 있는 후보",
-    "명확합니다": "검토할 수 있습니다",
-    "충분합니다": "확인할 필요가 있습니다",
-    "용이해집니다": "용이해질 수 있습니다",
-    "달성합니다": "검토할 수 있습니다",
-    "입증됩니다": "확인할 필요가 있습니다",
-    "기본 연동": "연동 검토",
-    "수주하여": "수주 가능성을 검토하여",
-    "획득할 수 있습니다": "검토할 수 있습니다",
-    "확보하여": "확보 가능성을 검토하여",
-    "고성능": "성능 검토가 필요한",
-    "저전력": "전력 효율 검토가 필요한",
-}
-
 NARRATIVE_FIELDS = [
     "confirmed_project_or_signal",
     "fit_vs_priority_explanation",
@@ -1438,138 +1364,20 @@ NARRATIVE_FIELDS = [
     "outreach_talk_track",
 ]
 
-SUMMARY_FIELDS = [
-    "overall_assessment",
-    "noise_ratio_comment",
-    "model_compatibility_caution",
-]
 
-
-def sanitize_hype_text(value: Any) -> Any:
-    if not isinstance(value, str):
-        return value
-
-    text = value
-    for bad, replacement in HYPE_REPLACEMENTS.items():
-        text = text.replace(bad, replacement)
-
-    # clean_conservative_text is defined below; it exists by runtime before this function is called.
-    if "clean_conservative_text" in globals():
-        text = clean_conservative_text(text)
-
-    return text
-
-
-def remove_unsupported_numeric_phrases(value: Any, numeric_claims: Any) -> Any:
-    if not isinstance(value, str):
-        return value
-
-    if isinstance(numeric_claims, list) and numeric_claims:
-        return value
-
-    text = value
-
-    # numeric_claims가 비어 있으면 숫자성 영업 표현을 보수적으로 치환
-    text = re.sub(r"\d+(?:\.\d+)?\s*(?:MW|억원|장|대|배|%)", "수치 근거 미확인", text)
-    text = text.replace("24시간", "상시")
-    text = text.replace("수백", "다수")
-    text = text.replace("수천", "다수")
-    text = text.replace("대규모", "상당한 규모의")
-    text = text.replace("대폭", "일부")
-    text = text.replace("크게 절감", "개선 가능성 검토")
-    text = text.replace("반값", "비용 구조 확인 필요")
-
-    risky_phrases = {
-        "전력 비용 부담을 최소화": "전력 비용 구조를 확인할 필요가 있음",
-        "전력 부담을 낮추고": "전력 부담 완화 가능성을 검토하고",
-        "공간 밀도를 향상시킬 수 있는": "공간 밀도 개선 가능성을 검토할 수 있는",
-        "비용 격차 개선 가능성": "비용 구조 확인 필요",
-        "장비 비용과 전력 부담을 낮추는": "장비 비용과 전력 부담 완화 가능성을 검토하는",
-        "운영 효율성을 제공": "운영 효율 개선 가능성을 검토",
-        "운영 원가를 절감": "운영 원가 구조를 확인",
-        "비용 절감": "비용 구조 확인",
-        "원가를 절감": "원가 구조를 확인",
-        "성능을 유지하고": "성능 유지 가능성을 확인하고",
-        "가속 성능 점검": "가속 가능성 점검",
-        "효율성을 확보": "효율 개선 가능성을 검토",
-        "효율성을 제고": "효율 개선 가능성을 검토",
-        "전력 효율성을 개선": "전력 효율 개선 가능성을 검토",
-        "상면 부담을 경감": "상면 부담 완화 가능성을 검토",
-        "트래픽 부하를 감소": "트래픽 부하 완화 가능성을 검토",
-        "추론 병목 대응": "추론 병목 가능성 확인",
-        "연산 비용을 개선": "연산 비용 구조를 확인",
-        "전력 제약 내 가용 연산 밀도를 극대화": "전력 제약 내 연산 밀도 개선 가능성을 검토",
-        "고밀도 추론 환경을 안정적으로 설계": "고밀도 추론 환경의 설계 가능성을 확인",
-        "전력 소모 한계를 제어": "전력 소모 구조를 확인",
-        "비용 부담을 줄일 수 있는": "비용 구조를 검토할 수 있는",
-        "하드웨어 비용 부담을 줄일 수 있는": "하드웨어 비용 구조를 검토할 수 있는",
-        "서버 구축 단가를 절감할 수 있는": "서버 구축 단가 구조를 검토할 수 있는",
-        "유지비 부담을 경감할": "유지비 구조를 검토할",
-        "전력 비용 부담을 최소화": "전력 비용 구조를 확인",
-        "전력 소모량 부담을 완화": "전력 소모량 구조를 확인",
-        "전력 효율성을 개선": "전력 효율 개선 가능성을 검토",
-        "총판 경쟁 요소를 더하고": "총판 경쟁 요소를 검토하고",
-        "사업 성공률을 높일 수 있습니다": "사업 구조를 개선할 수 있는지 확인할 필요가 있습니다",
-        "수익성을 추가 제고": "수익성 개선 가능성을 검토",
-        "비용 대비 효율 개선": "비용 대비 효율 구조 검토",
-        "비용 저감": "비용 구조 검토",
-        "비용 절감": "비용 구조 검토",
-        "단가 확보": "단가 구조 확인",
-        "단가 편차 극복": "단가 구조 확인",
-        "가격 경쟁력": "가격 구조",
-        "전력 소모량 부담": "전력 소모량 구조",
-        "하드웨어 운영 부담을 완화": "하드웨어 운영 구조를 검토",
-        "예산 대비 성능 제고": "예산 대비 성능 구조 검토",
-        "성능 제고": "성능 구조 검토",
-        "인프라 비용 개선": "인프라 비용 구조 검토",
-        "서버 개선 가능성": "서버 구조 검토",
-        "운영 개선 가능성": "운영 구조 검토",
-        "개선 가능성 검토 성능": "개선 가능성 검토",
-    }
-
-    for bad, replacement in risky_phrases.items():
-        text = text.replace(bad, replacement)
-
-    text = clean_conservative_text(text)
-
-    return text
-
-
-def clean_conservative_text(value: Any) -> Any:
-    if not isinstance(value, str):
-        return value
-
-    text = value
-    cleanup_replacements = {
-        "가능성 가능성": "가능성",
-        "가능성 검토 가능성": "가능성 검토",
-        "확보 가능성해야": "확보할 수 있는지 검토해야",
-        "효율 개선 가능성이 있는로": "효율 개선 가능성을 검토하며",
-        "전력 효율 검토가 필요한 효율": "전력 효율",
-        "전력 효율 검토가 필요한 기반": "전력 효율 검토 기반",
-        "성능 검토가 필요한 가속기": "가속기",
-        "전력 효율 검토가 필요한 가속기": "전력 효율 개선 가능성을 검토할 수 있는 가속기",
-        "전력 효율 검토가 필요한 하드웨어": "전력 효율 개선 가능성을 검토할 수 있는 하드웨어",
-        "비용 구조 확인성이": "비용 구조가",
-        "검의": "검토",
-        "가입 조율": "편입 가능성",
-        "가속화할 기회": "확대 가능성을 검토할 기회",
-        "손쉽게 창출": "확대 가능성을 검토",
-        "대리 창출": "간접적으로 발굴",
-        "가벼운 AI": "경량 AI",
-        "정합 가능하게": "정합성을 확인하며",
-        "제고할 방안": "검토할 방안",
-        "저전력 기반": "전력 효율 개선 가능성 기반",
-        "저전력 하드웨어": "전력 효율 개선 가능성을 검토할 수 있는 하드웨어",
-    }
-    for bad, replacement in cleanup_replacements.items():
-        text = text.replace(bad, replacement)
-
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+# 숫자성 표현 감지용 패턴. 발견되면 텍스트를 고쳐쓰지 않고 verification_needed에 표시만 한다.
+NUMERIC_EXPRESSION_PATTERN = re.compile(
+    r"(?:\d+(?:[.,]\d+)?\s*(?:%|배|MW|kW|W|억|만|장|대|GB|TB)"
+    r"|\b\d+(?:[.,]\d+)?\s*(?:percent|x|times)\b)",
+    flags=re.IGNORECASE,
+)
 
 
 def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
+    """
+    Structural validation only. Adjusts score fields when they contradict
+    the declared model_match_status / confirmed_model_name. No phrase rewriting.
+    """
     model_status = str(candidate.get("model_match_status", "")).lower()
     confirmed_model = str(candidate.get("confirmed_model_name", "")).strip()
     target_type = str(candidate.get("target_type", ""))
@@ -1579,14 +1387,9 @@ def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
     if confirmed_model in ["", "미확인"] or model_status == "unknown":
         candidate["model_fit_score"] = "UNKNOWN"
 
-        # 모델 미확인 CSP/operator는 outreach는 HIGH 가능하지만 rngd fit은 MID로 보수화
         if target_type == "CSP 운영 기업" and deployment_fit == "HIGH" and channel_fit == "HIGH":
-            candidate["rngd_fit_score"] = "MID"
-            if candidate.get("outreach_priority") == "HIGH":
-                candidate["fit_vs_priority_explanation"] = (
-                    "모델명은 미확인이나, CSP/인프라/채널 관점의 논의 가치가 높아 "
-                    "outreach priority는 HIGH로 유지한다. 모델 적합성은 UNKNOWN으로 보수 판단한다."
-                )
+            if candidate.get("rngd_fit_score") == "HIGH":
+                candidate["rngd_fit_score"] = "MID"
         else:
             if candidate.get("rngd_fit_score") == "HIGH":
                 candidate["rngd_fit_score"] = "MID"
@@ -1603,61 +1406,60 @@ def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
 def enrich_candidate_defaults(candidate: dict[str, Any]) -> dict[str, Any]:
     candidate.setdefault("decision_maker_profile_url", "미확인 — v0.6 담당자 검색 필요")
 
+    # B2G는 G2B 직접 확인 구현 전까지 항상 보수 라벨로 강제한다.
     if candidate.get("market") == "B2G":
-        candidate.setdefault("b2g_evidence_type", "기사/RSS 기반")
-        candidate.setdefault("g2b_checked", "미수행")
+        candidate["b2g_evidence_type"] = "기사/RSS 기반"
+        candidate["g2b_checked"] = "미수행"
         candidate.setdefault("procurement_next_action", "나라장터/RFP 직접 확인 필요")
 
     return candidate
 
 
+def flag_unsupported_numeric_claims(candidate: dict[str, Any]) -> dict[str, Any]:
+    """
+    If numeric_claims is empty but a narrative field contains numeric-looking
+    expressions (%, 배, MW, 억, ...), add a verification_needed note.
+    The Korean text itself is left untouched. Downstream the report-writer
+    LLM is instructed to drop unsupported numbers naturally.
+    """
+    numeric_claims = candidate.get("numeric_claims", [])
+    if isinstance(numeric_claims, list) and numeric_claims:
+        return candidate
+
+    flagged = []
+    for field in NARRATIVE_FIELDS:
+        value = candidate.get(field, "")
+        if isinstance(value, str) and NUMERIC_EXPRESSION_PATTERN.search(value):
+            flagged.append(field)
+
+    if flagged:
+        verification = candidate.get("verification_needed")
+        if not isinstance(verification, list):
+            verification = []
+        verification.append(
+            f"numeric_claims 미제공 상태에서 숫자성 표현이 포함됨: {', '.join(flagged)}"
+        )
+        candidate["verification_needed"] = verification
+
+    return candidate
+
+
 def postprocess_eval_result(result: dict[str, Any]) -> dict[str, Any]:
-    run_summary = result.get("run_summary", {})
-    if isinstance(run_summary, dict):
-        for field in SUMMARY_FIELDS:
-            value = run_summary.get(field, "")
-            value = sanitize_hype_text(value)
-            value = remove_unsupported_numeric_phrases(value, [])
-            run_summary[field] = value
-        result["run_summary"] = run_summary
-
-    eval_notes = result.get("eval_notes", [])
-    if isinstance(eval_notes, list):
-        result["eval_notes"] = [
-            remove_unsupported_numeric_phrases(
-                sanitize_hype_text(note),
-                [],
-            )
-            if isinstance(note, str)
-            else note
-            for note in eval_notes
-        ]
-
     candidates = result.get("candidates", [])
     if isinstance(candidates, list):
-        cleaned_candidates = []
-
+        cleaned = []
         for candidate in candidates:
             if not isinstance(candidate, dict):
                 continue
-
             candidate = enforce_candidate_fit_rules(candidate)
             candidate = enrich_candidate_defaults(candidate)
-
-            numeric_claims = candidate.get("numeric_claims", [])
-
-            for field in NARRATIVE_FIELDS:
-                value = candidate.get(field, "")
-                value = sanitize_hype_text(value)
-                value = remove_unsupported_numeric_phrases(value, numeric_claims)
-                candidate[field] = value
-
-            cleaned_candidates.append(candidate)
-
-        result["candidates"] = cleaned_candidates
+            candidate = flag_unsupported_numeric_claims(candidate)
+            cleaned.append(candidate)
+        result["candidates"] = cleaned
 
     return result
-    
+
+
 
 def evaluate_candidates_with_gemini(
     instructions: str,
@@ -1701,6 +1503,173 @@ def evaluate_candidates_with_gemini(
     }
 
     return result, raw_text
+
+
+def _trim_candidate_for_report(candidate: dict[str, Any]) -> dict[str, Any]:
+    fields = [
+        "name",
+        "country",
+        "market",
+        "target_type",
+        "classification",
+        "confirmed_project_or_signal",
+        "confirmed_model_name",
+        "model_match_status",
+        "model_fit_score",
+        "deployment_fit_score",
+        "channel_fit_score",
+        "rngd_fit_score",
+        "outreach_priority",
+        "fit_vs_priority_explanation",
+        "hook_type",
+        "buying_signal",
+        "infrastructure_signal",
+        "timing_reason",
+        "customer_win",
+        "furiosa_win",
+        "numeric_claims",
+        "direct_sales_possibility",
+        "csp_routed_sales_possibility",
+        "npuaas_adoption_possibility",
+        "csp_capacity_expansion_possibility",
+        "contact_reason",
+        "outreach_talk_track",
+        "revenue_timing",
+        "decision_maker_hint",
+        "existing_touchpoint",
+        "verification_needed",
+        "source_ids",
+        "source_urls",
+        "b2g_evidence_type",
+        "g2b_checked",
+        "procurement_next_action",
+    ]
+    return {field: candidate.get(field) for field in fields}
+
+
+def build_report_writer_prompt(
+    eval_result: dict[str, Any],
+    furiosa_docs_summary: dict[str, Any],
+) -> str:
+    candidates = [
+        _trim_candidate_for_report(c)
+        for c in eval_result.get("candidates", [])
+        if isinstance(c, dict) and c.get("classification") != "noise"
+    ]
+
+    payload = {
+        "today_kst": now_kst().strftime("%Y-%m-%d"),
+        "run_summary": eval_result.get("run_summary", {}),
+        "candidates": candidates,
+        "furiosa_supported_models": furiosa_docs_summary.get("supported_model_entries", [])[:40],
+        "furiosa_planned_models": furiosa_docs_summary.get("planned_model_entries", [])[:20],
+        "furiosa_precompiled_models": furiosa_docs_summary.get("precompiled_model_entries", [])[:40],
+    }
+
+    return f"""
+당신은 FuriosaAI BD 매니저용 주간 GTM 리포트를 한국어 마크다운으로 작성합니다.
+
+다음 INPUT JSON의 run_summary와 candidates만을 근거로 리포트를 작성하세요. 새 회사, 새 모델, 새 숫자를 발명하지 마세요.
+
+[톤·문체 규칙]
+- 자연스러운 한국어 문장으로 쓰세요. 직역체나 어색한 어미 결합("확보 가능성하고", "검토할 수 있습니다 명분", "개선 가능성 검토할 수 있습니다"처럼 끊긴 문장)은 금지합니다.
+- 과장 표현 금지: "완벽", "획기적", "독보적", "압도적", "최고", "보장", "선점" 같은 단어와 그 변형을 쓰지 마세요.
+- RNGD가 비용·전력·랙·지연·서버 수를 줄여준다고 단정하지 마세요. 출처가 그대로 말하지 않으면 "검토 가능", "확인 필요", "구조 확인 필요"로 표현하세요.
+
+[수치 규칙]
+- candidate의 numeric_claims에 명시된 수치만 인용할 수 있습니다.
+- numeric_claims가 비어 있는 후보에 대해서는 비용·전력·성능·MW·%·배수·대수·억원 등 숫자를 본문에 쓰지 마세요. 정성적으로만 묘사하세요.
+- numeric_claims에 있는 수치를 인용할 때는 그대로 인용하고, "(출처: source_id)" 형태로 표시하세요.
+
+[모델·B2G 규칙]
+- confirmed_model_name이 "미확인"이거나 model_match_status가 "unknown"이면 모델 적합성을 단정하지 말고 인프라/채널/타이밍 관점으로만 설명하세요.
+- model_match_status가 "family_only"이면 정확한 버전 지원이 확인되지 않았다고 표기하세요.
+- market이 "B2G"인 후보는 본문/표에 반드시 "B2G 근거: 기사/RSS 기반", "나라장터 확인: 미수행"을 함께 노출하세요.
+- B2G 섹션 첫 문장은 다음 문장을 그대로 포함하세요: "현재 B2G 후보는 기사/RSS 기반이며, 나라장터/RFP 직접 확인은 미수행 상태입니다."
+
+[출처 규칙]
+- 각 후보의 source_urls가 있으면 마크다운 링크로 1~3개 노출. 비어 있으면 "출처 미확인"으로 표기.
+- 후보별 표/상세에는 항상 출처 열/항목을 포함하세요.
+
+[리포트 구조 — 정확히 이 순서, 이 헤더로]
+# FuriosaAI GTM 리서치 — {{TODAY}}
+(TODAY는 INPUT의 today_kst 값을 사용)
+
+## 1. 한 줄 결론
+run_summary.overall_assessment를 보수적인 한 문장으로 정리. 새 사실 추가 금지.
+
+## 2. 이번 주 우선 연락 Top 3
+outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
+표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
+
+## 3. 버전 1 — B2B only
+market=="B2B" 후보만(노이즈 제외). 표 헤더: 우선순위 | 대상 | 유형 | 확인 모델 | 모델 매칭 | RNGD fit | outreach | 왜 지금 | 출처
+
+## 4. 버전 2 — B2B + B2G
+모든 비-노이즈 후보. 표 헤더는 §3과 동일하되 market=="B2G" 행에는 "왜 지금" 칸 끝에 "B2G 근거: 기사/RSS 기반 · 나라장터 확인: 미수행"을 함께 표기.
+
+## 5. 우선 연락 후보 상세
+상위 후보 최대 6개. 후보마다 다음 항목을 한국어 자연문으로 풀어쓰기:
+- 확인된 모델 / 모델 매칭 상태
+- RNGD fit / outreach priority
+- 고객 win
+- FuriosaAI win
+- 컨택 명분
+- 제안 토크 트랙
+- 출처 링크
+
+## 6. NPUaaS / CSP 경유 기회
+target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또는 npuaas_adoption_possibility=="HIGH"인 후보 중심.
+후보별로 CSP 경유 / NPUaaS / capacity 증설 가능성과 한 줄 사유.
+
+## 7. B2G 후보 — 나라장터/RFP 직접 확인 전
+섹션 첫 문장에 위에 명시한 고정 문장을 포함.
+market=="B2G" 후보별: 근거 유형, 나라장터 확인 여부, 다음 액션, 출처.
+
+## 8. 담당자 / 컨택 경로
+표 헤더: 대상 | 담당자 힌트 | 기존 접점
+- decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+
+## 9. 경쟁사 GTM 동향
+이번 버전에서는 구조화 데이터가 없으므로 다음 문장만 포함하세요. 추측 금지.
+"이번 버전은 후보 평가 중심이며, 경쟁사 GTM(고객 납품, 파트너십, NPUaaS/GPUaaS 출시, 공공 수주) 별도 구조화는 다음 버전에서 추가할 예정입니다."
+
+## 10. 주의 사항
+- B2G 후보는 나라장터/RFP 직접 확인 전이므로 watchlist/구조 확인으로 해석.
+- 모델명이 미확인인 후보는 인프라/채널/타이밍 관점으로만 해석.
+- 수치 근거가 없는 비용·전력·성능 단정은 포함하지 않았음을 명시.
+
+[출력 형식]
+- 마크다운 본문만 출력. 코드펜스(```), JSON, 영문 안내 문장 금지.
+
+INPUT:
+{json.dumps(payload, ensure_ascii=False, indent=2)}
+""".strip()
+
+
+def write_gtm_report_with_llm(
+    eval_result: dict[str, Any],
+    furiosa_docs_summary: dict[str, Any],
+) -> str:
+    api_key = os.getenv("GEMINI_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is missing.")
+
+    model = os.getenv("LLM_MODEL", "gemini-3.5-flash")
+    prompt = build_report_writer_prompt(eval_result, furiosa_docs_summary)
+
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(model=model, contents=prompt)
+    text = (response.text or "").strip()
+
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:markdown|md)?", "", text).strip()
+        text = re.sub(r"```$", "", text).strip()
+
+    if not text:
+        raise RuntimeError("Report-writer LLM returned empty text.")
+
+    return text
 
 
 def write_candidates_csv(path: Path, candidates: list[dict[str, Any]]) -> None:
@@ -2270,13 +2239,43 @@ def write_business_report(
     run_id: str,
     furiosa_docs_summary: dict[str, Any],
     eval_result: dict[str, Any] | None,
-) -> None:
+) -> dict[str, Any]:
+    """
+    Two-step rendering:
+      1. Ask the LLM to write the manager-facing Korean report from validated candidates.
+      2. If the LLM call fails for any reason, fall back to the deterministic builder
+         so we never silently drop gtm_report.md.
+
+    Returns a small metadata dict for run-level logging.
+    """
+    meta: dict[str, Any] = {
+        "writer": "deterministic_fallback",
+        "llm_error": "",
+    }
+
+    if eval_result and eval_result.get("candidates"):
+        try:
+            llm_report = write_gtm_report_with_llm(eval_result, furiosa_docs_summary)
+            footer = (
+                "\n\n---\n\n"
+                f"debug_run_id: `{run_id}`  \n"
+                f"furiosa_docs_successful: `{furiosa_docs_summary.get('docs_successful')}`  \n"
+                "report_writer: `llm`\n"
+            )
+            (run_dir / "gtm_report.md").write_text(llm_report + footer, encoding="utf-8")
+            meta["writer"] = "llm"
+            return meta
+        except Exception as exc:
+            meta["llm_error"] = str(exc)
+            print(f"Report-writer LLM FAILED, falling back to deterministic: {exc}")
+
     business_report = build_business_report(
         run_id=run_id,
         eval_result=eval_result,
         furiosa_docs_summary=furiosa_docs_summary,
     )
     (run_dir / "gtm_report.md").write_text(business_report, encoding="utf-8")
+    return meta
 
 def write_json(path: Path, data: Any) -> None:
     path.write_text(
@@ -2318,7 +2317,7 @@ def write_report(
 - mode: `{mode}`
 - memo: `{memo or ""}`
 - executed_at_kst: `{now_kst().isoformat()}`
-- agent_version: `v0.5`
+- agent_version: `{AGENT_VERSION}`
 - instructions_loaded_chars: `{instruction_chars}`
 - naver_sources_recent_7d_count: `{len(naver_sources)}`
 - rss_sources_recent_7d_count: `{len(rss_sources)}`
@@ -2330,9 +2329,9 @@ def write_report(
 
 ## 현재 단계
 
-이 실행은 v0.5 테스트입니다.
+이 실행은 {AGENT_VERSION} 테스트입니다.
 
-이번 버전에서는 네이버 뉴스 API, RSS feed, FuriosaAI 공개 개발자 문서를 수집한 뒤 Gemini로 GTM 후보를 1차 평가합니다.
+이번 버전에서는 네이버 뉴스 API, RSS feed, FuriosaAI 공개 개발자 문서를 수집한 뒤 Gemini로 GTM 후보를 1차 평가하고, 별도 LLM 호출로 매니저용 gtm_report.md를 작성합니다.
 
 아직 나라장터 직접 API, 담당자 심화 탐색, Notion 업로드는 수행하지 않았습니다.
 
@@ -2378,13 +2377,15 @@ def write_metadata(
     furiosa_docs_summary: dict[str, Any],
     eval_result: dict[str, Any] | None,
     llm_error: str | None,
+    report_writer_meta: dict[str, Any] | None = None,
 ) -> None:
+    writer_meta = report_writer_meta or {}
     metadata = {
         "run_id": run_id,
         "mode": mode,
         "memo": memo or "",
         "executed_at_kst": now_kst().isoformat(),
-        "agent_version": "v0.5",
+        "agent_version": AGENT_VERSION,
         "prompt_file": str(PROMPT_PATH.relative_to(ROOT)),
         "notion_uploaded": False,
         "google_docs_uploaded": False,
@@ -2400,6 +2401,8 @@ def write_metadata(
         "llm_provider": "gemini" if eval_result else "",
         "llm_model": os.getenv("LLM_MODEL", "gemini-3.5-flash") if eval_result else "",
         "llm_error": llm_error or "",
+        "report_writer": writer_meta.get("writer", ""),
+        "report_writer_llm_error": writer_meta.get("llm_error", ""),
         "max_llm_sources": MAX_LLM_SOURCES,
         "max_source_chars": MAX_SOURCE_CHARS,
         "max_output_candidates": MAX_OUTPUT_CANDIDATES,
@@ -2436,6 +2439,177 @@ def update_index(run_id: str, mode: str, memo: str | None) -> None:
 
     existing = existing.rstrip() + "\n" + link
     index_path.write_text(existing, encoding="utf-8")
+
+
+SAMPLE_EVAL_RESULT_FOR_TEST: dict[str, Any] = {
+    "run_summary": {
+        "overall_assessment": "샘플: 보수적으로 검토할 가치가 있는 후보가 일부 확인되었습니다.",
+        "top_priority_names": ["샘플 CSP운영사", "샘플 금융사"],
+        "noise_ratio_comment": "샘플 데이터.",
+        "model_compatibility_caution": "샘플 데이터.",
+    },
+    "candidates": [
+        {
+            "name": "샘플 CSP운영사",
+            "country": "KR",
+            "market": "B2B",
+            "target_type": "CSP 운영 기업",
+            "classification": "priority_outreach",
+            "confirmed_project_or_signal": "AI 클라우드 신규 inference 서비스 공지",
+            "confirmed_model_name": "미확인",
+            "model_match_status": "unknown",
+            "model_fit_score": "HIGH",
+            "deployment_fit_score": "HIGH",
+            "channel_fit_score": "HIGH",
+            "rngd_fit_score": "HIGH",
+            "outreach_priority": "HIGH",
+            "fit_vs_priority_explanation": "CSP 운영사라 채널/인프라 관점에서 검토 가능.",
+            "buying_signal": "신규 inference 서비스 출시 발표",
+            "infrastructure_signal": "데이터센터 추가 발표",
+            "timing_reason": "최근 한 달 내 공지",
+            "customer_win": "AI 추론 capacity 확보 가능성",
+            "furiosa_win": "NPUaaS 편입 가능성",
+            "numeric_claims": [],
+            "contact_reason": "신규 서비스 공지 직후 구조 확인",
+            "outreach_talk_track": "신규 서비스 라인업 관련 RNGD 적합성 논의",
+            "revenue_timing": "중기",
+            "decision_maker_hint": "Head of AI Cloud",
+            "existing_touchpoint": "확인 필요",
+            "verification_needed": ["모델 확정 시점"],
+            "source_ids": ["S001"],
+            "source_urls": ["https://example.com/csp-news"],
+        },
+        {
+            "name": "샘플 금융사",
+            "country": "KR",
+            "market": "B2B",
+            "target_type": "온프레미스 기업",
+            "classification": "structure_check",
+            "confirmed_project_or_signal": "EXAONE 도입 발표",
+            "confirmed_model_name": "EXAONE",
+            "model_match_status": "family_only",
+            "model_fit_score": "HIGH",
+            "deployment_fit_score": "MID",
+            "channel_fit_score": "MID",
+            "rngd_fit_score": "HIGH",
+            "outreach_priority": "MID",
+            "fit_vs_priority_explanation": "EXAONE family 도입 발표는 확인됨, 정확한 버전은 미확인.",
+            "buying_signal": "EXAONE 도입 발표",
+            "infrastructure_signal": "프라이빗 AI 구축 계획",
+            "timing_reason": "최근 공지",
+            "customer_win": "프라이빗 AI 구조 확보 가능성",
+            "furiosa_win": "EXAONE 정확 버전 매칭 시 적합도 검토 가능",
+            "numeric_claims": [],
+            "contact_reason": "EXAONE 정확 버전 확인 후 구조 논의",
+            "outreach_talk_track": "EXAONE 버전과 추론 처리량 가정 확인",
+            "revenue_timing": "중기",
+            "decision_maker_hint": "CTO / Head of AI",
+            "existing_touchpoint": "확인 필요",
+            "verification_needed": ["정확한 EXAONE 버전"],
+            "source_ids": ["S002"],
+            "source_urls": ["https://example.com/finance-news"],
+        },
+        {
+            "name": "샘플 공공기관",
+            "country": "KR",
+            "market": "B2G",
+            "target_type": "온프레미스 기업",
+            "classification": "structure_check",
+            "confirmed_project_or_signal": "공공 RAG 구축 사업 공고",
+            "confirmed_model_name": "미확인",
+            "model_match_status": "unknown",
+            "model_fit_score": "MID",
+            "deployment_fit_score": "MID",
+            "channel_fit_score": "LOW",
+            "rngd_fit_score": "MID",
+            "outreach_priority": "LOW",
+            "fit_vs_priority_explanation": "공공 사업이라 G2B 직접 확인 전까지 보수적으로 본다.",
+            "buying_signal": "RAG 구축 사업 공고",
+            "infrastructure_signal": "공공 데이터센터 활용 가능성",
+            "timing_reason": "공고 게시 직후",
+            "customer_win": "공공 활용 사례 가능성",
+            "furiosa_win": "공공 reference 가능성 검토",
+            "numeric_claims": [],
+            "contact_reason": "공고 구조 확인 후 사업자 매핑",
+            "outreach_talk_track": "사업 구조와 NPU 적합성 논의",
+            "revenue_timing": "장기",
+            "decision_maker_hint": "정보화 담당관",
+            "existing_touchpoint": "확인 필요",
+            "verification_needed": ["사업자/RFP 상세"],
+            "source_ids": ["S003"],
+            "source_urls": ["https://example.com/g2b-news"],
+        },
+    ],
+    "eval_notes": ["샘플 데이터로 오프라인 검증."],
+}
+
+
+def run_selftest() -> int:
+    """
+    Offline validation. Does not call any network or LLM.
+
+    Verifies:
+      - unknown model_match_status forces model_fit_score=UNKNOWN and never HIGH
+      - family_only never produces HIGH model_fit_score or HIGH rngd_fit_score
+      - B2G candidates carry the 기사/RSS 기반 + 미수행 labels
+      - The deterministic gtm_report.md fallback renders without crashing
+    """
+    failures: list[str] = []
+
+    result = postprocess_eval_result(json.loads(json.dumps(SAMPLE_EVAL_RESULT_FOR_TEST)))
+    cands = {c["name"]: c for c in result["candidates"]}
+
+    csp = cands["샘플 CSP운영사"]
+    if csp.get("model_fit_score") == "HIGH":
+        failures.append("unknown 모델인데 model_fit_score가 HIGH로 남았다.")
+    if csp.get("model_fit_score") != "UNKNOWN":
+        failures.append(f"unknown 모델이면 model_fit_score=UNKNOWN이어야 한다 (got {csp.get('model_fit_score')}).")
+    if csp.get("rngd_fit_score") == "HIGH":
+        failures.append("unknown 모델인데 rngd_fit_score가 HIGH로 남았다.")
+
+    fin = cands["샘플 금융사"]
+    if fin.get("model_fit_score") == "HIGH":
+        failures.append("family_only인데 model_fit_score가 HIGH로 남았다.")
+    if fin.get("rngd_fit_score") == "HIGH":
+        failures.append("family_only인데 rngd_fit_score가 HIGH로 남았다.")
+
+    gov = cands["샘플 공공기관"]
+    if gov.get("b2g_evidence_type") != "기사/RSS 기반":
+        failures.append(f"B2G 후보에 기사/RSS 기반 라벨이 없다 (got {gov.get('b2g_evidence_type')}).")
+    if gov.get("g2b_checked") != "미수행":
+        failures.append(f"B2G 후보에 나라장터 미수행 라벨이 없다 (got {gov.get('g2b_checked')}).")
+
+    try:
+        markdown = build_business_report(
+            run_id="selftest",
+            eval_result=result,
+            furiosa_docs_summary={"docs_successful": 0, "docs_failed": 0},
+        )
+        required_headers = [
+            "## 1.",
+            "## 2.",
+            "## 3. 버전 1 — B2B only",
+            "## 4. 버전 2 — B2B + B2G",
+            "## 5.",
+            "## 6. NPUaaS / CSP 경유 기회",
+            "## 7. B2G 후보 — 나라장터/RFP 직접 확인 전",
+            "## 8.",
+        ]
+        for header in required_headers:
+            if header not in markdown:
+                failures.append(f"deterministic gtm_report.md에 필수 섹션이 없다: {header}")
+    except Exception as exc:
+        failures.append(f"deterministic gtm_report.md 빌드가 예외로 실패: {exc}")
+
+    if failures:
+        print("SELFTEST FAILED")
+        for f in failures:
+            print(f"  - {f}")
+        return 1
+
+    print("SELFTEST OK")
+    print(f"  candidates validated: {len(result['candidates'])}")
+    return 0
 
 
 def main() -> None:
@@ -2540,13 +2714,13 @@ def main() -> None:
         eval_result=eval_result,
         llm_error=llm_error,
     )
-    write_business_report(
+    report_writer_meta = write_business_report(
         run_dir=run_dir,
         run_id=run_id,
         furiosa_docs_summary=furiosa_docs_summary,
         eval_result=eval_result,
     )
-    
+
     write_metadata(
         run_dir=run_dir,
         run_id=run_id,
@@ -2558,6 +2732,7 @@ def main() -> None:
         furiosa_docs_summary=furiosa_docs_summary,
         eval_result=eval_result,
         llm_error=llm_error,
+        report_writer_meta=report_writer_meta,
     )
     update_index(run_id, mode, memo)
 
@@ -2574,4 +2749,6 @@ def main() -> None:
     print(f"Report: {run_dir / 'report.md'}")
     
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        sys.exit(run_selftest())
     main()
