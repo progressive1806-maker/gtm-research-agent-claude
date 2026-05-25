@@ -15,6 +15,22 @@ on:
         description: "What are you testing?"
         required: false
         default: "manual-test"
+      enable_g2b:
+        description: "Enable optional G2B (나라장터) API integration"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      g2b_bid_endpoint:
+        description: "G2B bid-notice endpoint (leave empty to disable)"
+        required: false
+        default: ""
+      g2b_spec_endpoint:
+        description: "G2B pre-spec endpoint (leave empty to disable)"
+        required: false
+        default: ""
 
   schedule:
     # Monday 08:07 KST = Sunday 23:07 UTC
@@ -53,6 +69,10 @@ jobs:
           MAX_LLM_SOURCES: 40
           MAX_SOURCE_CHARS: 800
           MAX_OUTPUT_CANDIDATES: 12
+          ENABLE_G2B: ${{ github.event.inputs.enable_g2b }}
+          G2B_SERVICE_KEY: ${{ secrets.G2B_SERVICE_KEY }}
+          G2B_BID_ENDPOINT: ${{ github.event.inputs.g2b_bid_endpoint }}
+          G2B_SPEC_ENDPOINT: ${{ github.event.inputs.g2b_spec_endpoint }}
         run: |
           python agent/run.py
 
