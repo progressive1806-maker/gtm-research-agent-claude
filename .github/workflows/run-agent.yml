@@ -24,11 +24,11 @@ on:
           - "false"
           - "true"
       g2b_bid_endpoint:
-        description: "G2B bid-notice endpoint (leave empty to disable)"
+        description: "G2B bid-notice service root (leave empty to disable)"
         required: false
         default: ""
       g2b_spec_endpoint:
-        description: "G2B pre-spec endpoint (leave empty to disable)"
+        description: "G2B pre-spec service root (leave empty to disable)"
         required: false
         default: ""
 

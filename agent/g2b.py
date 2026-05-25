@@ -8,8 +8,15 @@ call is made; otherwise the module returns empty results plus the conventional
 Env vars (all required to enable):
   ENABLE_G2B=true
   G2B_SERVICE_KEY=...           # supplied via GitHub Actions secret
-  G2B_BID_ENDPOINT=https://...  # bid-notice API endpoint
-  G2B_SPEC_ENDPOINT=https://... # pre-specification API endpoint
+  G2B_BID_ENDPOINT=https://...  # bid-notice service root (operations are appended)
+  G2B_SPEC_ENDPOINT=https://... # pre-spec service root (operations are appended)
+
+Per-keyword fan-out:
+  Each bid keyword calls both /getBidPblancListInfoServc and /getBidPblancListInfoThng.
+  Each spec keyword calls both /getPublicPrcureThngInfoServc and /getPublicPrcureThngInfoThng.
+
+Operation names are baked into BID_OPERATIONS / SPEC_OPERATIONS below — users
+do not need to paste them into the workflow UI.
 
 Constraints:
 - No API keys are hardcoded.
@@ -22,9 +29,24 @@ from __future__ import annotations
 
 import os
 import time
+from datetime import datetime, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import requests
+
+# data.go.kr operation paths — appended to the service-root URL per request.
+BID_OPERATIONS: list[str] = [
+    "/getBidPblancListInfoServc",
+    "/getBidPblancListInfoThng",
+]
+SPEC_OPERATIONS: list[str] = [
+    "/getPublicPrcureThngInfoServc",
+    "/getPublicPrcureThngInfoThng",
+]
+
+# Recent-window for the inqryBgnDt / inqryEndDt query params.
+_LOOKBACK_DAYS = 30
 
 # Procurement keywords — the actual buying signals. Do NOT include "나라장터".
 G2B_KEYWORDS: list[str] = [
@@ -84,8 +106,44 @@ def _spec_endpoint() -> str:
     return os.getenv("G2B_SPEC_ENDPOINT", "").strip()
 
 
+def _join_operation(endpoint: str, operation: str) -> str:
+    """
+    Append a single operation path to a service-root endpoint.
+    Strips trailing slash from endpoint, ensures exactly one leading slash
+    on operation, leaves `https://` (and similar schemes) untouched.
+    Returns "" if endpoint is empty.
+    """
+    if not endpoint:
+        return ""
+    if not operation:
+        return endpoint
+    return endpoint.rstrip("/") + "/" + operation.lstrip("/")
+
+
+def bid_urls() -> list[str]:
+    root = _bid_endpoint()
+    if not root:
+        return []
+    return [_join_operation(root, op) for op in BID_OPERATIONS]
+
+
+def spec_urls() -> list[str]:
+    root = _spec_endpoint()
+    if not root:
+        return []
+    return [_join_operation(root, op) for op in SPEC_OPERATIONS]
+
+
 def _config_complete() -> bool:
     return bool(_service_key()) and bool(_bid_endpoint()) and bool(_spec_endpoint())
+
+
+def _date_window() -> tuple[str, str]:
+    """Returns (inqryBgnDt, inqryEndDt) for the last _LOOKBACK_DAYS, KST."""
+    now = datetime.now(ZoneInfo("Asia/Seoul"))
+    begin = (now - timedelta(days=_LOOKBACK_DAYS)).strftime("%Y%m%d") + "0000"
+    end = now.strftime("%Y%m%d") + "2359"
+    return begin, end
 
 
 def is_planning_only(title: str) -> bool:
@@ -110,16 +168,23 @@ def _extract_items(payload: Any) -> list[dict[str, Any]]:
     return []
 
 
-def _request(endpoint: str, keyword: str) -> list[dict[str, Any]]:
+def _request(
+    url: str,
+    keyword: str,
+    inqry_bgn: str,
+    inqry_end: str,
+) -> list[dict[str, Any]]:
     params = {
         "serviceKey": _service_key(),
-        "numOfRows": 10,
         "pageNo": 1,
+        "numOfRows": 10,
         "type": "json",
-        "bidNtceNm": keyword,
         "inqryDiv": 1,
+        "bidNtceNm": keyword,
+        "inqryBgnDt": inqry_bgn,
+        "inqryEndDt": inqry_end,
     }
-    response = requests.get(endpoint, params=params, timeout=20)
+    response = requests.get(url, params=params, timeout=20)
     response.raise_for_status()
     try:
         return _extract_items(response.json())
@@ -162,61 +227,123 @@ def _normalize_spec(item: dict[str, Any], keyword: str) -> dict[str, Any]:
     }
 
 
-def fetch_bid_notices() -> list[dict[str, Any]]:
-    endpoint = _bid_endpoint()
-    if not endpoint or not _service_key():
-        return []
-    items: list[dict[str, Any]] = []
-    for keyword in G2B_KEYWORDS:
-        try:
-            raw_items = _request(endpoint, keyword)
-        except Exception as exc:
-            print(f"G2B bid keyword failed '{keyword}': {exc}")
-            continue
-        for raw in raw_items:
-            norm = _normalize_bid(raw, keyword)
-            if is_planning_only(norm["title"]):
-                continue
-            items.append(norm)
-        time.sleep(0.2)
-    return items
+def _short_exc(exc: BaseException) -> str:
+    cls = exc.__class__.__name__
+    msg = str(exc).strip().splitlines()[0] if str(exc).strip() else ""
+    return f"{cls}: {msg}"[:240] if msg else cls
 
 
-def fetch_pre_specs() -> list[dict[str, Any]]:
-    endpoint = _spec_endpoint()
-    if not endpoint or not _service_key():
-        return []
-    items: list[dict[str, Any]] = []
-    for keyword in G2B_KEYWORDS:
-        try:
-            raw_items = _request(endpoint, keyword)
-        except Exception as exc:
-            print(f"G2B spec keyword failed '{keyword}': {exc}")
-            continue
-        for raw in raw_items:
-            norm = _normalize_spec(raw, keyword)
-            if is_planning_only(norm["title"]):
-                continue
-            items.append(norm)
-        time.sleep(0.2)
-    return items
-
-
-def collect() -> tuple[list[dict[str, Any]], list[dict[str, Any]], str]:
+def _fetch_keyword_loop(
+    urls: list[str],
+    normalize: Any,
+    label: str,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """
-    Returns (bid_items, spec_items, error_string).
-      error_string == "" on success (data may still be empty).
-      error_string == DISABLED_MSG when ENABLE_G2B!=true or any required
-        config var is missing — this is the no-op path.
-      error_string == <message> on actual network/parse failure.
+    Shared loop. For each G2B_KEYWORDS entry, calls every URL in `urls`.
+    Returns (items, telemetry). called_count is the total number of HTTP
+    attempts (keywords × operations). last_error is the most recent failure
+    so the caller can surface a real summary when every attempt failed.
     """
+    telemetry: dict[str, Any] = {
+        "called_count": 0,
+        "error_count": 0,
+        "last_error": "",
+    }
+    items: list[dict[str, Any]] = []
+    if not urls or not _service_key():
+        return items, telemetry
+
+    inqry_bgn, inqry_end = _date_window()
+
+    for keyword in G2B_KEYWORDS:
+        for url in urls:
+            telemetry["called_count"] += 1
+            try:
+                raw_items = _request(url, keyword, inqry_bgn, inqry_end)
+            except Exception as exc:
+                telemetry["error_count"] += 1
+                telemetry["last_error"] = _short_exc(exc)
+                print(
+                    f"G2B {label} '{keyword}' @ "
+                    f"{url.rsplit('/', 1)[-1]} failed: {telemetry['last_error']}"
+                )
+                continue
+            for raw in raw_items:
+                norm = normalize(raw, keyword)
+                if is_planning_only(norm["title"]):
+                    continue
+                items.append(norm)
+            time.sleep(0.2)
+    return items, telemetry
+
+
+def fetch_bid_notices() -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    return _fetch_keyword_loop(bid_urls(), _normalize_bid, "bid")
+
+
+def fetch_pre_specs() -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    return _fetch_keyword_loop(spec_urls(), _normalize_spec, "spec")
+
+
+def collect() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """
+    Returns (bid_items, spec_items, telemetry_dict). telemetry_dict shape:
+      {
+        "error":              "" | DISABLED_MSG | <concise failure summary>,
+        "bid_called_count":   int,
+        "bid_error_count":    int,
+        "bid_last_error":     str,
+        "spec_called_count":  int,
+        "spec_error_count":   int,
+        "spec_last_error":    str,
+      }
+
+    error == "" only when no failures occurred. When every bid call or every
+    spec call failed, error is a concise summary so metadata never claims
+    "none" while in fact every request 404'd.
+    """
+    empty_telemetry = {
+        "error": "",
+        "bid_called_count": 0,
+        "bid_error_count": 0,
+        "bid_last_error": "",
+        "spec_called_count": 0,
+        "spec_error_count": 0,
+        "spec_last_error": "",
+    }
+
     if not is_enabled():
-        return [], [], DISABLED_MSG
+        return [], [], {**empty_telemetry, "error": DISABLED_MSG}
     if not _config_complete():
-        return [], [], DISABLED_MSG
+        return [], [], {**empty_telemetry, "error": DISABLED_MSG}
+
     try:
-        bid = fetch_bid_notices()
-        spec = fetch_pre_specs()
-        return bid, spec, ""
+        bid_items, bid_t = fetch_bid_notices()
+        spec_items, spec_t = fetch_pre_specs()
     except Exception as exc:
-        return [], [], str(exc)
+        return [], [], {**empty_telemetry, "error": _short_exc(exc)}
+
+    parts: list[str] = []
+    all_bid_failed = bid_t["called_count"] > 0 and bid_t["error_count"] == bid_t["called_count"]
+    all_spec_failed = spec_t["called_count"] > 0 and spec_t["error_count"] == spec_t["called_count"]
+    if all_bid_failed:
+        parts.append(
+            f"all bid keyword calls failed "
+            f"({bid_t['error_count']}/{bid_t['called_count']}): {bid_t['last_error']}"
+        )
+    if all_spec_failed:
+        parts.append(
+            f"all spec keyword calls failed "
+            f"({spec_t['error_count']}/{spec_t['called_count']}): {spec_t['last_error']}"
+        )
+
+    telemetry = {
+        "error": "; ".join(parts),
+        "bid_called_count": bid_t["called_count"],
+        "bid_error_count": bid_t["error_count"],
+        "bid_last_error": bid_t["last_error"],
+        "spec_called_count": spec_t["called_count"],
+        "spec_error_count": spec_t["error_count"],
+        "spec_last_error": spec_t["last_error"],
+    }
+    return bid_items, spec_items, telemetry

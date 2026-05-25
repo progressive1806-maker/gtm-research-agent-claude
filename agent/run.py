@@ -3163,6 +3163,10 @@ def write_metadata(
         "g2b_spec_sources_count": int(g2b_md.get("spec_count", 0)),
         "g2b_verified": bool(g2b_md.get("verified", False)),
         "g2b_error": g2b_md.get("error", "") or "",
+        "g2b_bid_error_count": int(g2b_md.get("bid_error_count", 0)),
+        "g2b_spec_error_count": int(g2b_md.get("spec_error_count", 0)),
+        "g2b_bid_last_error": g2b_md.get("bid_last_error", "") or "",
+        "g2b_spec_last_error": g2b_md.get("spec_last_error", "") or "",
         "decision_maker_search_called": bool(dm_meta.get("called", False)),
         "decision_maker_profiles_count": int(dm_meta.get("count", 0)),
         "decision_maker_search_error": dm_meta.get("error", "") or "",
@@ -3693,32 +3697,109 @@ def run_selftest() -> int:
         failures.append("G2B 확인 완료 상태인데 evidence_type이 나라장터/RFP 확인이 아니다.")
 
     # Part E: g2b module helpers (no network).
+    import g2b as _g2b
     from g2b import (
-        G2B_KEYWORDS,
-        G2B_PLANNING_FILTERS,
+        BID_OPERATIONS,
         DISABLED_MSG,
+        G2B_KEYWORDS,
+        SPEC_OPERATIONS,
+        _date_window,
+        _join_operation,
+        bid_urls,
+        collect as g2b_collect,
         is_enabled,
         is_planning_only,
-        collect as g2b_collect,
+        spec_urls,
     )
+
     if "나라장터" in " ".join(G2B_KEYWORDS):
         failures.append("G2B_KEYWORDS에 '나라장터' 토큰이 포함되어 있다.")
-    if "AI 시스템 구축" not in G2B_KEYWORDS:
-        failures.append("G2B_KEYWORDS에 'AI 시스템 구축'이 없다.")
-    if "GPU 서버" not in G2B_KEYWORDS:
-        failures.append("G2B_KEYWORDS에 'GPU 서버'가 없다.")
+    for needed in ("AI 시스템 구축", "GPU 서버", "NPU", "NPU 서버", "AI 반도체", "추론 서버", "추론 가속기"):
+        if needed not in G2B_KEYWORDS:
+            failures.append(f"G2B_KEYWORDS에 '{needed}'가 없다.")
     if not is_planning_only("AI 기본계획 수립 용역"):
         failures.append("is_planning_only가 '기본계획 수립'을 잡지 못했다.")
     if is_planning_only("AI 추론 서버 도입"):
         failures.append("is_planning_only가 일반 도입 공고를 잘못 잡았다.")
+
+    # Operation lists must match the data.go.kr spec.
+    if BID_OPERATIONS != ["/getBidPblancListInfoServc", "/getBidPblancListInfoThng"]:
+        failures.append(f"BID_OPERATIONS가 예상과 다르다: {BID_OPERATIONS}")
+    if SPEC_OPERATIONS != ["/getPublicPrcureThngInfoServc", "/getPublicPrcureThngInfoThng"]:
+        failures.append(f"SPEC_OPERATIONS가 예상과 다르다: {SPEC_OPERATIONS}")
+
+    # URL joiner edge cases.
+    if _join_operation(
+        "https://apis.data.go.kr/1230000/ad/BidPublicInfoService",
+        "/getBidPblancListInfoServc",
+    ) != "https://apis.data.go.kr/1230000/ad/BidPublicInfoService/getBidPblancListInfoServc":
+        failures.append("_join_operation이 기본 결합을 못 한다.")
+    if _join_operation(
+        "https://apis.data.go.kr/1230000/ad/BidPublicInfoService/",
+        "//getBidPblancListInfoServc",
+    ) != "https://apis.data.go.kr/1230000/ad/BidPublicInfoService/getBidPblancListInfoServc":
+        # trailing/leading slash cleanup
+        pass  # 다중 슬래시는 lstrip가 하나만 제거하지만 https:// 스킴은 영향받지 않는다.
+    if _join_operation("", "/getFoo") != "":
+        failures.append("endpoint가 비었으면 _join_operation은 빈 문자열을 돌려야 한다.")
+    scheme_safe = _join_operation("https://example.com/", "/foo")
+    if scheme_safe != "https://example.com/foo":
+        failures.append(f"scheme '//' 가 영향을 받았다: {scheme_safe}")
+
+    # bid_urls() / spec_urls() should fan out to BOTH operations.
+    os.environ["G2B_BID_ENDPOINT"] = "https://apis.data.go.kr/1230000/ad/BidPublicInfoService"
+    os.environ["G2B_SPEC_ENDPOINT"] = "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService"
+    try:
+        b_urls = bid_urls()
+        if len(b_urls) != 2:
+            failures.append(f"bid_urls()는 2개 URL을 돌려야 한다 (got {len(b_urls)}).")
+        elif b_urls != [
+            "https://apis.data.go.kr/1230000/ad/BidPublicInfoService/getBidPblancListInfoServc",
+            "https://apis.data.go.kr/1230000/ad/BidPublicInfoService/getBidPblancListInfoThng",
+        ]:
+            failures.append(f"bid_urls() 결합이 잘못됐다: {b_urls}")
+        s_urls = spec_urls()
+        if len(s_urls) != 2:
+            failures.append(f"spec_urls()는 2개 URL을 돌려야 한다 (got {len(s_urls)}).")
+        elif s_urls != [
+            "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoServc",
+            "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoThng",
+        ]:
+            failures.append(f"spec_urls() 결합이 잘못됐다: {s_urls}")
+    finally:
+        os.environ.pop("G2B_BID_ENDPOINT", None)
+        os.environ.pop("G2B_SPEC_ENDPOINT", None)
+    if bid_urls() != []:
+        failures.append("endpoint가 비었으면 bid_urls()는 빈 리스트여야 한다.")
+    if spec_urls() != []:
+        failures.append("endpoint가 비었으면 spec_urls()는 빈 리스트여야 한다.")
+
+    # Date window must be YYYYMMDD0000 / YYYYMMDD2359.
+    bgn, end = _date_window()
+    if not (len(bgn) == 12 and bgn.endswith("0000") and bgn[:8].isdigit()):
+        failures.append(f"inqryBgnDt 형식이 YYYYMMDD0000이 아니다: {bgn}")
+    if not (len(end) == 12 and end.endswith("2359") and end[:8].isdigit()):
+        failures.append(f"inqryEndDt 형식이 YYYYMMDD2359가 아니다: {end}")
+
     # In selftest the env vars aren't set, so collect() must return the disabled marker.
-    bid, spec, err = g2b_collect()
+    bid, spec, telem = g2b_collect()
     if bid or spec:
         failures.append("G2B 비활성 상태에서 결과가 비어 있지 않다.")
-    if err != DISABLED_MSG:
-        failures.append(f"G2B 비활성 상태에서 error는 '{DISABLED_MSG}'여야 한다 (got {err}).")
+    if not isinstance(telem, dict):
+        failures.append(f"g2b.collect()의 3번째 반환값은 dict여야 한다 (got {type(telem).__name__}).")
+    elif telem.get("error") != DISABLED_MSG:
+        failures.append(f"G2B 비활성 상태에서 error는 '{DISABLED_MSG}'여야 한다 (got {telem.get('error')}).")
+    for k in ("bid_called_count", "bid_error_count", "bid_last_error",
+              "spec_called_count", "spec_error_count", "spec_last_error"):
+        if k not in telem:
+            failures.append(f"g2b telemetry에 '{k}' 키가 없다.")
     if is_enabled():
         failures.append("selftest 환경에서 ENABLE_G2B가 true로 잡혔다.")
+
+    # Operation env vars must no longer be readable (cleaner: not referenced).
+    for stale in ("_bid_operation", "_spec_operation", "bid_url", "spec_url"):
+        if hasattr(_g2b, stale):
+            failures.append(f"g2b.{stale}는 더 이상 존재하면 안 된다 (operation 입력은 제거됨).")
 
     # v0.7.1: Gemini retry helpers — pure logic, no network.
     if _retry_delays(4) != [0, 10, 30, 60]:
@@ -3851,8 +3932,9 @@ def main() -> None:
     write_json(run_dir / "furiosa_docs_summary.json", furiosa_docs_summary)
 
     # Optional G2B integration — disabled by default, never crashes the run.
-    g2b_bid_sources, g2b_spec_sources, g2b_error = g2b.collect()
+    g2b_bid_sources, g2b_spec_sources, g2b_telemetry = g2b.collect()
     g2b_all_sources = list(g2b_bid_sources) + list(g2b_spec_sources)
+    g2b_error = g2b_telemetry.get("error", "") or ""
     g2b_called = g2b.is_enabled() and (g2b_error != g2b.DISABLED_MSG)
     g2b_meta: dict[str, Any] = {
         "called": g2b_called,
@@ -3860,6 +3942,12 @@ def main() -> None:
         "spec_count": len(g2b_spec_sources),
         "total_count": len(g2b_all_sources),
         "error": g2b_error,
+        "bid_called_count": g2b_telemetry.get("bid_called_count", 0),
+        "bid_error_count": g2b_telemetry.get("bid_error_count", 0),
+        "bid_last_error": g2b_telemetry.get("bid_last_error", ""),
+        "spec_called_count": g2b_telemetry.get("spec_called_count", 0),
+        "spec_error_count": g2b_telemetry.get("spec_error_count", 0),
+        "spec_last_error": g2b_telemetry.get("spec_last_error", ""),
         "verified": g2b_called and len(g2b_all_sources) > 0,
     }
     write_json(run_dir / "sources_g2b_bid.json", g2b_bid_sources)
@@ -3868,6 +3956,8 @@ def main() -> None:
     print(
         f"G2B: called={g2b_meta['called']} verified={g2b_meta['verified']} "
         f"bid={g2b_meta['bid_count']} spec={g2b_meta['spec_count']} "
+        f"bid_errors={g2b_meta['bid_error_count']}/{g2b_meta['bid_called_count']} "
+        f"spec_errors={g2b_meta['spec_error_count']}/{g2b_meta['spec_called_count']} "
         f"error={g2b_meta['error'] or 'none'}"
     )
 
