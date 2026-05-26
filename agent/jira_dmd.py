@@ -72,48 +72,59 @@ def fetch_dmd_summaries() -> tuple[list[dict[str, Any]], str]:
     Returns (summaries, error). summaries is a list of {key, summary, status}.
     error is "" on success, DISABLED_MSG when not enabled, or a short message
     on network/auth failure.
+
+    Uses POST /rest/api/3/search/jql — the legacy GET /rest/api/3/search
+    endpoint started returning 410 Gone after Atlassian's 2025 migration.
+    The new endpoint paginates with nextPageToken instead of startAt.
     """
     if not is_enabled():
         return [], DISABLED_MSG
 
     base = os.getenv("JIRA_URL", "").strip().rstrip("/")
     project = _project_key()
-    url = f"{base}/rest/api/3/search"
-    params = {
-        "jql": f'project = {project} ORDER BY updated DESC',
-        "fields": "summary,status",
-        "maxResults": 200,
+    url = f"{base}/rest/api/3/search/jql"
+    headers = {
+        **_auth_header(),
+        "Content-Type": "application/json",
     }
+
+    out: list[dict[str, Any]] = []
+    next_page_token: str | None = None
     try:
-        response = requests.get(
-            url,
-            params=params,
-            headers=_auth_header(),
-            timeout=20,
-        )
-        response.raise_for_status()
-        payload = response.json() or {}
+        for _ in range(10):  # safety cap: 10 pages × 100 issues = 1000 max
+            body: dict[str, Any] = {
+                "jql": f"project = {project} ORDER BY updated DESC",
+                "fields": ["summary", "status"],
+                "maxResults": 100,
+            }
+            if next_page_token:
+                body["nextPageToken"] = next_page_token
+            response = requests.post(url, headers=headers, json=body, timeout=20)
+            response.raise_for_status()
+            payload = response.json() or {}
+            issues = payload.get("issues") or []
+            for issue in issues:
+                if not isinstance(issue, dict):
+                    continue
+                fields = issue.get("fields") or {}
+                summary = fields.get("summary") or ""
+                status_obj = fields.get("status") or {}
+                status_name = (
+                    status_obj.get("name") if isinstance(status_obj, dict) else ""
+                ) or ""
+                out.append(
+                    {
+                        "key": issue.get("key") or "",
+                        "summary": str(summary),
+                        "status": str(status_name),
+                    }
+                )
+            next_page_token = payload.get("nextPageToken")
+            if not next_page_token:
+                break
     except Exception as exc:
         return [], _short_exc(exc)
 
-    issues = payload.get("issues") or []
-    out: list[dict[str, Any]] = []
-    for issue in issues:
-        if not isinstance(issue, dict):
-            continue
-        fields = issue.get("fields") or {}
-        summary = fields.get("summary") or ""
-        status_obj = fields.get("status") or {}
-        status_name = (
-            status_obj.get("name") if isinstance(status_obj, dict) else ""
-        ) or ""
-        out.append(
-            {
-                "key": issue.get("key") or "",
-                "summary": str(summary),
-                "status": str(status_name),
-            }
-        )
     return out, ""
 
 

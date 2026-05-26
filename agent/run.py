@@ -2259,8 +2259,8 @@ def _is_transient_llm_error(exc: BaseException) -> bool:
 
 def _retry_delays(max_attempts: int) -> list[int]:
     """
-    Returns the delay (in seconds) to sleep *before* each attempt.
-    Defaults follow the spec: 0, 10, 30, 60. Extra attempts double the last.
+    Returns the delay (in seconds) to sleep *before* each attempt for general
+    transient errors. Defaults: 0, 10, 30, 60. Extra attempts double the last.
     """
     base = [0, 10, 30, 60]
     if max_attempts <= len(base):
@@ -2269,6 +2269,27 @@ def _retry_delays(max_attempts: int) -> list[int]:
     while len(out) < max_attempts:
         out.append(out[-1] * 2)
     return out
+
+
+def _retry_delays_for_quota(max_attempts: int) -> list[int]:
+    """
+    Quota-specific (429) backoff. Gemini quota windows are 60 seconds, so
+    waiting only 10s is pointless — the same window still applies. Start at
+    30s, then 60s, then 120s.
+    """
+    base = [0, 30, 60, 120]
+    if max_attempts <= len(base):
+        return base[:max_attempts]
+    out = list(base)
+    while len(out) < max_attempts:
+        out.append(out[-1] * 2)
+    return out
+
+
+def _is_quota_error(exc: BaseException) -> bool:
+    """Subset of transient errors specifically caused by Google quota / RPM."""
+    msg = f"{exc.__class__.__name__} {exc}".lower()
+    return any(tok in msg for tok in ("429", "resource_exhausted", "quota", "rate limit"))
 
 
 def _short_exc(exc: BaseException | None) -> str:
@@ -2303,13 +2324,18 @@ def gemini_generate_with_retry(prompt: str) -> str:
     max_attempts = env_int("LLM_MAX_RETRIES", 4)
     if max_attempts < 1:
         max_attempts = 1
-    delays = _retry_delays(max_attempts)
+    general_delays = _retry_delays(max_attempts)
+    quota_delays = _retry_delays_for_quota(max_attempts)
 
     client = genai.Client(api_key=api_key)
 
     last_exc: BaseException | None = None
     for attempt in range(1, max_attempts + 1):
-        delay = delays[attempt - 1]
+        # Pick the appropriate backoff schedule based on the previous error.
+        if last_exc is not None and _is_quota_error(last_exc):
+            delay = quota_delays[attempt - 1]
+        else:
+            delay = general_delays[attempt - 1]
         if delay > 0:
             print(
                 f"Gemini retry: attempt {attempt}/{max_attempts} after {delay}s "

@@ -94,6 +94,23 @@ def build_queries_for_candidate(
     return queries[:max_queries]
 
 
+def build_grounding_query_for_candidate(candidate: dict[str, Any]) -> str:
+    """
+    Compound query for Gemini grounding — one call instead of N. Bundling all
+    target roles into a single query keeps us under the 10 RPM free-tier limit
+    when running across ~10 candidates per workflow run.
+    """
+    name = (candidate.get("name") or "").strip()
+    if not name:
+        return ""
+    roles = roles_for_candidate(candidate)
+    role_blob = " OR ".join(f'"{r}"' for r in roles[:6])
+    return (
+        f'site:linkedin.com/in "{name}" ({role_blob}) '
+        "decision maker"
+    )
+
+
 def _strip_html(text: str) -> str:
     cleaned = re.sub(r"<[^>]+>", "", text or "")
     return unescape(cleaned).strip()
@@ -447,14 +464,26 @@ def find_profile_for_candidate(
 
     Prefers Google CSE when configured; falls back to Naver web/news search.
     """
-    queries = build_queries_for_candidate(candidate)
-    if not queries:
-        return None, [], None
-
     roles = roles_for_candidate(candidate)
     company = (candidate.get("name") or "").strip()
     prefer_grounding = gemini_grounding_configured()
     prefer_cse = google_cse_configured()
+
+    # When grounding is on, use ONE compound query per candidate instead of
+    # building N role-specific queries. Gemini 2.5 Flash free tier is 10 RPM,
+    # so we'd burn through quota fast otherwise. The compound query packs
+    # every role into a single grounded search.
+    if prefer_grounding:
+        compound = build_grounding_query_for_candidate(candidate)
+        queries = [compound] if compound else []
+        # 10 RPM = 6s between calls; pad to 6.5 for safety.
+        effective_sleep = max(rate_limit_sleep, 6.5)
+    else:
+        queries = build_queries_for_candidate(candidate)
+        effective_sleep = rate_limit_sleep
+
+    if not queries:
+        return None, [], None
 
     best: dict[str, Any] | None = None
     used_queries: list[str] = []
@@ -488,7 +517,7 @@ def find_profile_for_candidate(
             if best is None or CONFIDENCE_RANK[confidence] > CONFIDENCE_RANK[best["confidence"]]:
                 best = record
 
-        time.sleep(rate_limit_sleep)
+        time.sleep(effective_sleep)
         if best and best["confidence"] == "HIGH":
             break
 
