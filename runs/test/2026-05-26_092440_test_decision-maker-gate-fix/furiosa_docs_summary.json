@@ -1,0 +1,758 @@
+{
+  "fetched_at_kst": "2026-05-26T09:24:43.958050+09:00",
+  "docs_total": 11,
+  "docs_successful": 11,
+  "docs_failed": 0,
+  "successful_docs": [
+    {
+      "name": "Supported Models",
+      "url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html",
+      "category": "models",
+      "text_chars": 1603
+    },
+    {
+      "name": "Release 2026.2",
+      "url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html",
+      "category": "release",
+      "text_chars": 10480
+    },
+    {
+      "name": "RNGD Overview",
+      "url": "https://developer.furiosa.ai/latest/en/overview/rngd.html",
+      "category": "hardware",
+      "text_chars": 2548
+    },
+    {
+      "name": "Software Stack",
+      "url": "https://developer.furiosa.ai/latest/en/overview/software_stack.html",
+      "category": "software",
+      "text_chars": 3602
+    },
+    {
+      "name": "Roadmap",
+      "url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html",
+      "category": "roadmap",
+      "text_chars": 2750
+    },
+    {
+      "name": "Furiosa LLM Intro",
+      "url": "https://developer.furiosa.ai/latest/en/furiosa_llm/intro.html",
+      "category": "serving",
+      "text_chars": 1653
+    },
+    {
+      "name": "Cloud Native Toolkit",
+      "url": "https://developer.furiosa.ai/latest/en/cloud_native_toolkit/intro.html",
+      "category": "cloud_native",
+      "text_chars": 600
+    },
+    {
+      "name": "System Management Interface",
+      "url": "https://developer.furiosa.ai/latest/en/device_management/system_management_interface.html",
+      "category": "management",
+      "text_chars": 760
+    },
+    {
+      "name": "Hugging Face FuriosaAI Org",
+      "url": "https://huggingface.co/furiosa-ai",
+      "category": "huggingface",
+      "text_chars": 3619
+    },
+    {
+      "name": "Hugging Face FuriosaAI Models",
+      "url": "https://huggingface.co/furiosa-ai/models",
+      "category": "huggingface_models",
+      "text_chars": 1280
+    },
+    {
+      "name": "Hugging Face FuriosaAI Collections",
+      "url": "https://huggingface.co/furiosa-ai/collections",
+      "category": "huggingface_collections",
+      "text_chars": 1736
+    }
+  ],
+  "failed_docs": [],
+  "supported_model_entries": [
+    {
+      "model_name": "DeepSeek R1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "EXAONE-4.0",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Solar 1.0",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen 2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 Embedding",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 Reranker",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Release 2026.2",
+      "source_url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html"
+    },
+    {
+      "model_name": "Qwen2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen 2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "DeepSeek R1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen 2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    }
+  ],
+  "planned_model_entries": [
+    {
+      "model_name": "GPT-OSS",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "K-EXAONE",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Solar Open",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 MoE",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 VL",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "GPT-OSS",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "K-EXAONE",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Solar Open",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen3 MoE",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen3 VL",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    }
+  ],
+  "precompiled_model_entries": [
+    {
+      "model_name": "EXAONE-4.0-32B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.1-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen2.5-Coder-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Embedding-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Reranker-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-70B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "SOLAR-10.7B-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "SOLAR-10.7B-Instruct-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "LGAI-EXAONE/EXAONE-4.0-32B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "LGAI-EXAONE/EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.1-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen2-32B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Embedding-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Reranker-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "upstage/SOLAR-10.7B-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "upstage/SOLAR-10.7B-Instruct-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Release 2026.2",
+      "source_url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Release 2026.2",
+      "source_url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "collections",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "LGAI-EXAONE/EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "collections",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    }
+  ],
+  "keyword_hits": {
+    "serving_stack": [
+      "Release 2026.2: OpenAI",
+      "Release 2026.2: API",
+      "RNGD Overview: Kubernetes",
+      "Software Stack: vLLM",
+      "Software Stack: OpenAI",
+      "Software Stack: OpenAI-Compatible",
+      "Software Stack: Kubernetes",
+      "Software Stack: container",
+      "Software Stack: API",
+      "Software Stack: server",
+      "Roadmap: Kubernetes",
+      "Roadmap: container",
+      "Roadmap: API",
+      "Furiosa LLM Intro: vLLM",
+      "Furiosa LLM Intro: OpenAI",
+      "Furiosa LLM Intro: OpenAI-Compatible",
+      "Furiosa LLM Intro: Kubernetes",
+      "Furiosa LLM Intro: API",
+      "Furiosa LLM Intro: server",
+      "Cloud Native Toolkit: Kubernetes",
+      "Cloud Native Toolkit: container",
+      "Hugging Face FuriosaAI Org: API",
+      "Hugging Face FuriosaAI Org: server"
+    ],
+    "hardware_ops": [
+      "Release 2026.2: RNGD",
+      "RNGD Overview: RNGD",
+      "RNGD Overview: HBM",
+      "RNGD Overview: power",
+      "RNGD Overview: SR-IOV",
+      "RNGD Overview: virtualization",
+      "RNGD Overview: PCIe",
+      "RNGD Overview: thermal",
+      "Software Stack: power",
+      "Roadmap: RNGD",
+      "Hugging Face FuriosaAI Org: RNGD"
+    ]
+  },
+  "model_compatibility_note": "Use exact model/version matching for GTM evaluation. EXAONE 4.0 and EXAONE 4.5 must be treated as different. Qwen 2.5 and Qwen 3 must be treated as different. Llama 3.1 and Llama 3.3 must be treated as different. Supported model architecture/family, planned future support, and precompiled Hugging Face artifacts are different evidence types."
+}

@@ -1,0 +1,109 @@
+{
+  "called": true,
+  "valid_count": 0,
+  "suppressed_count": 5,
+  "unknown_count": 0,
+  "error": "",
+  "records": [
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "삼성SDS Head of Cloud LinkedIn",
+        "삼성SDS Head of Infrastructure LinkedIn",
+        "삼성SDS Data Center LinkedIn",
+        "삼성SDS Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/samsung-sds",
+        "title": "삼성SDS - LinkedIn",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "삼성SDS Head of Cloud LinkedIn",
+        "description_snippet": "한국어 ; 웹사이트 : http://www.samsungsds.com, 업계 : IT 서비스 및 IT 컨설팅, 회사 규모 : 직원 10,001명 이상, 본사 : Seoul, 유형 : 상장기업, 전문 분야 : Cloud Computing, Digital Logistics, Artificial Intelligence, Digital Transformation "
+      },
+      "error": null
+    },
+    {
+      "name": "엘리스그룹",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "엘리스그룹 Head of Cloud LinkedIn",
+        "엘리스그룹 Head of Infrastructure LinkedIn",
+        "엘리스그룹 Data Center LinkedIn",
+        "엘리스그룹 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/cloudsoftwaregroup",
+        "title": "Cloud Software Group",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "엘리스그룹 Head of Cloud LinkedIn",
+        "description_snippet": "Enabling customers to evolve, compete & succeed in data, automation, insight, and collaboration."
+      },
+      "error": null
+    },
+    {
+      "name": "서울아산병원",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "서울아산병원 CIO LinkedIn",
+        "서울아산병원 CTO LinkedIn",
+        "서울아산병원 CISO LinkedIn",
+        "서울아산병원 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://kr.linkedin.com/company/asan-medical-center",
+        "title": "Asan Medical Center (AMC)",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "서울아산병원 CIO LinkedIn",
+        "description_snippet": "Asan Medical Center (AMC) was established by ASAN Chung Ju-yung, the founder of Hyundai Group and Asan Foundation, in 1989. With the founder's mission of \"helping the underprivileged members of our so"
+      },
+      "error": null
+    },
+    {
+      "name": "KB금융그룹",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "KB금융그룹 CIO LinkedIn",
+        "KB금융그룹 CTO LinkedIn",
+        "KB금융그룹 CISO LinkedIn",
+        "KB금융그룹 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.kbfg.com/",
+        "title": "KB금융그룹",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "KB금융그룹 CIO LinkedIn",
+        "description_snippet": "국민의 평생 금융파트너 KB금융그룹의 기업소개 부터, 투자정보, ESG 경영, PR, 인재채용 정보를 제공합니다."
+      },
+      "error": null
+    },
+    {
+      "name": "오픈네트웍시스템",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "오픈네트웍시스템 Head of Cloud LinkedIn",
+        "오픈네트웍시스템 Head of Infrastructure LinkedIn",
+        "오픈네트웍시스템 Data Center LinkedIn",
+        "오픈네트웍시스템 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/alibaba-cloud-computing-company",
+        "title": "Alibaba Cloud",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "오픈네트웍시스템 Head of Cloud LinkedIn",
+        "description_snippet": "Alibaba Cloud is the largest provider of public cloud services in China and Asia Pacific. With its large scale and strong foundation in IaaS and PaaS infrastructure, Alibaba Cloud provides enterprises"
+      },
+      "error": null
+    }
+  ]
+}
