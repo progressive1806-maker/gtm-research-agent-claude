@@ -2085,7 +2085,7 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 
 ## 5. 담당자 / 컨택 경로
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
-- decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+- decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지. C-level 임원만 적지 말고 실제 컨택 가능한 시니어 IC / 팀장급도 같이 제시: 예) "CTO 또는 AI팀장", "Head of Infrastructure 또는 MLOps 엔지니어", "정보화 담당관 또는 AI 사업 담당".
 - LinkedIn/공개 프로필 후보 칸은 decision_maker_profile_url을 따릅니다.
   - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 개인 프로필이면 마크다운 링크로 노출. linkedin.com/company/ 같은 기업 페이지는 절대 노출하지 마세요 — BD는 개인 의사결정권자 프로필만 필요합니다.
   - 그 외(빈 URL, 뉴스/일반 사이트 URL, LOW/UNKNOWN)는 두 칸 모두 "확인 필요"로 표기.
@@ -2168,7 +2168,7 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 
 ## 6. 담당자 / 컨택 경로
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
-- decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
+- decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지. C-level 임원만 적지 말고 실제 컨택 가능한 시니어 IC / 팀장급도 같이 제시: 예) "CTO 또는 AI팀장", "Head of Infrastructure 또는 MLOps 엔지니어", "정보화 담당관 또는 AI 사업 담당".
 - LinkedIn/공개 프로필 후보 칸은 decision_maker_profile_url을 따릅니다.
   - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 개인 프로필이면 마크다운 링크로 노출. linkedin.com/company/ 같은 기업 페이지는 절대 노출하지 마세요 — BD는 개인 의사결정권자 프로필만 필요합니다.
   - 그 외(빈 URL, 뉴스/일반 사이트 URL, LOW/UNKNOWN)는 두 칸 모두 "확인 필요"로 표기.

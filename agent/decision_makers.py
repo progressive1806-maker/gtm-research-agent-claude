@@ -27,45 +27,73 @@ NAVER_NEWS_SEARCH_URL = "https://openapi.naver.com/v1/search/news.json"
 GOOGLE_CSE_URL = "https://www.googleapis.com/customsearch/v1"
 
 # Roles chosen by target_type. Mixed EN/KR so search snippets in both languages have a chance to match.
+# Korean BD reality: C-levels rarely have public LinkedIn profiles. The actual
+# contactable champions for a PoC are usually team leads + senior engineers +
+# AI/MLOps/Platform PMs. Role lists below intentionally mix executive titles
+# (for completeness) with team-level and IC-level titles (where the actual
+# evaluation and PoC starts).
 ROLE_TERMS_BY_TARGET: dict[str, list[str]] = {
     "온프레미스 기업": [
-        "CIO",
-        "CTO",
-        "CISO",
-        "Head of Infrastructure",
-        "Head of AI",
-        "정보화 본부장",
-        "IT 인프라 임원",
+        # Executives
+        "CIO", "CTO", "CISO",
+        "Head of AI", "Head of Infrastructure",
+        # 본부 / 팀 리더 — 한국 대기업에서 자주 보이는 직함
+        "정보화 본부장", "정보화실장", "정보화팀장",
+        "IT 인프라 임원", "IT팀장", "인프라팀장", "AI팀장",
+        # 시니어 IC — 실제 PoC 진행 주체. LinkedIn 사용률 높음
+        "AI 엔지니어", "ML 엔지니어", "MLOps 엔지니어",
+        "인프라 엔지니어", "시스템 엔지니어", "시니어 엔지니어",
+        "Solutions Architect", "솔루션 아키텍트",
+        "AI Lead", "ML Lead", "Platform Lead",
     ],
     "CSP 운영 기업": [
-        "Head of Cloud",
-        "Head of Infrastructure",
-        "Data Center",
-        "Platform Lead",
-        "GPU service lead",
-        "NPU service lead",
-        "클라우드 사업 본부장",
-        "데이터센터 본부장",
+        # Executives
+        "Head of Cloud", "Head of Infrastructure",
+        "클라우드 사업 본부장", "데이터센터 본부장",
+        # 사업/제품 리더 — CSP에서 NPU/GPU 도입 결정에 핵심
+        "GPU service lead", "NPU service lead",
+        "NPUaaS Product Manager", "GPUaaS Product Manager",
+        "Cloud Product Manager",
+        "사업 개발 담당", "MSP 채널 담당", "파트너십 매니저",
+        # 시니어 IC
+        "Cloud Engineer", "Platform Engineer", "Data Center Engineer",
+        "Cloud Solutions Architect", "DevOps Engineer", "SRE",
+        "Platform Lead", "Service Lead",
     ],
     "CSP 고객 기업": [
-        "Head of AI",
-        "Product AI lead",
-        "CTO",
-        "Platform lead",
-        "AI 본부장",
+        # Executives
+        "CTO", "Head of AI",
+        "AI 본부장", "AI 사업 본부장",
+        # 사업/제품 리더
+        "AI Product Manager", "Product AI lead",
+        "AI 기획자", "AI 전략 담당",
+        # 시니어 IC
+        "AI 엔지니어", "ML 엔지니어", "MLOps 엔지니어",
+        "AI Platform Engineer", "Platform Lead",
+        "AI Lead", "ML Lead",
     ],
 }
 
 # For B2G/public-sector candidates (market == "B2G").
 B2G_ROLE_TERMS: list[str] = [
-    "procurement",
-    "정보화 담당관",
-    "AI 사업 책임자",
-    "디지털정부 담당",
-    "조달 담당",
+    # 기관 임원/관리자
+    "정보화 담당관", "정보화 책임관", "정보화 책임자",
+    "AI 사업 책임자", "IT 사업 책임자",
+    # 실무 담당 — 과장/사무관급
+    "디지털정부 담당", "AI 사업 담당", "IT 사업 담당", "정보화 사업 담당",
+    # 조달
+    "조달 담당", "procurement",
+    # 운영/실장
+    "정보화 운영", "전산실장", "전산팀장",
+    # 공공 R&D / 연구소
+    "선임 연구원", "책임 연구원", "수석 연구원",
+    "AI 연구 책임자", "AI 그룹장",
 ]
 
-DEFAULT_ROLE_TERMS: list[str] = ["CIO", "CTO", "Head of AI", "Head of Cloud"]
+DEFAULT_ROLE_TERMS: list[str] = [
+    "CIO", "CTO", "Head of AI", "Head of Cloud",
+    "AI 엔지니어", "MLOps 엔지니어", "AI 팀장", "Platform Lead",
+]
 
 MAX_QUERIES_PER_CANDIDATE = 4
 
@@ -96,19 +124,20 @@ def build_queries_for_candidate(
 
 def build_grounding_query_for_candidate(candidate: dict[str, Any]) -> str:
     """
-    Compound query for Gemini grounding — one call instead of N. Bundling all
-    target roles into a single query keeps us under the 10 RPM free-tier limit
-    when running across ~10 candidates per workflow run.
+    Compound query for Gemini grounding — one call per candidate. Bundling
+    all target roles into a single query keeps us under the 10 RPM free-tier
+    limit while still covering execs + senior ICs + team leads. Korean BD
+    contacts often come from manager / engineer levels who actually have
+    public LinkedIn profiles (vs. C-levels who typically don't).
     """
     name = (candidate.get("name") or "").strip()
     if not name:
         return ""
     roles = roles_for_candidate(candidate)
-    role_blob = " OR ".join(f'"{r}"' for r in roles[:6])
-    return (
-        f'site:linkedin.com/in "{name}" ({role_blob}) '
-        "decision maker"
-    )
+    # Use up to 10 roles per query. Search engines accept long OR-trees and
+    # this widens the pool from "CTO only" to "CTO OR AI팀장 OR Platform Lead OR ...".
+    role_blob = " OR ".join(f'"{r}"' for r in roles[:10])
+    return f'site:linkedin.com/in "{name}" ({role_blob})'
 
 
 def _strip_html(text: str) -> str:
