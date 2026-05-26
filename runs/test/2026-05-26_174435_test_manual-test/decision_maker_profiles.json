@@ -1,0 +1,43 @@
+{
+  "called": true,
+  "valid_count": 0,
+  "suppressed_count": 2,
+  "unknown_count": 0,
+  "error": "",
+  "records": [
+    {
+      "name": "NHN클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "site:linkedin.com/in \"NHN클라우드\" (\"Head of Cloud\" OR \"Head of Infrastructure\" OR \"클라우드 사업 본부장\" OR \"데이터센터 본부장\" OR \"GPU service lead\" OR \"NPU service lead\" OR \"NPUaaS Product Manager\" OR \"GPUaaS Product Manager\" OR \"Cloud Product Manager\" OR \"사업 개발 담당\")"
+      ],
+      "best": {
+        "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFhJp2WH9cyNQ-lSJsibbIDovVK33s2INCqpc5ccfxbWAUNtwGTBbHIgEqZ2lxfdteF18_ul049wZXgaOhxWjyRYQtCIt7O-s1vtDYQvTJ0m7eeZ3lTTCHGgXuUEZlr89tXp1f78Q==",
+        "title": "허희도 - 클라우드사업본부장 at NHN클라우드",
+        "source": "gemini_grounding",
+        "confidence": "UNKNOWN",
+        "matched_query": "site:linkedin.com/in \"NHN클라우드\" (\"Head of Cloud\" OR \"Head of Infrastructure\" OR \"클라우드 사업 본부장\" OR \"데이터센터 본부장\" OR \"GPU service lead\" OR \"NPU service lead\" OR \"NPUaaS Product Manager\" OR \"GPUaaS Product Manager\" OR \"Cloud Product Manager\" OR \"사업 개발 담당\")",
+        "description_snippet": "NHN클라우드 허희도 클라우드사업본부장은 iM데이터시스템과 금융권 클라우드 구축 및 디지털 전환 협력을 위한 업무협약을 체결했다. 또한, 아바랩스, 블로코와 블록체인 기술 협력 및 생태계 확장을 위한 MOU에 참석했다. 그는 커리어넷과의 업무협약에서도 NHN 클라우드 클라우드사업본부장으로 언급되었다."
+      },
+      "error": null
+    },
+    {
+      "name": "KB금융",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "site:linkedin.com/in \"KB금융\" (\"CIO\" OR \"CTO\" OR \"CISO\" OR \"Head of AI\" OR \"Head of Infrastructure\" OR \"정보화 본부장\" OR \"정보화실장\" OR \"정보화팀장\" OR \"IT 인프라 임원\" OR \"IT팀장\")"
+      ],
+      "best": {
+        "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHG-Tqjh8yonRj6s7eYIocOPLqcXXfzhVwWU4cgkbnik3gRYNhzApOi-dlerQnPumqJ9YeQBHmAlkXHNvXWP9inFEfh6LmpkN4p4eZqHsZ8YS1ql3JLxntrZKw7mDPUSP9y",
+        "title": "dealsite.co.kr",
+        "source": "gemini_grounding",
+        "confidence": "UNKNOWN",
+        "matched_query": "site:linkedin.com/in \"KB금융\" (\"CIO\" OR \"CTO\" OR \"CISO\" OR \"Head of AI\" OR \"Head of Infrastructure\" OR \"정보화 본부장\" OR \"정보화실장\" OR \"정보화팀장\" OR \"IT 인프라 임원\" OR \"IT팀장\")",
+        "description_snippet": ""
+      },
+      "error": null
+    }
+  ]
+}

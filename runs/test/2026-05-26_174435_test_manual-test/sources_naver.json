@@ -1,0 +1,1919 @@
+[
+  {
+    "query": "제조 AI 플랫폼",
+    "title": "위즈코어, AI 팩토리 전환 전략 제시… \"설비 데이터 연결 구조 재설계...",
+    "description": "실제 제조 현장에 적용 가능한 AI 활용 기반을 마련할 수 있다고 설명했다. 위즈코어는 자사의 산업용 데이터 플랫폼 'NEXEDGE(넥스엣지)'를 통해 이러한 데이터 연결 구조의 기반 기술을 고도화하고 있다....",
+    "originallink": "https://www.industrynews.co.kr/news/articleView.html?idxno=81436",
+    "link": "https://www.industrynews.co.kr/news/articleView.html?idxno=81436",
+    "published_at_kst": "2026-05-26T17:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "서버부터 클라우드까지 … IT 올인원 서비스",
+    "description": "관리하는 'AI 통합 구축 및 활용 플랫폼'을 개발한 후 만족도는 상당히 높았다. 국방 보안을 위해 외부와... 서버, 네트워크, 데이터 등 IT 인프라의 통합 모니터링이 핵심이다. 브레인즈컴퍼니는 2022년 AI 기업...",
+    "originallink": "https://www.mk.co.kr/article/12058031",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685190?sid=101",
+    "published_at_kst": "2026-05-26T17:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 클라우드 GPU 서비스",
+    "title": "NHN클라우드, AI 풀스택 ‘팩토리X’ 공개…“내년 AI 매출 비중 50%로”",
+    "description": "(NHN)클라우드가 고성능 그래픽처리장치(GPU) 임대 서비스를 본격화하며 “내년까지 인공지능 분야 매출... 묶어 국내 최대 수준의 연산 성능(단일 클러스터 기준·27.4 엑사플롭스)을 구현하는 등 차별화된 인공지능...",
+    "originallink": "https://www.hani.co.kr/arti/economy/it/1260467.html",
+    "link": "https://n.news.naver.com/mnews/article/028/0002806777?sid=105",
+    "published_at_kst": "2026-05-26T17:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "SK하이닉스 'iHBM' 기술로 고대역폭메모리 발열 잡는다, 차세대 제품부...",
+    "description": "SK하이닉스는 iHBM 기술을 8세대(HBM5) 등 차세대 제품부터 적용해 고성능 컴퓨팅(HPC), AI 데이터센터 등 초고집적·초고대역폭 환경에서 요구되는 열 관리 수준을 충족하며 시스템 전반의 안정성과 운영 효율을...",
+    "originallink": "https://www.huffingtonpost.kr/article/257464",
+    "link": "https://www.huffingtonpost.kr/article/257464",
+    "published_at_kst": "2026-05-26T17:42:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "딥시크, 사용료 75% 파격 인하…AI 모델 업계 가격 경쟁 신호탄",
+    "description": "클라우드 산업 초창기에 아마존(AWS)식 가격 파괴 전략과 유사하다. 해외 개발자 커뮤니티에서는 \"이제 AI... 미국의 대중국 반도체 규제로 인해 엔비디아 최신 GPU 확보가 어려워진 중국 기업들이 자체 생태계...",
+    "originallink": "https://www.thelec.kr/news/articleView.html?idxno=57160",
+    "link": "https://www.thelec.kr/news/articleView.html?idxno=57160",
+    "published_at_kst": "2026-05-26T17:42:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "'빨리빨리'의 나라에서 웰니스는 어떻게 '트렌드'가 되었나",
+    "description": "병원 시술, 피부 관리, 기능성 화장품, 이너뷰티, 웨어러블 디바이스와 AI 기반 헬스케어 플랫폼까지 서로 유기적으로 연결되어 발전한다. 메디큐브는 총매출액 1조 4000억 원을 돌파하며 국내 단일 브랜드 최고 매출을...",
+    "originallink": "http://www.ktnews.com/news/articleView.html?idxno=146224",
+    "link": "http://www.ktnews.com/news/articleView.html?idxno=146224",
+    "published_at_kst": "2026-05-26T17:42:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "\"1만피 벽도 깬다\" 전망 쏟아져 … 고개드는 금리 인상론은 복병",
+    "description": "현재 시장은 유가 상승 부담을 AI와 데이터센터 중심의 투자 증가세로 흡수하고 있지만, 유가가 다시 뛰고 금리가 높아지면 강세장 종료 신호로 작용할 수 있다. AI 투자 사이클을 둘러싼 불확실성도 변수다. 미국에서...",
+    "originallink": "https://www.mk.co.kr/article/12058022",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685188?sid=101",
+    "published_at_kst": "2026-05-26T17:41:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "\"위성 100만기면 HBM이 도대체 몇 개야\"…초유의 상황에 개미 '들썩'",
+    "description": "이 때문에 24시간 데이터를 써야하고, 지상에 있는 게이트웨이와 AI 데이터센터 연결망을 확대해야 합니다. 통신 역할을 하는 게이트웨이에는 통신용 RF 장비, 네트워크 서버, 광통신 장비 등이 들어가는데, 반도체로는...",
+    "originallink": "https://www.wowtv.co.kr/NewsCenter/News/Read?articleId=A202605260270&t=NNv",
+    "link": "https://n.news.naver.com/mnews/article/215/0001253375?sid=101",
+    "published_at_kst": "2026-05-26T17:41:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "[후보자 돋보기] 군포 '산업 구조 대전환' 신호탄…하은호 군포시장 후...",
+    "description": "국비와 시비 등 총 282억 원이 투입된 군포산업진흥원 내 '웨어러블 로봇 실증센터'와 AI 데이터센터를 거점으로 삼아, 군포를 대한민국 '입는 로봇' 산업의 메카로 만들겠다는 구상이다. 제조업 기반이 강한...",
+    "originallink": "https://www.incheonilbo.com/news/articleView.html?idxno=1323743",
+    "link": "https://www.incheonilbo.com/news/articleView.html?idxno=1323743",
+    "published_at_kst": "2026-05-26T17:40:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "국가균형발전 첨병 새만금, '용지·인프라·제도' 지원 '시급'",
+    "description": "26일 전북도 등에 따르면, 현대차그룹은 새만금에 약 9조 원 규모를 투입해 AI데이터센터, 수전해 플랜트, 로봇수소도시 등 미래 신산업 생태계 조성에 나설 방침이다. 현대차그룹의 발표에 맞춰 정부는 새만금을...",
+    "originallink": "http://www.jeollailbo.com/news/articleView.html?idxno=801168",
+    "link": "http://www.jeollailbo.com/news/articleView.html?idxno=801168",
+    "published_at_kst": "2026-05-26T17:40:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "제조 AI 플랫폼",
+    "title": "올인웍스·올인카본, 창원 기계산업대전 'KIMEX 2026' 참가 성료",
+    "description": "기반 제조 AI 미들웨어 통합 솔루션을 성공적으로 선보였다고 26일 밝혔다. 올인웍스는 관계사인 제조특화... 온프레미스 AI 에이전트 플랫폼인 만큼, 올인웍스의 엔지니어링 역량과 올인카본의 AI 미들웨어 기술을...",
+    "originallink": "https://www.esgeconomy.com/news/articleView.html?idxno=15604",
+    "link": "https://www.esgeconomy.com/news/articleView.html?idxno=15604",
+    "published_at_kst": "2026-05-26T17:40:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "방산 매각 오락가락…1.2조 차입금 부담 더 커졌다 [재무포커스]",
+    "description": "최근 인공지능(AI) 기술의 급속한 발전에 따라 AI 데이터센터(DC) 및 전력망 인프라 수요가 급증해 구리 수요는 증가하고 있다. 풍산은 전력망 인프라 구축에 필요한 고성능 전도 소재를 만들 수 있는 합금 기술을 미래...",
+    "originallink": "https://www.sedaily.com/article/20048390?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/011/0004624646?sid=101",
+    "published_at_kst": "2026-05-26T17:39:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "삼성전자 전문가 참여해 현장 난제 해결 … 산학협력 차별화",
+    "description": "김 총장은 \"중소기업들은 스마트팩토리 도입 의지는 높지만 실제 이를 운영하고 고도화할 AI 인력이... AI 심화 교육 과정 역시 제조 현장 중심으로 설계했다. 생성형 AI와 에이전틱 AI 기초 교육부터 비전 AI 기반 불량 검출...",
+    "originallink": "https://www.mk.co.kr/article/12058006",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685178?sid=101",
+    "published_at_kst": "2026-05-26T17:37:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "[스마트산업강국 함께하는 제조혁신4.0] \"눈으로 확인하고 실습했더니 ...",
+    "description": "삼성전자 스마트팩토리 아카데미의 '중소기업형 AI 도입 및 활용' 강연이 진행되자 전국 각지에서 모인 중소·중견 제조기업 재직자들이 강사 설명을 휴대전화로 촬영하며 메모를 이어갔다. 이날 교육에서는 생성형 AI를...",
+    "originallink": "https://www.mk.co.kr/article/12058005",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685177?sid=101",
+    "published_at_kst": "2026-05-26T17:37:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "경기도, 3기 신도시 내 50·60대 주거단지 ‘헬스케어리츠’ 개발 추진",
+    "description": "(리츠가 AI 등 미래산업 필수 자산인 데이터센터, 태양광·풍력발전소 등 개발·운영)로 개발하고, 지역주민에 리츠 주식을 우선 공모하는 방안을 검토하는 중이다. 경기도는 이와 관련한 도민 인식조사를 26일부터...",
+    "originallink": "https://www.kyeonggi.com/article/20260526580576",
+    "link": "https://n.news.naver.com/mnews/article/666/0000108620?sid=102",
+    "published_at_kst": "2026-05-26T17:37:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "AI 풀스택 공개한 NHN클라우드 \"국가대표 AI 인프라기업 도약\"",
+    "description": "NHN클라우드는 광주광역시 국가 AI 데이터센터에서 엔비디아 H100 GPU와 전북 국산 신경망처리장치(NPU)를 통합 운영하고 있다. AI 전용 데이터센터 ‘팩토리X 서울’에서는 엔비디아 B200 GPU 7656장을 기반으로 총 27....",
+    "originallink": "https://www.hankyung.com/article/2026052699161",
+    "link": "https://n.news.naver.com/mnews/article/015/0005291368?sid=105",
+    "published_at_kst": "2026-05-26T17:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "자회사 매각·공장 증설…AI 회로박·ESS 집중하는 동박업계",
+    "description": "전기차 수요가 일시적으로 둔화하는 '캐즘(Chasm)'으로 고전했던 동박업계가 최근 AI(인공지능) 데이터센터 투자 급증으로 활기를 띠고 있습니다.AI용 회로박(HVLP), ESS(에너지저장장치)용 전지박 등의 수요 급증에...",
+    "originallink": "https://news.mtn.co.kr/news-detail/2026052616120112114",
+    "link": "https://news.mtn.co.kr/news-detail/2026052616120112114",
+    "published_at_kst": "2026-05-26T17:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 데이터센터",
+    "title": "\"GPU만으론 부족\"…클라우드 업계, AI 풀스택 경쟁 본격화",
+    "description": "두 번째는 GPU를 잘 활용할 수 있는 플랫폼 레이어, 그리고 그 위에 AI 에이전트의 실행 환경, 이 모든 것을 풀스택 AI로 제공하고 있습니다.] AI 전용 데이터센터인 'FactoryX 서울'에는 엔비디아 B200 GPU 7656장이...",
+    "originallink": "https://news.mtn.co.kr/news-detail/2026052616115639487",
+    "link": "https://news.mtn.co.kr/news-detail/2026052616115639487",
+    "published_at_kst": "2026-05-26T17:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 서비스",
+    "title": "[금융] KB금융 AI 사이버보안센터 출범 / 하나저축은행 변동형 정기예금...",
+    "description": "'절대 신뢰하지 않고 항상 검증'하는 제로트러스트 원칙도 그룹 클라우드 환경에 3단계 구축을 완료했다. KB금융은 AI 서비스 수명주기 전 단계에서 31개 위험 항목을 통제하고, 주요 서비스에 대해 자체 화이트해커와...",
+    "originallink": "https://www.webeconomy.co.kr/news/articleView.html?idxno=2182212",
+    "link": "https://www.webeconomy.co.kr/news/articleView.html?idxno=2182212",
+    "published_at_kst": "2026-05-26T17:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "기아에 안방 내준 현대차, 그랜저·아반떼로 왕좌 탈환 시동",
+    "description": "대형언어모델(LLM) 기반 생성형 AI를 적용해 단순 음성명령 수준을 넘어 정보 검색과 일정 추천, 자연스러운 대화 기능까지 지원한다. 차량이 단순 이동수단을 넘어 '움직이는 디지털 플랫폼'으로 진화하고 있다는 평가가...",
+    "originallink": "https://www.newsway.co.kr/news/view?ud=2026052611444344002",
+    "link": "https://www.newsway.co.kr/news/view?ud=2026052611444344002",
+    "published_at_kst": "2026-05-26T17:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "NHN클라우드, AI 풀스택 'FactoryX' 공개…AI 인프라 사업 확대",
+    "description": "또 NHN클라우드는 GPU 통합 관리 플랫폼 'GPU 라이브'와 AI 개발 플랫폼 'AI 이지메이커'를 통해 GPU 운영 효율과 AI 개발 생산성을 높이고, 올해 하반기에는 AI 에이전트 서비스인 '프로젝트X'도 출시할 계획이라고...",
+    "originallink": "https://www.fetv.co.kr/news/articleView.html?idxno=303088",
+    "link": "https://www.fetv.co.kr/news/articleView.html?idxno=303088",
+    "published_at_kst": "2026-05-26T17:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 서비스",
+    "title": "KB금융, AI 기반 보안체계 강화…통합 역량 업그레이드",
+    "description": "그룹 클라우드 환경에 대한 제로트러스트 3단계 구축을 완료했다. 이 사례는 금융업권 내에서 선제적인 구축 사례로 평가받고 있다. 또한, 2025년 3월 수립한 AI 거버넌스를 바탕으로 AI 서비스 수명주기 전 단계에서 31개...",
+    "originallink": "https://www.datasom.co.kr/news/articleView.html?idxno=208707",
+    "link": "https://www.datasom.co.kr/news/articleView.html?idxno=208707",
+    "published_at_kst": "2026-05-26T17:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "대전시, 6월 9~11일 '2026 대한민국 국방산업발전대전' 진행…200여 개 기...",
+    "description": "또 인공지능 기반 유무인복합체계(MUM-T) 발전 국제컨퍼런스, 군수융합 민·군 협력기반 AAM(미래항공모빌리티) 산업 발전 세미나, 우주 데이터센터 통신 인프라 포럼, 군산학 협력기반 국방AX(AI 전환) 발전전략 세미나 등...",
+    "originallink": "http://www.chungnamilbo.co.kr/news/articleView.html?idxno=890431",
+    "link": "http://www.chungnamilbo.co.kr/news/articleView.html?idxno=890431",
+    "published_at_kst": "2026-05-26T17:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "오사카 쇼룸의 AI 직원 '니나'… 인간 신입사원의 자리를 묻다",
+    "description": "업무가 AI로 대체될 수 있다는 점도 보여준다. AI는 이미 현장 업무로 들어왔다 생성형 AI가 처음 등장했을... 이런 이해관계가 겹치면서 AI와 로봇 도입은 개별 기업의 선택을 넘어 산업 정책의 주요 방향으로 떠오르고...",
+    "originallink": "https://www.e-science.co.kr/news/articleView.html?idxno=130007",
+    "link": "https://www.e-science.co.kr/news/articleView.html?idxno=130007",
+    "published_at_kst": "2026-05-26T17:30:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "[게시판] 메가존클라우드, 성공회대와 AI 인재 양성 협력 등 단신",
+    "description": "아하는 이번 인증으로 AI 튜터 및 비서 기능이 탑재된 '5세대 AI 전자 칠판'을 올해 하반기 내 출시할... 디지털플랫폼정부와 AI 기본법 등에 대응하기 위해 공직자의 AI 전문 역량 강화에 최적화된 교육 과정이다....",
+    "originallink": "https://www.aitimes.com/news/articleView.html?idxno=210938",
+    "link": "https://www.aitimes.com/news/articleView.html?idxno=210938",
+    "published_at_kst": "2026-05-26T17:30:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "제조 AI 플랫폼",
+    "title": "“건설은 결국 사람의 산업”, 강일형 영신디엔씨 대표가 말하는 스마트...",
+    "description": "건설업 역시 제조업처럼 데이터 기반 산업으로 재편될 가능성이 높다고 봤다. 공정과... 실제 영신디엔씨는 AI·로봇·플랫폼 기업들과 공동 기술개발과 현장 실증(PoC)을 진행하고...",
+    "originallink": "https://www.venturesquare.net/1079930/",
+    "link": "https://www.venturesquare.net/1079930/",
+    "published_at_kst": "2026-05-26T17:30:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "[퇴근길머니] 코스피, 8,000선 재탈환…고개 숙인 정용진",
+    "description": "신세계 측 조사에 따르면 문제의 '탱크데이' 문구는 직원들이 생성형 인공지능(AI)에 물어보는 과정에서... 이와 함께 AI 반도체 기업 마벨 테크놀로지 등의 실적 발표도 예정돼 있어 AI·반도체 랠리가 이어질지 관심입니다....",
+    "originallink": "http://www.yonhapnewstv.co.kr/news/MYH202605261727015Bj",
+    "link": "https://n.news.naver.com/mnews/article/422/0000868517?sid=101",
+    "published_at_kst": "2026-05-26T17:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 서비스",
+    "title": "경기도교육청, 인공지능(AI)·로보틱스 미래 인재 양성 추진",
+    "description": "이번 과정은 △인공지능(AI)·디지털 산업 분야 이해 △클라우드 컴퓨팅 서비스(AWS) 자격증 연계 교육 △빅테크 기업 산업 동향 체험 △현장 전문가 실무 지도 등 산업 수요 기반 실무 교육 중심으로 구성됐다. 특히 글로벌...",
+    "originallink": "https://www.m-i.kr/news/articleView.html?idxno=1376217",
+    "link": "https://www.m-i.kr/news/articleView.html?idxno=1376217",
+    "published_at_kst": "2026-05-26T17:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "해킹 대중화 시대…“AI 손흥민보다 AI 김민재 키워야”(종합)",
+    "description": "보안과 기업의 신뢰구현 전략’을 주제로 열렸다. 자율형 AI 에이전트 기술 도입이 전 산업계로... OS’ 생성형 AI가 마주한 또 다른 핵심 축인 ‘콘텐츠 신뢰성과 저작권’ 문제에 대한 솔루션도 공개됐다. 데이븐 AI의...",
+    "originallink": "https://www.edaily.co.kr/news/newspath.asp?newsid=04450966645452856",
+    "link": "https://n.news.naver.com/mnews/article/018/0006290937?sid=105",
+    "published_at_kst": "2026-05-26T17:27:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "[단독]LGU+, AI 데이터센터 2030년 400MW로 키운다",
+    "description": "LG유플러스의 첫 번째 전용 GPU 데이터센터로, 이미 사전 수요를 확보한 상태다. 준공 전 고객을... SK텔레콤은 울산 AIDC를 거점으로 장기적으로 1GW 규모 확대를 목표로 하고 있고, KT는 KT클라우드를 중심으로...",
+    "originallink": "https://news.mtn.co.kr/news-detail/2026052614430665565",
+    "link": "https://news.mtn.co.kr/news-detail/2026052614430665565",
+    "published_at_kst": "2026-05-26T17:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "제조 AI 플랫폼",
+    "title": "우주항공청, 900억 투입 항공엔진 국산화···방산수출 새 동력 확보한...",
+    "description": "인공지능(AI) 기반 협동전투무인기가 실전 배치 단계에 들어서면서 엔진의 역할이 단순 비행 동력원에서... 민군 겸용 구조로 물량을 확보하고, 첨단 제조 기술로 단가를 낮추며, 전력 생산 능력으로 차별화한 플랫폼이...",
+    "originallink": "https://www.enetnews.co.kr/news/articleView.html?idxno=50476",
+    "link": "https://www.enetnews.co.kr/news/articleView.html?idxno=50476",
+    "published_at_kst": "2026-05-26T17:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "[분석] LG전자 임원 AX 강연장에 등장한 '텔레그램 봇'의 지능",
+    "description": "가진 기업들은 작은 수정 하나에도 테스트·재실행·자동 검증 루프가 반복되며 토큰 비용이 폭증하는 문제를 겪고 있다. [기자수첩] 클로드 코드의 2만원 짜리 README는 지능일까? 이에 앞서 삼성전자는 외부 생성형 AI로...",
+    "originallink": "https://www.womaneconomy.co.kr/news/articleView.html?idxno=254388",
+    "link": "https://www.womaneconomy.co.kr/news/articleView.html?idxno=254388",
+    "published_at_kst": "2026-05-26T17:24:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "월가 거물 '빌 액먼', 마이크로소프트에 대규모 투자…\"AI 시대 최대 수...",
+    "description": "특히 투자업계는 마이크로소프트의 클라우드 플랫폼 애저(Azure)에 주목하고 있다. 생성형 AI 서비스 확대에는 막대한 데이터센터와 GPU 인프라가 필요한데, 마이크로소프트는 애저(Azure)를 통해 이러한 AI 연산 수요를 직접...",
+    "originallink": "http://www.bizwnews.com/news/articleView.html?idxno=137390",
+    "link": "http://www.bizwnews.com/news/articleView.html?idxno=137390",
+    "published_at_kst": "2026-05-26T17:24:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "조상희 화순전남대병원 교수, 보건복지부 장관 표창",
+    "description": "조상희 화순전남대학교병원 종양내과 교수가 최근 디지털 기반 임상시험 연구 인프라 구축과 AI... 특히 조 교수는 지난해부터 '디지털 스마트 바이오 임상시험 플랫폼 구축사업' 단장을 맡아 의료데이터 통합(Data...",
+    "originallink": "https://www.namdonews.com/news/articleView.html?idxno=911698",
+    "link": "https://www.namdonews.com/news/articleView.html?idxno=911698",
+    "published_at_kst": "2026-05-26T17:24:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "제조 AI 플랫폼",
+    "title": "“서울을 AI 제조업 글로벌 거점으로…1조 외국인 투자 유치할 것”[시...",
+    "description": "조선·화학·에너지 분야의 산업용 AI 플랫폼 시장을 선도하는 기업이다. 이 이사장은 이번 코그나이트 유치로 국내 제조업과의 시너지에 대해서도 기대감을 드러냈다. 그는 “한국은 제조업이 계속 첨단화 돼야...",
+    "originallink": "https://www.sedaily.com/article/20048301?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/011/0004624633?sid=101",
+    "published_at_kst": "2026-05-26T17:24:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "최명진 민주당 김포 도의원 후보, 교통·복지·경제 공약 발표",
+    "description": "풍무역세권 대학병원 조성의 신속 추진을 비롯해 김포형 공공산후조리원 모델 구축, 공공 노인복지시설 확충... 밀착형 플랫폼 고도화, 김포형 치유·에코 순환 모델 확산 등을 제시했다. 최명진 후보는 자신을 “시의회...",
+    "originallink": "https://www.kyeonggi.com/article/20260526580555",
+    "link": "https://n.news.naver.com/mnews/article/666/0000108617?sid=100",
+    "published_at_kst": "2026-05-26T17:23:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "NHN클라우드 ‘팩토리X’ 출격…“AI인프라 기업 도약”",
+    "description": "NHN클라우드는 광주 국가 AI 데이터센터에서 H100 GPU와 국산 신경망처리장치(NPU)를 통합 운영한 경험을 핵심 경쟁력으로 내세웠다. 정부의 ‘AI 컴퓨팅자원 활용기반 강화 사업’을 통해 엔비디아 B200 GPU 7656장을...",
+    "originallink": "https://www.sedaily.com/article/20048370?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/011/0004624630?sid=105",
+    "published_at_kst": "2026-05-26T17:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "퍼즐에이아이-이온엠솔루션 \"병원 혁신 지원\"",
+    "description": "퍼즐에이아이는 이온엠솔루션과 '중소병원 의료 혁신을 위한 AI 기반 EMR 통합 플랫폼 공동사업' 추진을 위한 업무협약(MOU)을 체결했다고 26일 밝혔다. 이번 협약은 중소병원의 진료 및 의무기록 업무를 자동화하고...",
+    "originallink": "https://www.dailymedi.com/news/news_view.php?wr_id=936792",
+    "link": "https://www.dailymedi.com/news/news_view.php?wr_id=936792",
+    "published_at_kst": "2026-05-26T17:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "\"글로벌 AI 전쟁의 승패, 모델 아닌 인프라에 달렸다\" [GCC 2026]",
+    "description": "오 PM은 엔비디아 그래픽처리장치(GPU)의 한계로 '막대한 전력 소모'와 '메모리 병목현상(Memory Wall)'을... K-클라우드 프로젝트 등 정부의 굵직한 지원이 이어지고 있다\"고 말했다. 오 PM은 하드웨어와 소프트웨어를...",
+    "originallink": "https://www.sisajournal.com/news/articleView.html?idxno=374205",
+    "link": "https://n.news.naver.com/mnews/article/586/0000129973?sid=101",
+    "published_at_kst": "2026-05-26T17:20:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "기업 AI 경쟁 핵심은 연결...노션, 개발자용 플랫폼 공개",
+    "description": "우먼타임스 = 심은혜 기자 기업들의 AI 도입 경쟁이 생성형 AI 활용을 넘어 내부·외부 시스템을 얼마나 유기적으로 연결하느냐로 이동하고 있다. 단순히 AI 기능을 붙이는 수준을 넘어 기업 내부 데이터와 업무 흐름...",
+    "originallink": "https://www.womentimes.co.kr/news/articleView.html?idxno=103199",
+    "link": "https://www.womentimes.co.kr/news/articleView.html?idxno=103199",
+    "published_at_kst": "2026-05-26T17:18:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "한국 중심으로 번지는 AI 혁명...아시아, 생성형 인공지능 확산의 핵심...",
+    "description": "AI를 적극적으로 도입한 기업과 그렇지 못한 기업 간 경쟁력 차이가 빠르게 벌어질 가능성이 있으며, 일부 직군에서는 자동화 압력도 확대될 수 있다는 것이다. 그럼에도 글로벌 기술업계에서는 생성형 AI 대중화 흐름이...",
+    "originallink": "https://www.redian.org/news/articleView.html?idxno=256704",
+    "link": "https://www.redian.org/news/articleView.html?idxno=256704",
+    "published_at_kst": "2026-05-26T17:18:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "[ZD SW 투데이] 한진정보통신·아시아나IDT, 공동 해커톤 성료 外",
+    "description": "SW뿐 아니라 클라우드, 보안, 인공지능(AI) 등 여러 분야에서 활발히 활동하고 있는 기업들의 소식을 담은... 마련됐으며, GPU 기반 '고성능 컴퓨팅 자원 지원'과 신경망처리장치(NPU) 기반 '국산 AI 반도체 활용' 두...",
+    "originallink": "https://zdnet.co.kr/view/?no=20260526095519",
+    "link": "https://n.news.naver.com/mnews/article/092/0002424206?sid=105",
+    "published_at_kst": "2026-05-26T17:18:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "100만 토큰이 0.0036달러… 中 딥시크, AI 비용 '4분의 1'로 줄였다",
+    "description": "특히 고객 상담, 코드 검토, 문서 요약, 검색형 에이전트처럼 같은 작업을 대량으로 처리하는 서비스에서는 토큰 단가 차이가 곧 운영비 차이로 이어진다. 딥시크가 할인 가격을 상시화한 것도 AI 사용량이...",
+    "originallink": "https://www.thepublic.kr/news/articleView.html?idxno=305605",
+    "link": "https://www.thepublic.kr/news/articleView.html?idxno=305605",
+    "published_at_kst": "2026-05-26T17:18:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "개원 28주년 한양대류마티스병원, “다학제 협진으로 새로운 도약”",
+    "description": "조수경 기획부장은 중증 류마티스질환 진료 체계 강화, 심층 진료 시스템 구축, 수술 및 시술 인프라 확대, 근골격계 통합 치료 플랫폼 구축, 디지털 헬스 및 AI 기반 진료 고도화 등의 계획을 소개했다. 특히 류마티스병원...",
+    "originallink": "https://health.chosun.com/site/data/html_dir/2026/05/26/2026052603911.html",
+    "link": "https://n.news.naver.com/mnews/article/346/0000110384?sid=103",
+    "published_at_kst": "2026-05-26T17:18:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "“에이전틱 AI 시대, ‘절대적 신뢰성’이 시장 판도 가른다”",
+    "description": "자율적으로 업무를 수행하는 ‘에이전틱 AI’ 도입이 본격화되는 가운데 초거대 AI의 불확실성 한계를... 보안과 기업의 신뢰 구현 전략’을 핵심 의제로 다뤘다. 먼저 김 대표는 생성형 AI가 단순 질의응답이나 초안...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052617104622032",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228968?sid=105",
+    "published_at_kst": "2026-05-26T17:17:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "생성형 AI 도입 기업",
+    "title": "[줌인] KB금융의 'AI 대 AI' 보안 전략...금융 리딩뱅크의 '보안 신뢰'가...",
+    "description": "금융권 '망분리 완화' 흐름 겨냥한 '제로 트러스트' 선제 도입 현재 금융권은 정부 주도의 규제 완화에 발맞춰 기존의 경직된 망분리 정책에서 벗어나 클라우드와 생성형 AI 활용을 확대하는 추세다. 문제는 망이...",
+    "originallink": "http://www.dailypop.kr/news/articleView.html?idxno=99156",
+    "link": "http://www.dailypop.kr/news/articleView.html?idxno=99156",
+    "published_at_kst": "2026-05-26T17:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 생성형 AI 구축",
+    "title": "[포토뉴스] 안형준 국가데이터처장, AI데이터 전문기업 ‘엔코아’ 방문...",
+    "description": "이번 방문은 인공지능(AI) 전환 시대를 맞아 공공데이터의 품질 및 표준화 체계 구축에 대한 현장 의견을... 안 처장은 데이터 가공·관리 솔루션 시연을 참관하고, 생성형 AI 시대에 선결돼야 할 데이터 거버넌스의...",
+    "originallink": "https://www.seoul.co.kr/news/economy/2026/05/26/20260526500248?wlog_tag3=naver",
+    "link": "https://n.news.naver.com/mnews/article/081/0003647007?sid=101",
+    "published_at_kst": "2026-05-26T17:14:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "“AI·정밀의료 등 미래의학 로드맵 제시”… 고려대의료원, 연구중심병...",
+    "description": "이번 심포지엄은 연구중심병원 인증제 시행 1주년을 맞아 마련된 행사로, AI·정밀의료·디지털헬스 기반... 연구중심병원이 단일 기관의 성과를 넘어 국가 바이오헬스 산업을 이끄는 핵심 플랫폼으로 확장되고 있음을...",
+    "originallink": "https://health.chosun.com/site/data/html_dir/2026/05/26/2026052603850.html",
+    "link": "https://n.news.naver.com/mnews/article/346/0000110383?sid=103",
+    "published_at_kst": "2026-05-26T17:12:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 클라우드",
+    "title": "\"어제의 경험으로 내일의 변화를\" NHN클라우드가 띄운 AI 공장 'FactoryX'",
+    "description": "NHN클라우드는 이처럼 AI 인프라 구축부터 GPU 운영 최적화, 에이전트 실행까지 이어지는 통합 AI 실행 환경을 구현하고, 기업이 AI를 실제 비즈니스에 지속적으로 적용·확장할 수 있도록 지원할 계획이다. 김동훈...",
+    "originallink": "https://www.fortunekorea.co.kr/news/articleView.html?idxno=52602",
+    "link": "https://www.fortunekorea.co.kr/news/articleView.html?idxno=52602",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "금융 생성형 AI",
+    "title": "증권가 새해 청사진 '결실'…IMA·AI·내부통제 강화",
+    "description": "ⓒ연합뉴스 올해 초 주요 증권사 CEO들이 일제히 종합투자계좌(IMA) 시장 선점, 생성형 인공지능(AI)의 전사적 도입, 오는 7월 의무화되는 금융회사 책무구조도의 안정적 안착 등을 핵심 과제로 제시한 가운데 이 같은...",
+    "originallink": "https://daily.hankooki.com/news/articleView.html?idxno=1370663",
+    "link": "https://daily.hankooki.com/news/articleView.html?idxno=1370663",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "금융 생성형 AI",
+    "title": "노크랩, 고려대 기술지주서 2억원 추가 유치…기업가치 2.3배↑",
+    "description": "생성형 AI(인공지능) 솔루션 전문기업 노크랩이 고려대학교 기술지주가 운영하는 '고려대 Tiger... 회사는 최근 KB금융그룹의 우수 스타트업 육성 프로그램 '2026 KB스타터스'에도 최종 선정됐다. 이번 선정으로...",
+    "originallink": "https://www.mt.co.kr/industry/2026/05/26/2026052611194414583",
+    "link": "https://n.news.naver.com/mnews/article/008/0005362997?sid=101",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 추론 비용",
+    "title": "[현장] 하드웨어 선점 넘어 '가동률 경쟁'… NHN클라우드, AI 풀스택 '팩...",
+    "description": "김태형 CTO는 발표에서 \"H100 GPU 한 장이 유휴 상태로 유지될 경우 시간당 약 2.1달러 수준의 비용 손실이... 포항 데이터센터를 중심으로 국내 NPU 기업들과 협업을 진행 중이며, 향후 추론형 AI 시장 확대에 맞춰 국산 AI...",
+    "originallink": "http://www.biztribune.co.kr/news/articleView.html?idxno=354147",
+    "link": "http://www.biztribune.co.kr/news/articleView.html?idxno=354147",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "망분리 AI",
+    "title": "KB금융, ‘AI 대 AI’ 보안전략 가동…그룹 통합 보안체계 강화",
+    "description": "악성메일 대응 훈련에도 AI 에이전트를 적용해 최신 피싱 유형을 반영한 훈련 시나리오를 자동 생성·배포하고 있다. 제로트러스트 기반 보안체계도 확대하고 있다. KB금융은 망분리, 다중인증, 접근통제 등 기존...",
+    "originallink": "https://www.socialvalue.kr/news/view/1065600234596663",
+    "link": "https://www.socialvalue.kr/news/view/1065600234596663",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "AI 데이터센터 몰려오는데…지역 청년 일자리는 '깜깜'",
+    "description": "부지에 삼성SDS가 추진하는 '구미 AI 데이터센터' 건립이 예정돼 있다. 또 구미국가5산업단지에는... 광양에서는 전남클라우드데이터센터와 KT, 마이크로소프트(MS) 등이 참여하는 데이터센터 사업이 오는 7월 착공을 목표로...",
+    "originallink": "https://www.kyongbuk.co.kr/news/articleView.html?idxno=4073840",
+    "link": "https://www.kyongbuk.co.kr/news/articleView.html?idxno=4073840",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 클라우드 GPU 서비스",
+    "title": "GPU 운영·AI 에이전트 관리 한 번에",
+    "description": "팩토리X는 인프라·플랫폼·서비스의 3대 레이어로 구성된 통합 솔루션으로, 대규모 GPU 자원을 활용하고자 하는 기업이나 사내 AI 전환(AX)을 추진하는 기업들이 핵심 타깃이다. NHN클라우드는 국내 최대 규모 GPU...",
+    "originallink": "https://www.mk.co.kr/article/12057952",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685139?sid=105",
+    "published_at_kst": "2026-05-26T17:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "금융 생성형 AI",
+    "title": "<IT 사랑방> 인공지능 윤리와 멀티클라우드 거버넌스 - 신뢰의 ...",
+    "description": "이는 클라우드가 금융, 의료, 제조, 공공정책까지 산업 전반을 포괄하는 국가차원의 인프라이자... 배경에는 생성형 인공지능 학습데이터의 출처와 소유권 문제가 있다. 단적인 예로, 유럽연합은 ‘AI...",
+    "originallink": "http://www.ifs.or.kr/bbs/board.php?bo_table=News&wr_id=55787",
+    "link": "http://www.ifs.or.kr/bbs/board.php?bo_table=News&wr_id=55787",
+    "published_at_kst": "2026-05-26T17:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 추론 비용",
+    "title": "\"GPU부터 AI 에이전트까지\"…NHN클라우드, 'FactoryX'로 AI 풀스택 시장 ...",
+    "description": "Live)'와 AI 개발 플랫폼 'AI 이지메이커(AI EasyMaker)'를 공개했다. GPU 라이브는 학습과 추론 워크로드를... 동시에 토큰 단위 사용량 관리 기능을 통해 프로젝트별 AI 운영 비용도 통제 가능하도록 했다. 안성민 CEO는...",
+    "originallink": "https://www.youthdaily.co.kr/news/article.html?no=219722",
+    "link": "https://www.youthdaily.co.kr/news/article.html?no=219722",
+    "published_at_kst": "2026-05-26T17:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 비용 절감",
+    "title": "전쟁터 된 AI 인프라 구축 현장, NHN클라우드 '팩토리X'로 승부수",
+    "description": "팩토리X는 ▲AI 워크로드에 최적화된 물리 '인프라' ▲GPU 자원 효율을 극대화하는 '플랫폼' ▲기업용 AI... 안성민 NHN엔터프라이즈 대표는 \"생성형 AI를 도입한 기업의 95%가 매출 증가나 비용 절감 등 성과를 내지...",
+    "originallink": "https://www.sidae.com/article/2026052610180952406",
+    "link": "https://n.news.naver.com/mnews/article/417/0001144860?sid=105",
+    "published_at_kst": "2026-05-26T17:05:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "36년 오피스 단종 선언…한컴, '에이전틱 OS'로 14조 시장 노린다",
+    "description": "한컴의 최종 타깃은 빅테크의 클라우드를 직접 도입하기 어려운 공공, 국방, 금융 등 고도의 데이터... 글로벌 데이터 주권 인프라 수요의 34.2%를 차지하는 유럽 지역에서의 상용화도 속도를 낸다. 한컴은 현재...",
+    "originallink": "http://www.thevaluenews.co.kr/news/view.php?idx=198993",
+    "link": "http://www.thevaluenews.co.kr/news/view.php?idx=198993",
+    "published_at_kst": "2026-05-26T17:04:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 비용 절감",
+    "title": "[DD퇴근길] BTS 다음 타자는 AI…K-콘텐츠에 불어온 엔터테크 열풍",
+    "description": "비용절감은 긍정적이지만 반대편에서는 \"이러다 내 목소리, 얼굴, 대본을 AI에게 통째로 빼앗기는 것... 초창기에는 그래픽처리장치(GPU) 확보가 최대 화두였는데 최근에는 사정이 좀 바뀌었습니다. 하드웨어 확보는...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052616591643646",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228966?sid=105",
+    "published_at_kst": "2026-05-26T17:03:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "안교재 \"수원의 수부도시 DNA 다시 깨우겠다...행정도시 넘어 경제특례...",
+    "description": "\"군공항 문제는 지역 갈등이 아니라 시민 안전과 국방력의 문제입니다. 장기적으로는 수원군공항 폐쇄... 화성의 데이터센터와 수원의 AI·반도체 연구 인프라가 연결된다면 경기남부 전체의 디지털 경쟁력도 커질 수...",
+    "originallink": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003237549&CMPT_CD=P0010&utm_source=naver&utm_medium=newsearch&utm_campaign=naver_news",
+    "link": "https://n.news.naver.com/mnews/article/047/0002517151?sid=162",
+    "published_at_kst": "2026-05-26T17:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "세종디엑스, '디지털 마케팅 인재 양성' 앞장",
+    "description": "블록체인 및 AI 기반 혁신 플랫폼 기업 세종디엑스(대표 박효진)는 한국외국어대학교 G-RISE(Regional Innovation... 검색증강생성(RAG) 기반 문서 분석 및 지능형 응답 기술을 자체 개발하며 AI 응답 정확도를 높였고, 보안...",
+    "originallink": "https://www.datanet.co.kr/news/articleView.html?idxno=211939",
+    "link": "https://www.datanet.co.kr/news/articleView.html?idxno=211939",
+    "published_at_kst": "2026-05-26T17:00:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "[현장] '빅3' 밀리던 NHN클라우드 김동훈 대표, 첫 연간 흑자 자신하며 ...",
+    "description": "\"인공지능(AI)이 필요한 모든 기관과 기업이 NHN클라우드의 타깃 고객이 될 것이다. 독파모(독자 AI... 국내 클라우드 시장 '빅3'를 꼽으면 NHN클라우드는 삼성SDS와 네이버클라우드, KT클라우드에 밀리는 양상을 보였다....",
+    "originallink": "https://www.huffingtonpost.kr/article/257458",
+    "link": "https://www.huffingtonpost.kr/article/257458",
+    "published_at_kst": "2026-05-26T16:56:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 생성형 AI 구축",
+    "title": "AI 판 키우는 삼성전자, 빅테크 3종·가우스 '투트랙'",
+    "description": "공공뉴스=이화종 기자 삼성전자 디바이스경험(DX)부문이 현업 임직원의 업무 생산성 혁신을 위해 글로벌 빅테크의 외부 생성형 인공지능(AI) 서비스를 내달 중 전격 도입한다. 이에 따라 핵심 기밀을 다루는 업무는...",
+    "originallink": "http://www.00news.co.kr/news/articleView.html?idxno=104042",
+    "link": "http://www.00news.co.kr/news/articleView.html?idxno=104042",
+    "published_at_kst": "2026-05-26T16:54:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "김해시장 선거 나선 여야 후보들 주요 공약은?",
+    "description": "국제물류진흥지역 특별법 활용, 스마트물류 플랫폼 구축, AI·방산·전력반도체 산업 유치 등도 연장선에... 달빛어린이병원 주요 거점 확충, 지역사랑상품권 확대 발행 등을 내세웠다. 여기에 김해형 민생회복 지원금 20만...",
+    "originallink": "https://www.newsgn.com/news/articleView.html?idxno=554004",
+    "link": "https://www.newsgn.com/news/articleView.html?idxno=554004",
+    "published_at_kst": "2026-05-26T16:52:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "금융 생성형 AI",
+    "title": "“AI 투자액 20% 보안에”…금감원, 금융권 디지털통제 강화",
+    "description": "금융감독원이 금융권의 인공지능(AI) 활용 확산에 맞춰 보안 투자와 위험관리 체계 강화에 나선다. 생성형 AI 도입 경쟁이 본격화면서 내부정보 유출과 AI 오작동, 사이버 공격 등 새로운 리스크 우려가 커지자 금융당국도...",
+    "originallink": "https://www.etoday.co.kr/news/view/2587800",
+    "link": "https://www.etoday.co.kr/news/view/2587800",
+    "published_at_kst": "2026-05-26T16:50:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "'AI發 고용 한파' 덮친 충청 \"어쩌나‥\"",
+    "description": "높을수록 AI 대체 가능성이 크다는 의미다. 이밖에 금융사무 종사자(0.579), 고객상담·모니터 요원(0.57), 통계... 5'를 선보였고 최근엔 스스로 보고서를 작성하는 등 주도적 업무를 수행하는 '에이전트형 AI' 경쟁으로...",
+    "originallink": "https://www.ggilbo.com/news/articleView.html?idxno=1160319",
+    "link": "https://www.ggilbo.com/news/articleView.html?idxno=1160319",
+    "published_at_kst": "2026-05-26T16:46:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "[병원단신]한양대류마티스병원, 28주년 맞아 중증 질환 특화·다학제 협...",
+    "description": "치료 플랫폼 구축, 디지털 헬스 및 AI 기반 진료 고도화 등 구체적인 추진 계획을 소개했다. 류마티스병원은 최근 조직 개편을 통해 기획부와 대외협력팀을 신설하고, 공유의사결정실 및 임상정밀의료실을 구축하는 등...",
+    "originallink": "https://www.getnews.co.kr/news/articleView.html?idxno=870951",
+    "link": "https://www.getnews.co.kr/news/articleView.html?idxno=870951",
+    "published_at_kst": "2026-05-26T16:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 GPUaaS AI 클라우드",
+    "title": "김동훈 NHN클라우드 대표 \"'팩토리X' 통해 AI G3 강국 도약 견인\"",
+    "description": "4EF(엑사플롭스) 규모의 국내 최초 엑사스케일 AI 클러스터를 운영하고 있다. NHN클라우드는 팩토리X... 향후 NHN클라우드는 공공과 민간을 아우르는 영역에서 범용 GPUaaS(서비스형 GPU)부터 맞춤형 프라이빗 AI...",
+    "originallink": "https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065579909469061",
+    "link": "https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065579909469061",
+    "published_at_kst": "2026-05-26T16:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "NHN클라우드, 풀스택 브랜드 ‘팩토리엑스’ 공개… “매출 절반 AI서 낸...",
+    "description": "NHN클라우드가 AI 인프라·플랫폼·서비스를 아우르는 풀스택 브랜드 ‘NHN 팩토리엑스(FactoryX)’를 26일... 하반기 출시 예정으로 공개했다. MIT 2025년 NANDA 보고서를 인용해 생성형 AI 파일럿 프로젝트의 95%가 실제...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052616363722771",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228962?sid=004",
+    "published_at_kst": "2026-05-26T16:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 GPUaaS AI 클라우드",
+    "title": "[AT 현장] NHN클라우드, AI 풀스택 ‘FactoryX’ 출범…“AI 경쟁 핵심은...",
+    "description": "NHN클라우드는 공공과 민간을 아우르는 영역에서 범용 GPUaaS(서비스형 GPU)부터 맞춤형 프라이빗 AI 인프라까지 시장의 다양한 수요에 전방위로 대응하며 사업 영역을 확장해 나갈 계획이다. 김 대표는 “국내...",
+    "originallink": "https://www.asiatime.co.kr/article/20260526500298",
+    "link": "https://www.asiatime.co.kr/article/20260526500298",
+    "published_at_kst": "2026-05-26T16:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 생성형 AI 구축",
+    "title": "경북대, 업스테이지와 'AI 네이티브 캠퍼스 구축' 협약",
+    "description": "국산 AI 기술을 대학 캠퍼스에 직접 적용·검증하고, 앞으로 공공과 교육 분야로 확산 가능한 성공 모델을 제시한다는 계획입니다. 협약에 따라 경북대는 오는 8월부터 업스테이지의 거대언어모델 기반의 생성형 AI...",
+    "originallink": "https://dgmbc.com/NewsArticle/842378",
+    "link": "https://n.news.naver.com/mnews/article/657/0000051814?sid=102",
+    "published_at_kst": "2026-05-26T16:35:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 생성형 AI 구축",
+    "title": "국가데이터처, 데이터 전문기업 엔코아 방문…AI 시대 공공데이터 품질...",
+    "description": "국가데이터처는 안형준 처장이 서울 마포구에 위치한 데이터 전문기업 엔코아를 방문해 데이터 가공·관리 솔루션 시연을 참관하고, 생성형 AI 시대 데이터 거버넌스 구축과 공공데이터 민간 활용 확대 방안을...",
+    "originallink": "https://www.news1.kr/economy/trend/6177980",
+    "link": "https://n.news.naver.com/mnews/article/421/0008966953?sid=101",
+    "published_at_kst": "2026-05-26T16:35:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "양자컴퓨터주 왜 또 불붙었나, 포톤·드림시큐리티·엑스게이트가 뛴 이...",
+    "description": "이 칩은 양자난수생성기 칩과 암호통신 기능 칩을 결합한 보안칩으로, 공공·국방·통신망 보안 시장과... 양자컴퓨팅은 국가 안보와 AI 인프라의 핵심 기술로 부상하고 있지만, 국내 상장사 상당수는 아직 양자컴퓨터를...",
+    "originallink": "https://www.betanews.net/article/view/beta202605260087",
+    "link": "https://www.betanews.net/article/view/beta202605260087",
+    "published_at_kst": "2026-05-26T16:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 GPUaaS AI 클라우드",
+    "title": "“대한민국 AI G3 시대 이끈다”…NHN, AI 풀스택 브랜드 ‘FactoryX’ 공...",
+    "description": "NHN클라우드는 앞으로 공공·민간 시장 전반에서 GPUaaS(서비스형 GPU)부터 맞춤형 프라이빗 AI 인프라까지 사업 영역을 확대할 계획이다. 김동훈 대표는 “국내 기업들이 데이터 주권을 지키며 AI 비즈니스를...",
+    "originallink": "https://www.ceoscoredaily.com/page/view/2026052615431773725",
+    "link": "https://www.ceoscoredaily.com/page/view/2026052615431773725",
+    "published_at_kst": "2026-05-26T16:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "커넥토, 경기콘텐츠진흥원 '2026 초기성장 스케일업' 사업 선정",
+    "description": "커넥토는 육아 생태계의 AX(AI 전환)를 위한 AI(인공지능) 에이전트 플랫폼 'KYK(Know Your Kid)'를 개발 중이다. 이... 업체에 따르면 범용 AI 모델의 한계를 보완하고자 양육·교육 분야 검증 데이터만을 활용하는 RAG(검색 증강...",
+    "originallink": "https://www.mt.co.kr/industry/2026/05/26/2026052610164855732",
+    "link": "https://n.news.naver.com/mnews/article/008/0005362951?sid=101",
+    "published_at_kst": "2026-05-26T16:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "병원 AI 플랫폼",
+    "title": "에버엑스 무릎 통증 DTx ‘모라 큐어’, ESSKA 학술상 수상",
+    "description": "AI 기반 동작 분석 기술과 디지털 재활 솔루션을 기반으로 근골격계 질환의 평가와 치료, 관리를 지원하는 디지털 헬스케어 기업이다. 에버액스는 모라 큐어를 비롯한 디지털 치료·재활 플랫폼을 통해 병원 진료와...",
+    "originallink": "https://swtvnews.com/news/newsview.php?ncode=1065594337710765",
+    "link": "https://swtvnews.com/news/newsview.php?ncode=1065594337710765",
+    "published_at_kst": "2026-05-26T16:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "망분리 AI",
+    "title": "\"AI 공격엔 AI로 대응\"... KB금융, 그룹 보안체계 고도화",
+    "description": "훈련에도 AI 에이전트를 적용했다. 최신 피싱 수법을 반영한 훈련 시나리오를 자동 생성·배포해 대응 역량을 높이고 있다는 설명이다. KB금융은 기존 망분리와 다중인증(MFA), 접근통제 체계를 유지하는 동시에 '절대...",
+    "originallink": "http://www.thefirstmedia.net/news/articleView.html?idxno=199980",
+    "link": "http://www.thefirstmedia.net/news/articleView.html?idxno=199980",
+    "published_at_kst": "2026-05-26T16:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 생성형 AI 구축",
+    "title": "데이터처, AI 시대 공공데이터 유통망 구축 박차…\"초연결 체계 만들것...",
+    "description": "안 처장은 현장에서 생성형 인공지능(AI) 시대에 선결 요건인 데이터 거버넌스 구축과 공공 데이터 민간 활용도 제고 방안 등을 논의했다. 엔코아는 약 700개 고객사를 대상으로 1200여개의 공공·민간 데이터 프로젝트를...",
+    "originallink": "https://www.newsis.com/view/NISX20260526_0003644482",
+    "link": "https://n.news.naver.com/mnews/article/003/0013968259?sid=101",
+    "published_at_kst": "2026-05-26T16:24:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "NHN Cloud sells out GPU resources, unveils AI brand 'FactoryX'",
+    "description": "\"Through FactoryX, we will fully support AI transformation across both the public and private sectors.\" The company expects AI revenue to nearly triple its share this year, from 13 percent to 38...",
+    "originallink": "https://koreajoongangdaily.joins.com/news/2026-05-26/business/industry/NHN-Cloud-sells-out-GPU-resources-unveils-AI-brand-FactoryX/2601095",
+    "link": "https://n.news.naver.com/mnews/article/640/0000088983?sid=101",
+    "published_at_kst": "2026-05-26T16:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 GPUaaS AI 클라우드",
+    "title": "NHN클라우드 “GPU 낭비 없이 쓰는 기업 7%뿐… ‘팩토리X’로 AX 혁신 지...",
+    "description": "NHN클라우드는 ‘팩토리X’ 출범을 기점으로 단순 클라우드 사업자를 넘어 기업의 AI 전환을 안정적으로 지원하는 ‘국가대표 AI 인프라 기업’으로 거듭나겠다고 밝혔다. 범용 GPUaaS(서비스형 GPU)부터 맞춤형 AI...",
+    "originallink": "https://biz.chosun.com/it-science/ict/2026/05/26/K73CFXG73NGZLDYOLJYKKMARGM/?utm_source=naver&utm_medium=original&utm_campaign=biz",
+    "link": "https://n.news.naver.com/mnews/article/366/0001167198?sid=105",
+    "published_at_kst": "2026-05-26T16:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "토스, 남다른 인공지능 감각…샘 올트먼號 오픈AI와 맞손 잡은 배경",
+    "description": "금융 플랫폼 경쟁이 서비스 출시 속도와 운영 효율 싸움으로 옮겨가면서 토스도 AI를 조직 운영과 서비스... 팀별로 AI를 활용해 해결하려는 과제가 있으면 사내 대형 언어 모델(LLM) 전문가가 적용 사례와 구현 방식을...",
+    "originallink": "https://www.bloter.net/news/articleView.html?idxno=663452",
+    "link": "https://n.news.naver.com/mnews/article/293/0000085302?sid=101",
+    "published_at_kst": "2026-05-26T16:09:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "AI 투자 끝물 아니다…모건스탠리 “반도체 시장 2천조까지 커진다”",
+    "description": "모건스탠리는 AI 서비스가 단순 추론(Inference) 중심에서 실제 실행 단계로 발전하면서 GPU뿐 아니라 작업 분배와 시스템 제어를 담당하는 CPU 역할도 빠르게 커지고 있다고 설명했다. 이에 따라 AI 워크로드를...",
+    "originallink": "http://www.joseilbo.com/news/news_read.php?uid=568938&class=17&grp=",
+    "link": "https://n.news.naver.com/mnews/article/123/0002383656?sid=101",
+    "published_at_kst": "2026-05-26T16:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "[ED] Welcome voice on moral AI",
+    "description": "intelligence (AI). Pope Leo, in his much-awaited first encyclical, called for external... the private sector and strongly called for external regulation. \"It is not enough to invoke ethics in the...",
+    "originallink": "https://www.koreatimes.co.kr/path/A2026052611450005730",
+    "link": "https://www.koreatimes.co.kr/path/A2026052611450005730",
+    "published_at_kst": "2026-05-26T16:00:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen3 추론 서비스",
+    "title": "DMind AI, Web3 특화 LLM 벤치마크 연구 공개",
+    "description": "객관식 문항 외에도 스마트 컨트랙트 디버깅, 온체인 수치 추론 등 실제 활용 상황을 반영한 과제를 포함했다. 연구팀은 GPT-5 시리즈, Claude, Gemini, DeepSeek, Grok, Qwen 등 31개 AI 모델을 대상으로 성능을...",
+    "originallink": "https://biz.chosun.com/industry/business_info/2026/05/26/M6GANPX7KRBRJMMQPJIJA6PNPE/?utm_source=naver&utm_medium=original&utm_campaign=biz",
+    "link": "https://n.news.naver.com/mnews/article/366/0001167184?sid=101",
+    "published_at_kst": "2026-05-26T15:48:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "포스코, AI로 제철소·사무실 바꾼다…'인텔리전트 전환' 속도",
+    "description": "지난 2023년 포스코DX와의 협업을 통해 사내 업무시스템과 결합한 P-GPT(Private GPT) 플랫폼을 도입하고, 직원의 의사결정이 필요한 업무를 대상으로 AI를 활용하고 있다. 포스코는 제조/사무 인텔리전트화 확산을 통해...",
+    "originallink": "https://www.news1.kr/industry/general-industry/6177836",
+    "link": "https://n.news.naver.com/mnews/article/421/0008966706?sid=101",
+    "published_at_kst": "2026-05-26T15:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 RAG 구축",
+    "title": "경북대, 업스테이지와 업무협약…국산 AI 기반 AI 네이티브 캠퍼스 구축",
+    "description": "양 기관은 협약에 따라 국산 AI 기반의 AI 네이티브 캠퍼스 구현, 공공·교육 분야 실증모델 구축, 교육·연구... 검색증강생성(RAG) 서비스를 단계적으로 실증한다. 2027년부터는 이러한 우수사례를 대외적으로 확산해...",
+    "originallink": "https://www.etnews.com/20260526000373",
+    "link": "https://n.news.naver.com/mnews/article/030/0003431335?sid=102",
+    "published_at_kst": "2026-05-26T15:42:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "Creative MUT Chosen to Transform Seoul's Hidden Underground Space into a ...",
+    "description": "public-private partnership model designed to maximize the value of public assets. Leveraging its proprietary hologram technology and AI-powered interactive engines, the company plans to open the...",
+    "originallink": "https://www.nc.press/news/articleView.html?idxno=616411",
+    "link": "https://www.nc.press/news/articleView.html?idxno=616411",
+    "published_at_kst": "2026-05-26T15:41:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "Think tank revises up S. Korea's 2026 growth outlook to 2.5 pct on robust...",
+    "description": "intelligence (AI) infrastructure, the KIET said. The country's yearly exports surpassed the $700... Private consumption is forecast to increase 2.2 percent from a year earlier in 2026, thanks to...",
+    "originallink": "https://en.yna.co.kr/view/AEN20260526008000320?input=2106m",
+    "link": "https://n.news.naver.com/mnews/article/001/0016099811?sid=104",
+    "published_at_kst": "2026-05-26T15:40:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 CSP AI 추론 서비스",
+    "title": "﻿\"국가대표 AI 인프라 기업 도약\" NHN클라우드, '팩토리X' 공개 (현장)",
+    "description": "\"GPU 인프라 구축부터 운영, AI 서비스 실행까지 아우르는 통합 실행 환경 팩토리X를 기반으로 대한민국 AI... 이렇듯 폭발적으로 증가 중인 GPU 수요에 기민하게 대응하며 국내 선두 'AI CSP'로서 시장지배력을 더욱...",
+    "originallink": "https://www.mhj21.com/news/articleView.html?idxno=252348",
+    "link": "https://www.mhj21.com/news/articleView.html?idxno=252348",
+    "published_at_kst": "2026-05-26T15:40:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 GPUaaS AI 클라우드",
+    "title": "NHN클라우드, AI 풀스택 브랜드 ‘팩토리X’ 발표",
+    "description": "향후에는 공공과 민간을 아우르는 영역에서 범용 GPUaaS(서비스형 GPU)부터 맞춤형 프라이빗 AI 인프라까지 시장의 다양한 수요에 전방위로 대응하며 사업 영역을 확장해 나갈 계획이다. 김동훈 대표는 “국내...",
+    "originallink": "https://www.mk.co.kr/article/12057731",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685047?sid=101",
+    "published_at_kst": "2026-05-26T15:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "공공 RAG 구축",
+    "title": "경북대, 업스테이지와 손잡고 AI 네이티브 캠퍼스 추진",
+    "description": "적용하고 공공·교육 분야로 확산 가능한 모델을 구축하기 위해 마련됐다.양 기관은 국산 AI 기반 캠퍼스... 검색증강생성(RAG) 서비스도 단계적으로 도입한다. 대학은 2027년 이후 관련 사례를 다른 국립대와 공공기관...",
+    "originallink": "https://www.kbsm.net/news/view.php?idx=520775",
+    "link": "https://www.kbsm.net/news/view.php?idx=520775",
+    "published_at_kst": "2026-05-26T15:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 비용 절감",
+    "title": "OWC, 썬더볼트 5 기반 AI 가속기 및 스토리지 허브 'OWC Stack AI' 발표",
+    "description": "OWC, 컴퓨텍스 2026에서 Thunderbolt 5 AI 가속기 및 스토리지 허브 공개 시연 로컬 환경에서 대규모 AI 모델 구동 지원하여 클라우드 비용 절감 및 데이터 보안 강화 Thunderbolt 5의 높은 대역폭과 고속 플래시를 통해 GPU...",
+    "originallink": "https://www.thisisgame.com/articles/424568",
+    "link": "https://www.thisisgame.com/articles/424568",
+    "published_at_kst": "2026-05-26T15:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "망분리 AI",
+    "title": "KB금융, ‘AI 공격엔 AI로’…그룹 차원 사이버보안 체계 고도화",
+    "description": "AI 에이전트를 적용해 최신 피싱 수법을 반영한 훈련 시나리오를 자동 생성·배포하는 방식으로 임직원 보안 대응 역량을 끌어올리고 있다. ‘절대 신뢰하지 않는다’…제로트러스트 전면 확대 KB금융은 기존 망분리...",
+    "originallink": "https://www.todayeconomic.com/news/article.html?no=30719",
+    "link": "https://www.todayeconomic.com/news/article.html?no=30719",
+    "published_at_kst": "2026-05-26T15:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "조달청 AI 플랫폼 구축",
+    "title": "[기업 인사이트] 베일 벗은 'YH트리니티' 김영호·김윤회 투톱, 융합 플...",
+    "description": "조달청 나라장터 등록 전문업체인 인엠스는 공공 조달대행과 태양광 EPC, 발전사업자(SPC) 운영을 맡아... △태양광 자가소비형 PPA(전력구매계약) △공공 영상보안 △AI 기반 데이터 플랫폼 △그래핀 및 난연 신소재...",
+    "originallink": "https://www.sjsori.com/news/articleView.html?idxno=86073",
+    "link": "https://www.sjsori.com/news/articleView.html?idxno=86073",
+    "published_at_kst": "2026-05-26T15:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "정준영 계룡시장 후보 \"떠나는 도시가 아니라 돌아오는 계룡 만들겠다\"",
+    "description": "이어 \"계룡은 국방도시라는 강점과 우수한 생활환경을 갖고 있지만, 청년층이 안정적으로 미래를 설계할... 추진, △EBS AI 공공학습센터 운영, △생활문화·체육 인프라 확대 등을 추진하겠다고 약속했다. 정 후보는 \"아이...",
+    "originallink": "http://www.cctimes.kr/news/articleView.html?idxno=908561",
+    "link": "http://www.cctimes.kr/news/articleView.html?idxno=908561",
+    "published_at_kst": "2026-05-26T15:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "정준영 \"청년이 돌아오는 계룡 만들겠다\"",
+    "description": "추진 △EBS AI 공공학습센터 운영 △생활문화·체육 인프라 확대 등을 주요 공약으로 제시했다. 특히 정 후보는... 이어 \"계룡은 국방도시라는 강점과 우수한 생활환경을 갖고 있지만 청년층이 안정적으로 미래를 설계할...",
+    "originallink": "http://www.dtnews24.com/news/articleView.html?idxno=811918",
+    "link": "http://www.dtnews24.com/news/articleView.html?idxno=811918",
+    "published_at_kst": "2026-05-26T15:32:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 비용 절감",
+    "title": "中 딥시크 가격 인하 공세에 글로벌 AI 가격 경쟁 본격화",
+    "description": "또 비용 절감분이 이용자 요금 인하보다 AI 기업의 수익성 개선에 먼저 반영될 가능성도 거론했다. 이 같은... 미국의 대중국 첨단 반도체 수출 규제로 중국 기업들의 엔비디아 고성능 GPU 확보가 어려워진 가운데, 중국 AI...",
+    "originallink": "https://www.ekoreanews.co.kr/news/articleView.html?idxno=86208",
+    "link": "https://www.ekoreanews.co.kr/news/articleView.html?idxno=86208",
+    "published_at_kst": "2026-05-26T15:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "엔비디아 GPU 클라우드 파트너십",
+    "title": "NHN클라우드, 데이터센터 수요 폭증에 흑자전환 기대감",
+    "description": "기반으로 엔비디아 B200 GPU 7656장 및 단일 클러스터 4080장을 운용하고 있다. NHN클라우드는 선제적으로... 생태계 확장을 위한 파트너십 구축 및 인수합병(M&A) 작업도 순항 중이다. 자회사 NHN인재아이엔씨와...",
+    "originallink": "https://news.dealsitetv.com/articles/170929",
+    "link": "https://news.dealsitetv.com/articles/170929",
+    "published_at_kst": "2026-05-26T15:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "유용원 의원, 북한 EMP 공격 대비 위한 범정부 차원 대책 마련 촉구 내용...",
+    "description": "국회 국방위원회 소속 국민의힘 유용원 의원이 북한의 전자기무기(EMP) 위협이 고도화되고 있는 가운데... 국가 AI 데이터센터는 국내 인공지능 산업 경쟁력 강화와 클라우드 산업 발전을 위한 핵심 인프라 역할을...",
+    "originallink": "http://www.newsworker.co.kr/news/articleView.html?idxno=428450",
+    "link": "http://www.newsworker.co.kr/news/articleView.html?idxno=428450",
+    "published_at_kst": "2026-05-26T15:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국방 AI 인프라",
+    "title": "핵잠 띄운 이재명 대통령…“안보 우리 힘으로 책임”",
+    "description": "진해는 해군 잠수함 전력과 조선·방산 인프라가 집중된 지역으로, 정부가 원잠 개발을 군 전력 강화와 국내... 원잠 개발과 전작권 환수, AI 기반 미래전 전환을 하나의 패키지로 제시한 것은 단순한 국방 현안 발표를 넘어...",
+    "originallink": "https://www.kyeonggi.com/article/20260526580365",
+    "link": "https://n.news.naver.com/mnews/article/666/0000108566?sid=100",
+    "published_at_kst": "2026-05-26T15:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "한국인 10명 중 6명 “AI, 개인 금융 코치 역할 기대”",
+    "description": "이 기업은 도입한 플랫폼을 활용해 AI 에이전트에게도 사람과 동일한 신원 확인·거버넌스 체계를 적용하는... 예를 들어 금융 자문·은행 업무 에이전트는 고객 포트폴리오와 상담 이력을 분석해 회의 자료를 생성하고...",
+    "originallink": "https://biz.heraldcorp.com/article/10756262?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/016/0002648256?sid=105",
+    "published_at_kst": "2026-05-26T15:17:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "망분리 AI",
+    "title": "로그인 후 보안 공백 막아내는 한컴 AI 인증시스템",
+    "description": "기존 물리적 망분리 중심 보안 체계를 데이터 중요도 중심으로 바꾸고, 다중 인증과 AI 기반 이상 탐지 등을 활용해 보안 실효성을 높이는 방향이다. 국가 망 보안 체계(N2SF) 역시 정보 자산의 중요도에 따라 보안 수준을...",
+    "originallink": "https://www.smartbizn.com/news/articleView.html?idxno=144711",
+    "link": "https://www.smartbizn.com/news/articleView.html?idxno=144711",
+    "published_at_kst": "2026-05-26T15:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "망분리 AI",
+    "title": "“AI 공격 AI로 막는다”...KT, 통신 특화 자체 보안 에이전트 가동",
+    "description": "이상운 KT 정보보안실장(CISO) 인터뷰 금융결제원 30년 베테랑, KT 보안 수장 AI 침투 테스트·취약점 점검 자체... 다만 금융권은 물리적 망분리, 통신사는 논리적 분리라는 구조적 차이가 있다. 이 전무는 “논리적으로만...",
+    "originallink": "https://www.mk.co.kr/article/12057700",
+    "link": "https://n.news.naver.com/mnews/article/009/0005685028?sid=105",
+    "published_at_kst": "2026-05-26T15:14:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 비용 절감",
+    "title": "엠키스코어, NIPA AI 사업 참여…\"DLC 기반 AI 인프라 구축 완료\"",
+    "description": "이번 사업은 총 1조4600억원 규모의 AI 인프라 프로젝트로 엠키스코어는 그래픽처리장치(GPU) 클러스터... 또 공랭식 대비 팬 전력을 줄여 서버 소비전력과 항온·항습 시설 운영 비용 절감 효과도 기대할 수 있으며...",
+    "originallink": "https://www.dailian.co.kr/news/view/1648632/?sc=Naver",
+    "link": "https://n.news.naver.com/mnews/article/119/0003094448?sid=105",
+    "published_at_kst": "2026-05-26T15:05:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "“효율적인 토큰 활용이 AI 경쟁력”… NHN클라우드, AI 풀스택 ‘팩토...",
+    "description": "환경 플랫폼이다. 김 대표는 AI 시장이 단순 거대언어모델(LLM) 경쟁을 넘어 실제 운영 효율 경쟁 단계로... 올 하반기 출시 예정인 프로젝트X는 비개발자도 자연어 기반으로 기업 맞춤형 AI 에이전트를 구축할 수...",
+    "originallink": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202605261435476910988",
+    "link": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202605261435476910988",
+    "published_at_kst": "2026-05-26T15:02:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "오모션, KBS와 3D 디지털 휴먼 기반 'AI 앵커' 개발",
+    "description": "2021년 설립된 오모션은 광운대 오문석 교수와 서영호 교수가 창업한 기업으로, 극사실적 3D 디지털 휴먼과 AI 에이전트 기술을 개발해왔다. 회사는 현재 인천공항 출입국장 키오스크, 금융권 AI 상담 서비스 등 다양한...",
+    "originallink": "https://www.etnews.com/20260526000340",
+    "link": "https://n.news.naver.com/mnews/article/030/0003431304?sid=105",
+    "published_at_kst": "2026-05-26T14:52:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "\"AI가 공공SW 사업 발주서 쓴다\"…'공공SW AI 발주관리 플랫폼' 구축 추...",
+    "description": "처리하는 플랫폼 구축에 나섰다. 조달청과 NIA가 17억8천만원을 투입해 '공공SW AI 책임형 발주관리 플랫폼... 단순 템플릿 조합이 아니라 법령·지침·유사사업 자료 등 사전 등록된 지식원(RAG)을 기반으로 사업개요...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052614231514644",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228941?sid=105",
+    "published_at_kst": "2026-05-26T14:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "임광식 횡성군수 후보, ‘구인·구직 통합 모바일앱 구축’ 공약 발표",
+    "description": "information ▲AI-based customized job recommendations ▲integrated guidance on public and private sector jobs ▲matching seasonal rural workers. Furthermore, the plan is to develop a user-centric system that is...",
+    "originallink": "http://www.breaknews.com/1209774",
+    "link": "http://www.breaknews.com/1209774",
+    "published_at_kst": "2026-05-26T14:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "[#클라우드 월드] 씨플랫폼 '제약바이오 AI R&D 세미나'·세종디엑스-한...",
+    "description": "26일 클라우드 업계에서는 씨플랫폼의 제약·바이오·헬스케어 AI R&D 가속화 전략 세미나 개최... 검색증강생성(RAG) 기반 문서 분석 및 지능형 응답 기술을 자체 개발해 AI 응답 정확도를 높이고, 고객 데이터 비학습...",
+    "originallink": "https://www.newsworks.co.kr/news/articleView.html?idxno=841838",
+    "link": "https://www.newsworks.co.kr/news/articleView.html?idxno=841838",
+    "published_at_kst": "2026-05-26T14:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "﻿\"Web3의 ChatGPT 평가지 나왔다\"… KDD 2026에 Web3 AI 연구팀 논문 채택",
+    "description": "DMind 모델은 현재 AI 금융플랫폼 'Minara' (미나라) 에 실제로 탑재되어 서비스 중이다. 미나라는 개인 투자자와 디지털 자산 보유자를 위한 재무 비서 역할을 하는 AI인데, 출시 3개월 내 DMind 를 탑재한 AI...",
+    "originallink": "https://www.eroun.net/news/articleView.html?idxno=81610",
+    "link": "https://www.eroun.net/news/articleView.html?idxno=81610",
+    "published_at_kst": "2026-05-26T14:32:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "“전문인력·예산 없는데 랜섬웨어 폭탄”…중기중앙회, 보안 자구책 마...",
+    "description": "서면 상담 가이드라인을 제공했다. 최근 글로벌 정보기술(IT) 시장에서 화두가 된 앤트로픽의 ‘미토스(Mythos)’ 사례처럼 자율형 AI 에이전트 도입에 따른 새로운 보안 리스크에 대해서도 중소기업들이 선제적으로...",
+    "originallink": "https://www.g-enews.com/view.php?ud=202605261236401753a9fc143920_1",
+    "link": "https://www.g-enews.com/view.php?ud=202605261236401753a9fc143920_1",
+    "published_at_kst": "2026-05-26T14:32:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "Hyundai builds new robot units to scale Atlas deployment",
+    "description": "SDF refers to a smart manufacturing facility where AI manages production, logistics and quality... the private sector and are subject to even tighter hurdles in government procurement. In...",
+    "originallink": "https://www.koreaherald.com/article/10756187?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/044/0000284533?sid=104",
+    "published_at_kst": "2026-05-26T14:23:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "Nation of 50 million kings, queens",
+    "description": "I am, of course, referring to the impact of artificial intelligence (AI), more specifically... Sung Lee is a senior advisor and partner at Midas Private Equity; concurrent advisory and...",
+    "originallink": "https://www.koreatimes.co.kr/path/A2026052014040002262",
+    "link": "https://www.koreatimes.co.kr/path/A2026052014040002262",
+    "published_at_kst": "2026-05-26T14:20:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "나라지식정보, 근대 다문자 OCR·RAG 기반 공공문서 AI 싱가포르서 수요...",
+    "description": "국민참여형 플랫폼도 함께 고도화한다. 싱가포르 행사에서는 기술 수요가 보다 구체적으로 확인됐다.... 앞으로는 OCR 중심 파이프라인 고도화, RAG 기반 통합 검색·활용 환경 구축, 국사편찬위원회 연계 현장...",
+    "originallink": "https://www.fntoday.co.kr/news/articleView.html?idxno=384974",
+    "link": "https://www.fntoday.co.kr/news/articleView.html?idxno=384974",
+    "published_at_kst": "2026-05-26T14:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "NHN클라우드, AI 풀스택 ‘팩토리X’ 공개 “7년 노하우 망라”",
+    "description": "NHN클라우드가 AI 인프라와 운영 플랫폼, AI 에이전트 서비스 등을 엮은 통합 브랜드로 기업용 AI 시장... 올해 하반기 출시 예정인 ‘프로젝트X’는 비개발자도 자연어를 기반으로 기업 업무 환경에 최적화된 맞춤형...",
+    "originallink": "https://byline.network/?p=9004111222604610",
+    "link": "https://byline.network/?p=9004111222604610",
+    "published_at_kst": "2026-05-26T14:14:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "로이드케이, AI 검색 구조화 특허 확보…\"RAG 넘어 에이전틱 AI 데이터 기...",
+    "description": "회사는 해당 기술을 자사 데이터·AI 플랫폼 'DO 솔루션 2.0'에 적용해 기업용 AI 검색과 분석 환경을 고도화할 계획이라고 전했다. 최근 기업 현장에서는 검색증강생성(RAG) 기반 생성형 AI 도입이 빠르게 확대되고 있다....",
+    "originallink": "https://www.epnc.co.kr/news/articleView.html?idxno=402203",
+    "link": "https://www.epnc.co.kr/news/articleView.html?idxno=402203",
+    "published_at_kst": "2026-05-26T14:04:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "[이슈] 번역부터 데이터 분석까지…한은 내부망 AI '보키' 안착",
+    "description": "외부 AI 활용이 제한되는 중앙은행 특성상 폐쇄망 기반 자체 AI 구축에 나선 것이다. 26일 한국은행에 따르면, 지난 1월 공개된 보키는 네이버의 클라우드 인프라와 대규모언어모델(LLM)을 기반으로 구축된 금융·경제 특화...",
+    "originallink": "https://www.startuptoday.co.kr/news/articleView.html?idxno=801960",
+    "link": "https://www.startuptoday.co.kr/news/articleView.html?idxno=801960",
+    "published_at_kst": "2026-05-26T14:04:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "private AI",
+    "title": "성수동 신화의 진짜 설계자는 누구인가 — 오세훈인가, 정원오인가",
+    "description": "및 AI 글로벌 이니셔티브 집행위원(현) -제8대 주상하이 대한민국 총영사 -2010... attracting private creativity and capital, these changes carried substantial significance. Indeed, following the Oh...",
+    "originallink": "http://www.breaknews.com/1209760",
+    "link": "http://www.breaknews.com/1209760",
+    "published_at_kst": "2026-05-26T13:56:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "조달청 AI 플랫폼 구축",
+    "title": "YH트리니티, 에너지·보안IT·신소재 아우르는 그룹형 플랫폼 출범",
+    "description": "인엠스는 조달청 나라장터 등록 전문업체로 고객접점에서 고객영업과 채널관리 등 역할을 수행한다. 현재 YH트리니티는 태양광 자가소비형 PPA, 공공 영상보안, AI 기반 데이터 플랫폼, 그래핀 및 난연 신소재, 실버케어 및...",
+    "originallink": "https://magazine.hankyung.com/business/article/202605269051b",
+    "link": "https://n.news.naver.com/mnews/article/050/0000106581?sid=101",
+    "published_at_kst": "2026-05-26T13:48:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "국내 CSP AI 추론 서비스",
+    "title": "AI 데이터센터 투자 확대 속 네오클라우드 부상…국내도 초기 경쟁",
+    "description": "네오클라우드는 AI 모델 학습과 추론에 필요한 GPU 자원을 중심으로 설계된 AI 특화형 클라우드다. 기존... 기존 클라우드는 웹서비스, 스트리밍, 기업 IT 시스템 등 다양한 업무를 동시에 처리하기 위한 범용...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052613375282940",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228928?sid=105",
+    "published_at_kst": "2026-05-26T13:47:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPU 비용 절감",
+    "title": "딥엑스, 컴퓨텍스서 차세대 피지컬AI 생태계 공개",
+    "description": "딥엑스는 별도 고전력 GPU 없이도 다채널 영상 분석을 수행할 수 있는 저전력 AI 가속 솔루션을 제시한다.... 딥엑스는 기존 고전력 GPGPU 기반 시스템 대비 전력 비용과 총소유비용을 절감할 수 있는 그린 AI 인프라...",
+    "originallink": "http://www.hansbiz.co.kr/news/articleView.html?idxno=840650",
+    "link": "http://www.hansbiz.co.kr/news/articleView.html?idxno=840650",
+    "published_at_kst": "2026-05-26T13:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 기반 RAG 서비스",
+    "title": "부산시, 음성대화로 시정정보 제공한다!... 지능형 챗봇 「AI 부기뉴스」...",
+    "description": "시는 GPT-5.2 기반 대규모 언어모델(LLM)과 검색증강생성(RAG) 기술을 적용해 정확성을 높였으며, 스마트폰·PC... 네이버클라우드와 협력해 마련된 이번 교육은 28일까지 3일간 네이버 스퀘어 부산에서 진행된다. 시...",
+    "originallink": "http://www.queen.co.kr/news/articleView.html?idxno=457501",
+    "link": "http://www.queen.co.kr/news/articleView.html?idxno=457501",
+    "published_at_kst": "2026-05-26T13:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "LLM 플랫폼 출시",
+    "title": "엔비디아 대항마 ‘라이젠 AI 헤일로’ 내놓은 AMD…맥 미니처럼 인기 ...",
+    "description": "AI 미니 PC의 인기가 좋아지면서 또 다른 CPU 및 GPU 제조사인 AMD 역시 대항마를 출시해 이 시장에서 경쟁을 예고하고 있습니다. 최근 AMD는 자체 AI PC인 ‘라이젠 AI 헤일로 개발자 플랫폼’(Ryzen AI Halo Dev Platform...",
+    "originallink": "https://nownews.seoul.co.kr/news/newsView.php?id=20260526601012&wlog_tag3=naver",
+    "link": "https://n.news.naver.com/mnews/article/081/0003646866?sid=105",
+    "published_at_kst": "2026-05-26T13:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 기업",
+    "title": "\"OCI홀딩스, 지상 태양광 수요 증가…GE 베르노바가 부럽지 않다\"",
+    "description": "(Space-Based Solar Power) 기술 개발을 본격화하고 있어 미국 또한 태양광 산업 육성과 공급망 내재화는... 향후 OCI TRS는 미국 에너지 안보의 핵심 고부가 태양광 소재 기업으로서 자리매김할 가능성이 높다....",
+    "originallink": "https://www.newsquest.co.kr/news/articleView.html?idxno=266792",
+    "link": "https://www.newsquest.co.kr/news/articleView.html?idxno=266792",
+    "published_at_kst": "2026-05-26T11:50:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "카카오가 멈추면 벌어질 일 [이슈크래커]",
+    "description": "친구와 가족 사이의 대화뿐 아니라 회사 단체방, 학교·학원 공지, 자영업자 고객 상담, 병원·택배·쇼핑... 카카오톡 안에 AI 에이전트를 내재화하고, 이용자 경험을 바꾸는 방식의 서비스 고도화도 추진하고 있습니다....",
+    "originallink": "https://www.etoday.co.kr/news/view/2587747",
+    "link": "https://www.etoday.co.kr/news/view/2587747",
+    "published_at_kst": "2026-05-26T11:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "조달청 AI 플랫폼 구축",
+    "title": "2026년 중소기업을 빛낸 영광의 얼굴-2",
+    "description": "창립해 AI 기반 지능형 보험 업무 자동화 플랫폼을 개발하며 보험 업무의 디지털 전환을 이끌어왔다. 보험료... 점토벽돌의 중소기업자간 경쟁제품과 조달청 우수제품 지정을 적극 지원했다. 또한 네팔 정부와의...",
+    "originallink": "http://www.kbiznews.co.kr/news/articleView.html?idxno=114210",
+    "link": "http://www.kbiznews.co.kr/news/articleView.html?idxno=114210",
+    "published_at_kst": "2026-05-26T11:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "최명수 소프트제국 대표, 제61회 발명의 날 '산업포장' 수훈",
+    "description": "SWAI for Scoring은 생성형 AI와 RAG 기술, AI OCR 기술이 적용된 AI 기반 서·논술형 평가 플랫폼으로, 문제 출제부터 답안지 AI OCR, 답안 분석, AI 자동채점, 첨삭 피드백, 평가 결과 관리까지 전 과정을 지원한다. 특히 AI서...",
+    "originallink": "https://www.etnews.com/20260526000178",
+    "link": "https://n.news.naver.com/mnews/article/030/0003431143?sid=101",
+    "published_at_kst": "2026-05-26T11:05:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "\"AI 공격은 AI로 방어\"…금융권 망분리 규제 예외 적용",
+    "description": "특히 스스로 탐색·판단·실행하는 에이전트형 AI가 보안 취약점 탐지와 공격 실행을 자동화할 수 있다는... 전면 해제가 이뤄질 경우 해당 금융회사는 AI 기반 보안체계 구축뿐 아니라 챗봇 상담, 자산관리, 여신심사...",
+    "originallink": "http://www.4th.kr/news/articleView.html?idxno=2112222",
+    "link": "http://www.4th.kr/news/articleView.html?idxno=2112222",
+    "published_at_kst": "2026-05-26T11:04:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI 상담 에이전트",
+    "title": "[더벨][Policy Radar] \"AI 공격은 AI로 방어\"…금융권 망분리 규제 전격 ...",
+    "description": "실행하는 에이전트 AI의 공격 속도와 범위를 감당하기 어렵다는 판단에 따른 조치다. AI 공격은 AI로... 전면적인 AI 보안체계 전환이 가능하다. 동시에 챗봇 상담이나 자산관리부터 여신심사, 기업금융, 내부통제 등 금융...",
+    "originallink": "https://www.thebell.co.kr/free/content/ArticleView.asp?key=202605221522369560103395",
+    "link": "https://www.thebell.co.kr/free/content/ArticleView.asp?key=202605221522369560103395",
+    "published_at_kst": "2026-05-26T11:02:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPT-OSS 도입",
+    "title": "\"90분 만에 뚫렸다\"…AI 안전장치 무력화 공포에 '초비상'",
+    "description": "오픈AI는 최근 공개한 GPT-OSS 모델에서 위험한 정보를 제거한 데이터 세트로 학습시키는 방식을 도입하고 있다. 다만 전문가들은 유해 데이터를 제거한다고 해서 모델이 자동으로 안전해지는 것은 아니라고 지적했다....",
+    "originallink": "https://www.hankyung.com/article/202605268572i",
+    "link": "https://n.news.naver.com/mnews/article/015/0005291080?sid=104",
+    "published_at_kst": "2026-05-26T10:56:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "RAG 플랫폼",
+    "title": "“대화 통해 앱 완성”…부산 스타트업, 8억 R&D 자금 따냈다",
+    "description": "특히 카카오·네이버 간편 로그인과 토스페이 등 국내 결제 환경을 표준 기능으로 내재화해 글로벌 노코드 플랫폼과 차별화를 꾀했다. 온디바이스 AI 기술과 검색증강생성(RAG) 엔진을 결합해 코드 생성 정확도 95% 이상을...",
+    "originallink": "https://www.sedaily.com/article/20048131?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/011/0004624443?sid=102",
+    "published_at_kst": "2026-05-26T10:35:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "K-EXAONE 도입",
+    "title": "국가 R&D 예산 심의도 맡는다...공공 인프라 된 'K-AI'",
+    "description": "서비스에 도입했고, 부산시는 네이버 AI 모델 기반의 'AI 부기 주무관'을 개발해 행정 업무에 접목하고 있다. 공공 안전 영역에서도 국산 AI 활용이 추진된다. 정부는 LG AI연구원의 생성형 AI 모델 '엑사원(EXAONE)...",
+    "originallink": "http://www.fnnews.com/news/202605261027143555",
+    "link": "https://n.news.naver.com/mnews/article/014/0005526272?sid=105",
+    "published_at_kst": "2026-05-26T10:30:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "[단독] 한미반도체, HBF용 TC본더 만든다",
+    "description": "26일 반도체 업계에 따르면 한미반도체는 최근 AI 추론(Inference)용 차세대 메모리로 주목받는 HBF 전용 TC본더를 개발, 하반기 초도 물량 출하를 계획 중이다. 업계에선 사실상 글로벌 낸드 업체의 HBF 양산 로드맵에...",
+    "originallink": "https://news.mtn.co.kr/news-detail/2026052608515364392",
+    "link": "https://news.mtn.co.kr/news-detail/2026052608515364392",
+    "published_at_kst": "2026-05-26T10:14:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "K-EXAONE 도입",
+    "title": "R&D 심의부터 돌봄까지…과기정통부, K-AI 공공 확산 사례 공개",
+    "description": "모델이 도입된다. 과기정통부와 행정안전부가 공동 추진하는 '범정부 AI 공통기반'으로 중앙부처와 지방자치단체가 다양한 국내 AI 모델을 활용할 수 있도록 지원한다. 과학기술 분야에서는 K-문샷 프로젝트와 연계한...",
+    "originallink": "https://www.ajunews.com/view/20260526094114311",
+    "link": "https://www.ajunews.com/view/20260526094114311",
+    "published_at_kst": "2026-05-26T09:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "시스트란, 'AI EXPO Korea 2026'서 폐쇄망 맞춤형 AI 솔루션 4종 공개",
+    "description": "해당 시스템들은 외부 인터넷망과 차단된 기업 내부 폐쇄망에서 독립적으로 구동되는 온프레미스 환경을 지원한다. 최근 클라우드 기반 AI의 데이터 유출 우려가 커지면서 사내 지식 자산의 보안을 담보하면서도 AI...",
+    "originallink": "https://www.etnews.com/20260522000276",
+    "link": "https://n.news.naver.com/mnews/article/030/0003431009?sid=101",
+    "published_at_kst": "2026-05-26T09:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "시스트란, ‘AI EXPO Korea 2026’서 온프레미스 기반 AI 솔루션 4종 공개",
+    "description": "Server)’ △온프레미스 AI 통역기 ‘SI&T’ △온프레미스 sLLM 플랫폼 ‘퀘이사(QUESAR)’ △인공지능 온톨로지 관리 플랫폼 ‘I-ONT’를 전시했다. 네 가지 솔루션 모두 기업 내부 폐쇄망에서 독립적으로 운영 가능한...",
+    "originallink": "https://www.donga.com/news/Economy/article/all/20260522/133975860/1",
+    "link": "https://n.news.naver.com/mnews/article/020/0003722207?sid=101",
+    "published_at_kst": "2026-05-26T09:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 기업",
+    "title": "\"OCI홀딩스, 스페이스X에 폴리실리콘 공급 가능성 높아\"-하나",
+    "description": "(Space-Based Solar Power) 기술 개발을 본격 추진 중\"이라며 \"미국 입장에서는 우주 산업 경쟁에서 뒤처지지 않기... 윤 연구원은 \"과거에는 여러 고객사에 범용 소재를 판매하는 화학 소재 기업 이미지가 강했다면 앞으로는...",
+    "originallink": "https://www.hankyung.com/article/2026052678686",
+    "link": "https://n.news.naver.com/mnews/article/015/0005290942?sid=101",
+    "published_at_kst": "2026-05-26T08:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "한국은행, 생성형 AI 도입 4개월…내부자료 140만건 학습",
+    "description": "한은에 따르면 보키는 중앙은행이 자체 데이터와 폐쇄망을 기반으로 구축한 '세계 최초 중앙은행 소버린 AI'다. 민간 AI 서비스를 유료 구독하는 동유럽과 아시아권 중앙은행을 중심으로 구축 경험과 운영 방식에 대한...",
+    "originallink": "https://www.slist.kr/news/articleView.html?idxno=741186",
+    "link": "https://www.slist.kr/news/articleView.html?idxno=741186",
+    "published_at_kst": "2026-05-26T06:56:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "한국은행, AI 보키 도입으로 업무 혁신 가속화",
+    "description": "그럼에도 한국은행은 보키를 자체 데이터와 폐쇄망을 바탕으로 구축한 세계 최초 중앙은행 ‘소버린 인공지능’으로 설명하고 있다. 소버린 인공지능은 외부 플랫폼 의존도를 낮추고, 기관이 직접 데이터와 보안을...",
+    "originallink": "https://www.tokenpost.kr/news/tech/363011",
+    "link": "https://www.tokenpost.kr/news/tech/363011",
+    "published_at_kst": "2026-05-26T06:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "[유효상 칼럼] 왜 식탁 접시만 한 커다란 칩이 엔비디아를 긴장시킬까",
+    "description": "AI가 '학습(Training)'에서 '추론(Inference)'의 시대로 넘어가는 지금, 세레브라스의 WSE 아키텍처는 이 추론 워크로드에서 엔비디아 GPU 대비 최대 15~20배 빠르다. 엔비디아 GPU로 대규모 언어 모델을 구동하려면 수만...",
+    "originallink": "https://www.mt.co.kr/opinion/2026/05/26/2026052114515725368",
+    "link": "https://n.news.naver.com/mnews/article/008/0005362499?sid=110",
+    "published_at_kst": "2026-05-26T06:00:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "한은 AI 도입 넉달, 보고서 막히면 '보키'부터…해외서도 관심",
+    "description": "한은에 따르면 보키는 중앙은행이 자체 데이터와 폐쇄망을 기반으로 구축한 '세계 최초 중앙은행 소버린 AI'다. 이 때문에 민간 AI 서비스를 유료로 구독하는 동유럽과 아시아권 중앙은행을 중심으로 보키 구축 경험과...",
+    "originallink": "https://www.yna.co.kr/view/AKR20260525048600002?input=1195m",
+    "link": "https://n.news.naver.com/mnews/article/001/0016098089?sid=101",
+    "published_at_kst": "2026-05-26T05:51:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "엔비디아 GPU 클라우드 파트너십",
+    "title": "[투자를IT다] 2026년 5월 3주차 IT기업 주요 소식과 시장 전망",
+    "description": "엔비디아는 모든 클라우드에서 실행되고, 모든 AI 모델을 구동하며, 어디서나 AI가 생산되는 유일한... 앤트로픽은 빌&멀린다 게이츠 재단과 4년간 2억 달러 규모의 파트너십을 체결하며 주목받았다. 보조금...",
+    "originallink": "https://it.donga.com/108937/",
+    "link": "https://it.donga.com/108937/",
+    "published_at_kst": "2026-05-25T21:24:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "엑사원 3.5 도입",
+    "title": "AI가 일할 환경 누가 잘 만드나… 빅테크 '플랫폼 경쟁' 서막 [AI 인사이...",
+    "description": "기존에 AI 도입에 수개월이 걸렸다면 앤스로픽은 자사 AI 에이전트 템플릿을 통해 도입 기간을 단 몇일로... LG AI연구원은 '엑사원' 시리즈를 기반으로 제조와 연구개발(R&D), 금융 분야 특화 AI를 강화하고 있다. 특히...",
+    "originallink": "http://www.fnnews.com/news/202605251908498092",
+    "link": "https://n.news.naver.com/mnews/article/014/0005526085?sid=105",
+    "published_at_kst": "2026-05-25T19:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "조달청 AI 플랫폼 구축",
+    "title": "[경제칼럼] 전북 AI 신산업의 미래, 공공조달 혁신이 마중물 되다",
+    "description": "새만금 AI 인프라 구축, 지자체의 현장 지원, 대학의 인재 확충, 그리고 조달청의 혁신 구매 채널이 긴밀하게 맞물려 끊임없이 수량을 공급하는 플랫폼을 구축해야 한다. 지역 기업들이 실증 단지에서 기술을 검증받고...",
+    "originallink": "https://www.jjan.kr/article/20260525500264",
+    "link": "https://www.jjan.kr/article/20260525500264",
+    "published_at_kst": "2026-05-25T18:50:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "조달청 AI 플랫폼 구축",
+    "title": "[기획] 2026 국제소방안전박람회 눈길 끈 기술과 제품은? - Ⅰ",
+    "description": "3월 조달청 혁신제품으로 지정된 만큼 공공기관 대상 공급에도 적극 나설 계획”이라고 전했다. 신영... 혁신적 플랫폼”이라며 “독보적인 AIㆍIoT 기술력을 바탕으로 예방 중심의 새로운 소방안전 시장을 선도해...",
+    "originallink": "http://fpn119.co.kr/251576",
+    "link": "http://fpn119.co.kr/251576",
+    "published_at_kst": "2026-05-25T18:18:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 기업",
+    "title": "전남도, 유럽 수소 거점 네덜란드서 '청정수소 투자유치' 총력전",
+    "description": "글로벌 기업과 투자자들을 대상으로 투자설명회(IR)를 개최했다고 밝혔다. 이번... and solar power generation.” He added, “Having firmly established Jeollanam-do’s differentiated...",
+    "originallink": "http://www.breaknews.com/1209612",
+    "link": "http://www.breaknews.com/1209612",
+    "published_at_kst": "2026-05-25T18:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "나라장터 AI CCTV",
+    "title": "AI 영상관제 전문기업 브레인치즈, 대통령상 후보 확정",
+    "description": "조달청 나라장터 입점 등 다방면에서 가시적인 경영 성과를 창출하고 있다. 이 대표는 \"공공·재난·산업·생활 안전 등 다양한 분야에서 AI 영상관제 솔루션 적용 범위를 확대해 나갈 계획\"이라며 \"브레인치즈 온디바이스...",
+    "originallink": "https://www.joongboo.com/news/articleView.html?idxno=363726733",
+    "link": "https://www.joongboo.com/news/articleView.html?idxno=363726733",
+    "published_at_kst": "2026-05-25T15:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "엑사원 3.5 도입",
+    "title": "AI 경쟁축 '실행하는 AI'로 전환...플랫폼 경쟁 본격화",
+    "description": "방식을 도입하기로 했다. 사용자 업무처리부터 검색·메일·쇼핑·영상 제작까지 연결하는 AI 생태계를 구축하겠다는 전략이다. 특히 '제미나이 3.5 플래시'는 경쟁사들의 모델보다 출력 속도가 4배 이상 빠르면서도...",
+    "originallink": "http://www.fnnews.com/news/202605251109254523",
+    "link": "https://n.news.naver.com/mnews/article/014/0005525939?sid=105",
+    "published_at_kst": "2026-05-25T14:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "조달청 AI 플랫폼 구축",
+    "title": "공공SW 발주 AI 에이전트가 지원…조달청, 공공조달 AX 본격화",
+    "description": "25일 업계에 따르면 조달청과 한국지능정보사회진흥원(NIA)이 '공공SW AI 책임형 발주관리 플랫폼' 구축에 나섰다. 이번 사업은 지난 2월 경제관계장관회의에서 발표된 '공공조달의 AI산업 활성화 선도 방안'의...",
+    "originallink": "https://www.etnews.com/20260522000281",
+    "link": "https://n.news.naver.com/mnews/article/030/0003430879?sid=105",
+    "published_at_kst": "2026-05-25T12:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "AI 인과추론 스타트업 '자블리',TIPS 선정 행정 자동화 플랫폼으로 글로...",
+    "description": "자블리는 이번 선정을 발판 삼아 향후 24개월간 인과추론(Causal Inference) 및 설명 가능 AI(XAI) 기반의 비자 적격성 판정 AI 플랫폼을 세계 최고 수준으로 고도화할 계획이다. 2023년 10월 전남 여수에서 설립된...",
+    "originallink": "https://www.aitimes.kr/news/articleView.html?idxno=40180",
+    "link": "https://www.aitimes.kr/news/articleView.html?idxno=40180",
+    "published_at_kst": "2026-05-25T11:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "[주간 클라우드 동향/5월④] 빅테크 공세 속 국내 CSP, 공동 대응·기술...",
+    "description": "아마존웹서비스(AWS), 마이크로소프트 애저, 구글 클라우드는 AI 수요를 등에 업고 분기마다 수십조원 규모... KT클라우드, 네이버클라우드, 카카오엔터프라이즈, 가비아, NHN클라우드, 삼성SDS 등 국내 CSP 6개사가...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052509101133595",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228855?sid=004",
+    "published_at_kst": "2026-05-25T10:25:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "[DD 주간브리핑] 오픈AI CSO 방한부터 삼성SDS·NHN클라우드 총출동…'AI...",
+    "description": "26일 NHN클라우드는 이노그리드 인수 이후 첫 기자간담회를 열고 초거대 GPU 클러스터 기반의 ‘AI... ◆ 삼성SDS, AI 네이티브 전환 위한 비즈니스 성과 사례 공개=삼성SDS가 5월 29일 삼성SDS 잠실 서관 B1 마젤란홀에서...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052216371975959",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228854?sid=004",
+    "published_at_kst": "2026-05-25T10:17:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "나라장터 AI 시스템 구축",
+    "title": "산업수도 울산 찾은 이형주 회장...\"회원 보호·업역 확대\" 강조",
+    "description": "현장에서는 나라장터 자재단가 현실화와 공공기관 입찰 진입장벽 완화 등 중소업체들의 현실적인... 협회는 일반용 전기공사 실적증명서 기준 상향과 전기장터 플랫폼, 모바일 견적 자동화 시스템 구축 등을 추진하고...",
+    "originallink": "https://www.electimes.com/news/articleView.html?idxno=368410",
+    "link": "https://www.electimes.com/news/articleView.html?idxno=368410",
+    "published_at_kst": "2026-05-25T10:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 도입",
+    "title": "국민성장펀드 AI 투자 확대…최적화·인프라 기업 수혜 '관심'",
+    "description": "업스테이지 역시 자체 LLM(거대언어모델) '솔라(Solar)'를 통해 기업용 AI 시장에서 빠르게 입지를 넓히는... 특히 내년 국가 연구개발(R&D) 예산 심의·배분 과정에 AI가 처음 도입되는 가운데 독자 AI 파운데이션 모델 사업과...",
+    "originallink": "https://www.newsis.com/view/NISX20260522_0003640871",
+    "link": "https://n.news.naver.com/mnews/article/003/0013965401?sid=101",
+    "published_at_kst": "2026-05-25T09:00:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR RAG",
+    "title": "What I Learned About Loss While Skateboarding at Costco",
+    "description": "a rag, jumped rope for two minutes, and queued Eric B. & Rakim on a portable speaker. Popular... My friends nicknamed the spot “Solar Crisis” because it was lit by a towering light pole whose...",
+    "originallink": "https://www.nytimes.com/2026/05/24/business/economy/costco-curbs-skateboarding-genx.html?partner=naver",
+    "link": "https://www.nytimes.com/2026/05/24/business/economy/costco-curbs-skateboarding-genx.html?partner=naver",
+    "published_at_kst": "2026-05-24T18:02:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "폐쇄망 AI",
+    "title": "미토스 발 위협…금융위, 13년만에 금융사 망분리 완화",
+    "description": "외부 연결과 데이터 공유를 전제로 하는 AI 기술이 외부와의 완전한 단절을 목적으로 하는 망분리 제도가 근본적으로 충돌한다. SaaS 활용도 금융회사 업무 자체가 인터넷이 차단된 폐쇄망에서 이뤄지기에 불가능하다....",
+    "originallink": "https://news.bizwatch.co.kr/article/finance/2026/05/22/0043",
+    "link": "https://n.news.naver.com/mnews/article/648/0000047407?sid=101",
+    "published_at_kst": "2026-05-24T12:00:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "국내 IT서비스 산업, ‘AI 전환 속도’가 기업 성패 가른다",
+    "description": "LG CNS는 AI와 클라우드 중심의 신사업 수주를 확대하며 독보적인 성장세를 이어가고 있는 반면, 삼성SDS, 현대오토에버, 포스코DX 등은 기존 사업 구조의 한계와 수익성 압박으로 인해 상대적으로 성장 동력이 둔화되는...",
+    "originallink": "https://www.m-economynews.com/news/article.html?no=67410",
+    "link": "https://www.m-economynews.com/news/article.html?no=67410",
+    "published_at_kst": "2026-05-23T18:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 기반 RAG 서비스",
+    "title": "[2026 테마캠퍼스/전북대학교] 'AI 대학 대전환'… 교육·연구·산업까지...",
+    "description": "특히 검색증강생성(RAG) 기술을 활용해 신뢰도 높은 답변을 제공하고, 학습자의 수준과 학습 이력에 맞춘 개인화된 콘텐츠를 지원한다. 여기에 AI 기반 자동 자막 생성과 다국어 번역 기능, 실시간 번역 서비스까지...",
+    "originallink": "https://news.unn.net/news/articleView.html?idxno=592650",
+    "link": "https://news.unn.net/news/articleView.html?idxno=592650",
+    "published_at_kst": "2026-05-23T11:50:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "멀티플 다시 올라간다…삼성SDS 리레이팅 가능성 제기",
+    "description": "최근 기업들의 AI 도입 확대와 함께 클라우드 전환 수요도 빠르게 늘어나는 분위기다. 삼성SDS가 단순 IT 서비스 기업을 넘어 AI 인프라 플랫폼 기업으로 재평가될 가능성이 있다고 보고 있다. 최근 국내 증시에서도 AI...",
+    "originallink": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=454902",
+    "link": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=454902",
+    "published_at_kst": "2026-05-23T11:06:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "K-반도체기업 파두 대만시장 본격 진출…AI 데이터센터 공략 시동",
+    "description": "특히 AI 훈련(Training), 체크포인트 저장, AI 추론(Inference) 등 AI 데이터 라이프사이클의 전 과정에 최적화된 아키텍처를 제공함으로써 고속 데이터 전송과 저지연 요구를 동시에 충족하고 있다. ▲  K-반도체 기업...",
+    "originallink": "https://www.kpinews.kr/newsView/1065566601196808",
+    "link": "https://www.kpinews.kr/newsView/1065566601196808",
+    "published_at_kst": "2026-05-23T08:26:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "엑사원 3.5 도입",
+    "title": "[CEO리포트] 강태영 NH농협은행장, ‘실무형 리더십’으로 민족은행 '디...",
+    "description": "내부통제 측면에서도 농협은행은 은행권 최초로 내부통제전문가 인증제도를 도입하고, 금융사고 예방... 특히 LG CNS는 농협은행 전용 생성형 AI 구축을 위해 엑사원 3.5를 파인튜닝하고, 검색증강생성(RAG) 솔루션을 적용해...",
+    "originallink": "https://www.news2day.co.kr/article/20260522500024",
+    "link": "https://www.news2day.co.kr/article/20260522500024",
+    "published_at_kst": "2026-05-23T06:48:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "‘100조’ 기업이 비교 대상…퓨리오사AI 나스닥行 매력 여전 [시그널]",
+    "description": "세레브라스와 여전히 큰 격차지만 LG AI연구원, LG유플러스, 삼성SDS, 메가존클라우드 등 굵직한 기업들을 고객으로 확보하며 납품 성과에 대한 기대감도 작지 않다. 증권가에서도 퓨리오사AI의 투자 유치 이력을...",
+    "originallink": "https://www.sedaily.com/article/20047365?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/011/0004623825?sid=101",
+    "published_at_kst": "2026-05-23T05:56:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 AI",
+    "title": "'수도권 데이터센터' 몰리지만…전력망 '감당불가'→지방이 대안?",
+    "description": "삼성SDS는 경북 구미에 4273억원을 투자해 60MW 규모 AI 데이터센터를 짓기로 했다. 전남 해남 솔라시도에는 네이버클라우드, 카카오, KT 등이 참여하는 국가AI컴퓨팅센터가 들어설 예정이다. 하지만 두 사례 모두 '앵커...",
+    "originallink": "https://www.mt.co.kr/tech/2026/05/23/2026052210211399740",
+    "link": "https://n.news.naver.com/mnews/article/008/0005361932?sid=105",
+    "published_at_kst": "2026-05-23T05:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "국채금리 발작에 고개드는 S공포…AI 열기로 증시만 호황",
+    "description": "노무라증권은 “AI가 대규모 지식을 주입하는 학습 단계를 넘어 실질적인 서비스를 구현하는 추론(Inference) 단계로 급격히 이동하고 있다”며 “고대역폭메모리(HBM) 수요가 폭발적으로 증가할 것”이라고 전망했다....",
+    "originallink": "https://www.joongang.co.kr/article/25430680",
+    "link": "https://n.news.naver.com/mnews/article/353/0000055491?sid=102",
+    "published_at_kst": "2026-05-23T00:02:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 도입",
+    "title": "전문학 서구청장 후보 \"재건축 전담 상설조직 신설, 청년 주거 부담 획...",
+    "description": "기준 도입 등을 열거하며 미래형 도시 설계의 필요성을 피력했다. 또한 주민들의... as solar power generation, Energy Storage Systems (ESS), and the introduction of Zero Energy Building (ZEB)...",
+    "originallink": "http://www.breaknews.com/1209416",
+    "link": "http://www.breaknews.com/1209416",
+    "published_at_kst": "2026-05-22T22:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "[Semiconductor / Equipment Industry] Beginning of structural changes",
+    "description": "Agentic AI and new investment paradigm The proliferation of recent inference and agentic AI technologies has triggered bottlenecks across various hardware components. In particular, demand for...",
+    "originallink": "https://www.businesskorea.co.kr/news/articleView.html?idxno=270010",
+    "link": "https://www.businesskorea.co.kr/news/articleView.html?idxno=270010",
+    "published_at_kst": "2026-05-22T22:38:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 企業",
+    "title": "코엑스에 펼쳐진 유럽의 딥테크 혁신… 엔벡스 2026 ‘EU 비즈니스 허브...",
+    "description": "Josha Kneiber, CEO of Germany's hyCLEANER GmbH, stated, \"The loss in power generation efficiency due to solar... 協力機を模索しようとする韓企業係者らで賑わい熱い熱を吹き出していた。...",
+    "originallink": "https://www.venturesquare.net/1084845/",
+    "link": "https://www.venturesquare.net/1084845/",
+    "published_at_kst": "2026-05-22T19:35:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "K-EXAONE 기업",
+    "title": "한컴-LG AI연구원, AI 문서 에이전트 협력…공공 AX 시장 공동 공략",
+    "description": "엑사원(EXAONE) 모델을 결합하는 방식으로 협력 관계를 이어왔다. 이번 협약을 계기로 양사는 정부부처, 공공기관, 공기업 등을 대상으로 사업 발굴부터 수주, 납품까지 공동 대응한다는 방침이다. 온디바이스 AI...",
+    "originallink": "http://www.newslock.co.kr/news/articleView.html?idxno=130504",
+    "link": "http://www.newslock.co.kr/news/articleView.html?idxno=130504",
+    "published_at_kst": "2026-05-22T17:50:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 도입",
+    "title": "광명시, 재생에너지 보급 융복합지원사업 수요조사 실시",
+    "description": "이번 조사는 태양광, 태양열, 지열 등 자가소비용 친환경 설비 도입을 희망하는... as solar photovoltaic, solar thermal, and geothermal systems. The city completed the formation of a...",
+    "originallink": "http://www.breaknews.com/1209349",
+    "link": "http://www.breaknews.com/1209349",
+    "published_at_kst": "2026-05-22T17:46:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "나라장터 AI 인프라",
+    "title": "모빌린트 'NPU 솔루션' 조달청 혁신제품 등록…\"공공시장 공략\"",
+    "description": "조달청 혁신제품에 등록되면 중앙부처와 지방자치단체, 공공기관은 나라장터를 통해 모빌린트의 AI... 형태의 AI 가속기다. 모빌린트는 두 제품이 가격뿐 아니라 전력효율이 높아 공공기관 AI 인프라 환경에서...",
+    "originallink": "https://www.mt.co.kr/future/2026/05/26/2026052214135044338",
+    "link": "https://n.news.naver.com/mnews/article/008/0005361849?sid=101",
+    "published_at_kst": "2026-05-22T17:00:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 상담 서비스",
+    "title": "아모레퍼시픽, 아마존 웹서비스 주최 'AWS 서밋 서울 2026' 전시 성료",
+    "description": "해당 행사는 아마존웹서비스(AWS)가 주최한 것으로, 아모레는 AI 기반 통합 뷰티 서비스 플랫폼 '뷰티 컨시어지(Beauty Concierge)' 전시를 진행했다. 아모레 관계자는 \"AWS 서밋 서울 2026은 최신 클라우드 기술 트렌드와...",
+    "originallink": "http://www.sisacast.kr/news/articleView.html?idxno=96118",
+    "link": "http://www.sisacast.kr/news/articleView.html?idxno=96118",
+    "published_at_kst": "2026-05-22T15:36:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "K-EXAONE 기업",
+    "title": "한컴 AI 에이전트, LG '챗엑사원' 들어간다…공공 AI 시장 동맹 강화",
+    "description": "양사는 이를 기반으로 한컴의 문서 AI 역량과 LG AI연구원의 초거대 AI 모델 '엑사원(EXAONE)'을 결합한... 양사는 한컴 AI 에이전트와 챗엑사원을 결합한 솔루션을 앞세워 정부부처, 공공기관, 공기업 대상 사업을 공동...",
+    "originallink": "https://www.mt.co.kr/tech/2026/05/22/2026052215283358675",
+    "link": "https://n.news.naver.com/mnews/article/008/0005361794?sid=105",
+    "published_at_kst": "2026-05-22T15:30:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference",
+    "title": "GPU 시대 다음은 '추론'…Arm 급등에 AI 최적화 기업 주목",
+    "description": "시장에선 이번 상승을 단순한 개별 종목 강세가 아니라 AI 산업이 '학습(training)' 중심에서 '추론(inference)' 중심으로 이동하고 있다는 신호로 해석하는 분위기다. 22일 금융투자업계에 따르면 이 같은 급등의...",
+    "originallink": "https://www.newstopkorea.com/news/articleView.html?idxno=45123",
+    "link": "https://www.newstopkorea.com/news/articleView.html?idxno=45123",
+    "published_at_kst": "2026-05-22T15:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 상담 서비스",
+    "title": "아모레퍼시픽, AWS 손잡고 'AI 뷰티 컨사어지' 공개...초개인화 서비스 ...",
+    "description": "협업한 AI 기반 통합 뷰티 서비스 플랫폼 '뷰티 컨시어지(Beauty Concierge)'를 전시했다고 22일 밝혔다. AWS 서밋 서울 2026은 최신 클라우드 기술 트렌드와 산업별 혁신 사례를 공유하는 클라우드·AI 컨퍼런스로, 지난...",
+    "originallink": "https://www.the-pr.co.kr/news/articleView.html?idxno=61411",
+    "link": "https://www.the-pr.co.kr/news/articleView.html?idxno=61411",
+    "published_at_kst": "2026-05-22T15:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "K-EXAONE 기업",
+    "title": "“기획서 써줘” 한마디에 한글 문서 뚝딱…한컴-LG 손잡았다",
+    "description": "양사는 한컴의 AI 에이전트 기술과 LG AI연구원의 초거대 AI 모델 ‘엑사원(EXAONE)’, 서비스 인프라를... 한컴 에이전트와 챗엑사원 결합 솔루션을 기반으로 정부부처와 공공기관, 공기업 대상 사업 발굴부터 수주...",
+    "originallink": "https://www.mk.co.kr/article/12055579",
+    "link": "https://n.news.naver.com/mnews/article/009/0005683830?sid=105",
+    "published_at_kst": "2026-05-22T15:19:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 상담 서비스",
+    "title": "아모레퍼시픽, AWS 서밋서 '에이전틱 AI' 접목한 통합 뷰티 플랫폼 공개",
+    "description": "1:1 상담 서비스도 함께 이뤄져 기술과 전문가의 진단이 결합된 형태를 보여줬다. 특히 QR 기반 사용자 식별 시스템을 통해 여러 진단 결과를 하나로 묶은 통합 AI 카운슬링을 지원함으로써 단일 서비스를 넘어선...",
+    "originallink": "https://www.pointe.co.kr/news/articleView.html?idxno=79791",
+    "link": "https://www.pointe.co.kr/news/articleView.html?idxno=79791",
+    "published_at_kst": "2026-05-22T14:44:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "OpenAI 호환 API",
+    "title": "블록체인 프로젝트 피크, 솔라나·베이스 연동 기계 전용 플랫폼 'peaqOS...",
+    "description": "sh는 Compute, Inference, Web 등 6개 카테고리에 걸쳐 구글, OpenAI, 앤트로픽, 테더 등 주요 기술 기업의 API... 플랫폼은 Cursor, Windsurf, Claude Code 등 AI 코딩 에이전트와 호환성을 가지며, 단 한 번의 명령어 설치를...",
+    "originallink": "https://www.delighti.co.kr/news/articleView.html?idxno=116780",
+    "link": "https://www.delighti.co.kr/news/articleView.html?idxno=116780",
+    "published_at_kst": "2026-05-22T14:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 기반 RAG 서비스",
+    "title": "링크브릭스 호라이즌 에이아이, 통합 AI 검색 시스템 '보라 하이퍼 RAG' ...",
+    "description": "링크브릭스 호라이즌 에이아이는 VORA HYPER RAG를 기반으로 서비스형 소프트웨어(SaaS)형 클라우드 서비스와 온프레미스 구축형 사업을 동시에 확대해 나갈 계획이다. 특히 금융, 법률, 제조, 공공, 연구기관 등...",
+    "originallink": "https://www.etnews.com/20260522000255",
+    "link": "https://n.news.naver.com/mnews/article/030/0003430575?sid=105",
+    "published_at_kst": "2026-05-22T14:19:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "OpenAI 호환 API",
+    "title": "peaq, 기계 전용 디지털 서비스 플랫폼 및 마켓플레이스 출시",
+    "description": "서비스에는 Google의 Gemini, BigQuery, Document AI, Cloud Translation과 OpenAI의 ChatGPT, Anthropic의 Claude, Tether의... 도구와의 호환성을 지원한다. 개발자는 개별 API 키 발급 없이 단일 블록체인 지갑을 통해...",
+    "originallink": "https://www.stardailynews.co.kr/news/articleView.html?idxno=536761",
+    "link": "https://www.stardailynews.co.kr/news/articleView.html?idxno=536761",
+    "published_at_kst": "2026-05-22T13:12:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "vLLM",
+    "title": "GitLab 19.0 Extends Intelligent Orchestration",
+    "description": "Both on-premises and private cloud deployment options are supported, including deployment via vLLM on GPU-enabled infrastructure and hybrid configurations that mix self-hosted and GitLab-managed...",
+    "originallink": "https://www.itbiznews.com/news/articleView.html?idxno=213715",
+    "link": "https://www.itbiznews.com/news/articleView.html?idxno=213715",
+    "published_at_kst": "2026-05-22T12:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 GPU",
+    "title": "미래에셋證 \"삼성SDS, AI 인프라 수혜 기대…목표가 24만원 제시\"",
+    "description": "삼성SDS는 데이터센터와 클라우드, GPU 인프라 역량을 보유해 국내 AI 인프라 시장 확대 과정에서 선도 기업으로 자리 잡을 수 있다는 평가다. 임 연구원은 “클라우드 매출액은 2027년까지 연평균 18%까지...",
+    "originallink": "https://www.thepowernews.co.kr/view.php?ud=202605221116568858de3f0aa1be_7",
+    "link": "https://www.thepowernews.co.kr/view.php?ud=202605221116568858de3f0aa1be_7",
+    "published_at_kst": "2026-05-22T11:22:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "엔비디아 GPU 클라우드 파트너십",
+    "title": "엔비디아 \"나 아직 한창이야\"…\"블랙웰·루빈으로 1조달러 매출 가능\"",
+    "description": "지난 1년여간 투자와 파트너십 계약에만 900억 달러, 우리 돈 136조 원을 쏟아부었는데요. 대상은 145곳에... 있다, 엔비디아는 모든 클라우드에서 구동되고, 모든 프런티어 모델과 개방형 모델을 지원하는 데다...",
+    "originallink": "https://biz.sbs.co.kr/article_hub/20000312106?division=NAVER",
+    "link": "https://n.news.naver.com/mnews/article/374/0000511803?sid=104",
+    "published_at_kst": "2026-05-22T11:20:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 상담 서비스",
+    "title": "[산업브리핑] 쿠팡·아모레퍼시픽·바디프랜드, 소비·뷰티·가전 분야서...",
+    "description": "클라우드·AI 콘퍼런스로, 아모레퍼시픽은 자사의 연구 역량과 AI 기술을 결합한 맞춤형 뷰티 서비스를 체험... 1대1 상담 서비스도 함께 운영됐다. ▲바디프랜드 바디프랜드는 콤팩트 헬스케어로봇 '뉴팔콘'의 신규 색상...",
+    "originallink": "http://www.weeklytoday.com/news/articleView.html?idxno=776837",
+    "link": "http://www.weeklytoday.com/news/articleView.html?idxno=776837",
+    "published_at_kst": "2026-05-22T11:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "클라우드 AI 상담 서비스",
+    "title": "국내 주요 클라우드·AI 기업, AWS 서밋 서울 2026서 에이전틱 AI 전략 총...",
+    "description": "메가존클라우드는 에이전틱 AI의 실질적 경쟁력을 주제로 AI 서비스 브랜드 에어(AIR), 보안 브랜드 헤일로(HALO), 클라우드 마이그레이션 자동화 솔루션 하이퍼미그(HyperMig) 등을 중심으로 기업 맞춤형 상담을...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052211113526836",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228722?sid=105",
+    "published_at_kst": "2026-05-22T11:13:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "DeepSeek R1 기업",
+    "title": "LLM의 미래는 ‘특화’에 있다…의료·법률·금융 분야 맞춤형 모델 21가...",
+    "description": "클라이밋BERT(ClimateBERT) 클라이밋BERT는 뉴스 기사, 연구 논문, 기업의 기후 보고서 등에서 추출한 기후... 딥시크-R1 리걸(DeepSeek-R1 Legal) 여러 사용자가 다양한 법률 문서를 사용해 딥시크 파운데이션 모델을 파인...",
+    "originallink": "https://www.itworld.co.kr/article/4175450/llm의-미래는-특화에-있다-의료·법률·금융-분야-맞춤.html",
+    "link": "https://www.itworld.co.kr/article/4175450/llm의-미래는-특화에-있다-의료·법률·금융-분야-맞춤.html",
+    "published_at_kst": "2026-05-22T10:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen2.5 기업",
+    "title": "알리바바, 35시간 연속 자율 수행 AI ‘Qwen3.7-Max’ 공개…오픈소스 대...",
+    "description": "이미지 출처: Qwen 공식 블로그 중국 빅테크 기업 알리바바(Alibaba)의 AI 연구팀 큐원... 알리바바는 앞서 Qwen 2.5, Qwen 3.6 등 주요 모델의 가중치를 공개하며 오픈소스...",
+    "originallink": "https://www.venturesquare.net/1084653/",
+    "link": "https://www.venturesquare.net/1084653/",
+    "published_at_kst": "2026-05-22T09:25:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "리벨리온 클라우드 파트너십",
+    "title": "[Tech & Now] 삼성전자, 美 스마트폰 소비자 만족도 1위…애플 제쳤다 등",
+    "description": "또 중국 시장에서는 올뷰클라우드(AVC) 데이터를 기준으로 3년 연속 판매 1위를 차지했다. 에코백스는... Provider) 파트너십을 갱신한 GS네오텍은 이번 행사에서 플래티넘 부스를 운영했다. GS네오텍은 이번 행사에서 AI...",
+    "originallink": "https://www.ebn.co.kr/news/articleView.html?idxno=1709781",
+    "link": "https://www.ebn.co.kr/news/articleView.html?idxno=1709781",
+    "published_at_kst": "2026-05-22T09:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 GPU",
+    "title": "국내 CSP-KACI, 공동 전선 구축…글로벌 압박·GPU난 '한목소리' 대응",
+    "description": "국내 클라우드 서비스 기업들이 글로벌 CSP의 시장 잠식과 GPU 수급난, 데이터센터 에너지 비용 급등 등... kt cloud·네이버클라우드·카카오엔터프라이즈·가비아·NHN클라우드·삼성SDS 등 국내 주요 CSP 6개사가...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052017342600376",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228656?sid=105",
+    "published_at_kst": "2026-05-21T17:40:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "DeepSeek R1 기업",
+    "title": "[시선UP] 애널리스트 38명 매도 의견 0… '삼전닉스' 랠리의 진짜 리스크",
+    "description": "2025년 1월 중국 딥시크(DeepSeek)는 V3 모델을 600만달러 미만의 비용으로 훈련했다고 발표했고, 이를 기반으로 강화학습으로 구축한 R1 모델이 OpenAI o1급 추론 성능을 달성했다고 알려지면서, 발표 직후 엔비디아...",
+    "originallink": "http://www.updownnews.co.kr/news/articleView.html?idxno=317304",
+    "link": "http://www.updownnews.co.kr/news/articleView.html?idxno=317304",
+    "published_at_kst": "2026-05-21T17:30:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 고객 AI",
+    "title": "앤트로픽, 한국 지사 설립 임박…‘클로드 열풍’에 전략 바꿨다",
+    "description": "최 지사장은 구글클라우드, 어도비, 오토데스크, 한국마이크로소프트 등 글로벌 IT 기업에서 주요 직책을... 오픈AI는 이미 한국 법인 설립 이후 기업 고객 확보에 속도를 내고 있다. 삼성SDS와 협력 관계를 구축했고 국내...",
+    "originallink": "http://www.lawissue.co.kr/view.php?ud=2026052117254215869817d053b9_12",
+    "link": "http://www.lawissue.co.kr/view.php?ud=2026052117254215869817d053b9_12",
+    "published_at_kst": "2026-05-21T17:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen3 기업",
+    "title": "[DD퇴근길] 보너스만 6억원?…파업 문턱에서 극적으로 웃은 삼성전자",
+    "description": "단순히 한 기업의 노사갈등이 아니라 국민경제에 막대한 악영향을 미칠 수 있다는 점에서 갈등 봉합은... 여기에 하드웨어뿐만 아니라 자체 AI 모델인 'Qwen 3.7-Max'까지 묶어 소프트웨어까지 갈아 끼웠습니다. 냉정하게...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052114523760355",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228647?sid=105",
+    "published_at_kst": "2026-05-21T17:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 클라우드",
+    "title": "HP코리아, 업스테이지와 AI 에이전트 협력…기업용 솔루션 확대",
+    "description": "HP의 고성능 AI 워크스테이션 인프라와 업스테이지의 자체 개발 거대언어모델(LLM) '솔라(Solar)'를 결합해... 금융·공공·제조 업종을 중심으로 데이터 보안과 내부 통제를 이유로 클라우드 외부 반출이 어려운...",
+    "originallink": "http://www.metroseoul.co.kr/article/20260521500281",
+    "link": "http://www.metroseoul.co.kr/article/20260521500281",
+    "published_at_kst": "2026-05-21T15:48:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "SOLAR 온프레미스",
+    "title": "HP 코리아-업스테이지, AI 에이전트 기반 업무 혁신 맞손",
+    "description": "업스테이지는 자체 개발한 거대언어모델(LLM) ‘솔라(Solar)’와 문서 특화 AI 기술을 HP의 강력한 하드웨어... 온프레미스 및 하이브리드 AI 수요에 맞춤화된 최적의 솔루션을 제공하고, 기업 고객들이 실제 업무...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052115454576048",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228631?sid=105",
+    "published_at_kst": "2026-05-21T15:46:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "리벨리온 클라우드 파트너십",
+    "title": "삼성·하이닉스만 믿다간 늦는다? '이것' 놓치면 한국 식민지 된다",
+    "description": "◇ 박영선 : 네, 왜 그러냐면 첫째 클라우드에다가 데이터를 보내면 이게 갔다 오느라고 속도가... \" 그래 가지고 큰 회사들이 바로 그 퓨리오사AI, 리벨리온, 딥엑스, 그다음에 또 요새 뜨고 있는 파두, 그때 우리가...",
+    "originallink": "https://www.ytn.co.kr/_ln/0102_202605211517504060",
+    "link": "https://n.news.naver.com/mnews/article/052/0002356271?sid=101",
+    "published_at_kst": "2026-05-21T15:17:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "vLLM",
+    "title": "제이디원, 한국지능정보사회진흥원(NIA) 'K-AI 리더보드' 분야 종합 1위",
+    "description": "특히 vLLM, SGLang, 트랜스포머스 등 글로벌 표준 추론 프레임워크와의 호환성을 기반으로, 기업 및 기관이 기존 인프라에 한국어 특화 AI 모델을 보다 유연하게 적용할 수 있도록 지원할 계획이다. 제이디원...",
+    "originallink": "http://www.sisunnews.co.kr/news/articleView.html?idxno=239039",
+    "link": "http://www.sisunnews.co.kr/news/articleView.html?idxno=239039",
+    "published_at_kst": "2026-05-21T14:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen3 도입",
+    "title": "알리바바, AI 풀스택 업그레이드 발표…신규 LLM·AI칩·인프라 공개",
+    "description": "이번에 공개된 Qwen3.7-Max는 알리바바의 최신 대규모언어모델(LLM)로, 에이전틱 코딩과 복잡한 추론... RL)을 도입해 지속적인 모델 개선을 추진한다. 자율적으로 동작하는 에이전트가 사전에 정의된 범위...",
+    "originallink": "https://platum.kr/archives/287378",
+    "link": "https://platum.kr/archives/287378",
+    "published_at_kst": "2026-05-21T13:58:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "vLLM",
+    "title": "\"클라우드 없이 3000억 매개변수 모델 구동\"…AMD, ‘라이젠 AI 헤일로·...",
+    "description": "파이토치(PyTorch), vLLM 등 엔지니어들이 널리 사용하는 프레임워크와 호환된다. 리눅스 프로토타이핑부터 윈도우 배포까지 원스톱으로 지원한다. 동시에 베일을 벗은 ‘라이젠 AI 맥스 프로 400’ 시리즈는...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052111222313704",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228608?sid=105",
+    "published_at_kst": "2026-05-21T11:23:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "vLLM",
+    "title": "AI 인프라 투자 더 커진다…엔비디아 훈풍에 'AI 코인' 기대감 확대",
+    "description": "또 vLLM, SGLang 같은 오픈소스 AI 도구가 특정 하드웨어 의존도를 낮추는 방향으로 발전하고 있다는 점도 변수다. 그럼에도 시장은 당분간 AI 인프라 투자 확대 흐름이 이어질 가능성에 무게를 두고 있다. 이에 따라...",
+    "originallink": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=667943",
+    "link": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=667943",
+    "published_at_kst": "2026-05-21T11:08:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen3 도입",
+    "title": "알리바바, 자체 AI칩 '젠우 M890' 공개…엔비디아 의존 낮춘다",
+    "description": "차세대 대형언어모델 ‘큐원3.7-맥스(Qwen3.7-Max)’도 함께 나왔다. 이 모델은 고난도 코딩, 복잡한 추론... 이를 도입한 것으로 전해졌다. 이번 발표는 중국 빅테크의 AI 반도체 자립 흐름과 맞물려 있다. 미국이...",
+    "originallink": "https://www.ajunews.com/view/20260521104338651",
+    "link": "https://www.ajunews.com/view/20260521104338651",
+    "published_at_kst": "2026-05-21T10:46:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 고객 AI",
+    "title": "LG이노텍·카카오모빌리티 손잡았다…자율주행 협력",
+    "description": "AI 이체부터 사기 탐지까지…달아오르는 금융권 ‘AX 열풍’ - 핵심 요약: 우리은행이 AI 에이전트 구축 사업의 우선협상대상자로 삼성SDS를 선정하며 금융권 AX 경쟁이 본격화됐다. 우리은행은 고객관계관리(CRM)...",
+    "originallink": "https://www.sedaily.com/article/20046605?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/011/0004623070?sid=101",
+    "published_at_kst": "2026-05-21T07:28:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference as a service",
+    "title": "Intel Core Ultra Series 3: The New Standard for Edge AI Robotics Compute",
+    "description": "for a fundamentally different product. 'We've built Ella for the service economy,' Tan adds. 'With Intel Core Ultra 3, we can now deploy agentic AI at the edge — on physical robots — and...",
+    "originallink": "https://www.gamevu.co.kr/news/articleView.html?idxno=58073",
+    "link": "https://www.gamevu.co.kr/news/articleView.html?idxno=58073",
+    "published_at_kst": "2026-05-21T07:10:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "K-EXAONE 도입",
+    "title": "[AI클로즈업] K-휴머노이드 착수... 실시간 데이터 연결·모델 경량화 관...",
+    "description": "AI '엑사원(EXAONE)' 기반 휴머노이드 파운데이션 모델 확장을 맡는다. 2연구단(행동SW)은 KIST·서울대·KAIST... 3차년도에는 비디오캡처 기반 인터페이스를 도입해 착용 장비 없이도 다수 사용자가 데이터 수집에 참여할...",
+    "originallink": "https://www.ddaily.co.kr/page/view/2026052016512856045",
+    "link": "https://n.news.naver.com/mnews/article/138/0002228543?sid=105",
+    "published_at_kst": "2026-05-21T06:01:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "삼성SDS 클라우드 고객 AI",
+    "title": "\"AI는 이제 운영이다\"… AWS 서밋서 드러난 韓 IT기업들의 '진지전'",
+    "description": "AI 전환, 멀티클라우드 전략을 따로 보지 않고 하나의 구조 변화로 읽고 있다는 의미다. 결국 삼성SDS의... 생성형 AI 시장은 기술 시연 단계가 아니라 실제 운영 단계로 넘어가고 있다\"며 \"기업 고객 입장에서는 한 번...",
+    "originallink": "http://www.newsroad.co.kr/news/articleView.html?idxno=59549",
+    "link": "http://www.newsroad.co.kr/news/articleView.html?idxno=59549",
+    "published_at_kst": "2026-05-20T20:34:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "나라장터 AI 시스템 구축",
+    "title": "기업 업무에 스며든 AI Agent…ONS, AI EXPO KOREA 2026서 활용 사례 공개",
+    "description": "시스템은 현재 Dify 운영사 랭지니어스(LangGenius) K.K.와 국내 유일 공식 파트너 계약을 체결하고 플랫폼 공급과 기술 지원을 담당하고 있다. 현장에서는 AI 페르소나 스튜디오, 스마트 브로슈어 OCR 분석기, 나라장터...",
+    "originallink": "https://www.joongang.co.kr/article/25430014",
+    "link": "https://n.news.naver.com/mnews/article/353/0000055478?sid=102",
+    "published_at_kst": "2026-05-20T18:23:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "vLLM",
+    "title": "나무기술-레드햇, '엔터프라이즈 에이전틱 AI 플랫폼' 공동 개발 나선다",
+    "description": "AI 추론 엔진(vLLM)과 Red Hat AI Enterprise 기반 환경을 연계하고 있으며, GPU 인프라부터 에이전트 오케스트레이션, 클라우드 관리 플랫폼(CMP)까지 AI 서비스 전반에 필요한 자체 기술 역량을 보유하고 있다....",
+    "originallink": "http://www.itdaily.kr/news/articleView.html?idxno=239425",
+    "link": "http://www.itdaily.kr/news/articleView.html?idxno=239425",
+    "published_at_kst": "2026-05-20T16:42:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen3 도입",
+    "title": "[이혜선의 차이나는 테크] 데이터 올인하던 中 통신사, AI 토큰 요금제로...",
+    "description": "차이나모바일 상하이 법인은 1위안(약 221원)에 40만 토큰씩 원하는 만큼 살 수 있는 방식을 도입했고... 가입자는 딥시크, 알리바바 '치웬'(Qwen) 등 중국 주요 AI 모델을 요금제 안에서 골라 쓸 수 있다. 이번 요금제 출시...",
+    "originallink": "https://www.dt.co.kr/article/12063486?ref=naver",
+    "link": "https://n.news.naver.com/mnews/article/029/0003027683?sid=105",
+    "published_at_kst": "2026-05-20T14:14:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "Qwen3 추론 서비스",
+    "title": "[AI의 종목 이야기] 알리바바, 신형 AI 가속기 '전우 M890' 공개",
+    "description": "금융서비스 기업들도 해당 하드웨어를 활용하고 있다고 알리바바는 전했다. 알리바바는 또한 코딩과 에이전틱 작업에 최적화된 기반 모델 '큰 3.7-맥스(Qwen 3.7-Max)'도 새롭게 공개했다. 항저우에 본사를 둔...",
+    "originallink": "https://www.newspim.com/news/view/20260520000669",
+    "link": "https://www.newspim.com/news/view/20260520000669",
+    "published_at_kst": "2026-05-20T13:37:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "vLLM",
+    "title": "나무기술, 레드햇과 엔터프라이즈 에이전틱 AI 플랫폼 공동 개발",
+    "description": "AI 추론 엔진(vLLM)과 레드햇 AI 엔터프라이즈 기반 환경을 연계하고 있으며 GPU 인프라부터 에이전트 오케스트레이션, 클라우드 관리 플랫폼(CMP)까지 AI 서비스 전반에 필요한 자체 기술 역량을 보유하고 있다....",
+    "originallink": "https://www.etnews.com/20260520000264",
+    "link": "https://n.news.naver.com/mnews/article/030/0003429587?sid=105",
+    "published_at_kst": "2026-05-20T13:15:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "GPT-OSS 도입",
+    "title": "디지털 주권부터 비용 절감까지, 오픈 AI 모델의 부상",
+    "description": "구글의 젬마는 제미나이의 파생 모델이고, 오픈AI는 GPT-OSS를, 마이크로소프트는 파이를 내놨다. 폐쇄형... 모델 도입을 검토하기 시작했다고 말했다. 고스는 “AI 경쟁은 여전히 초기 단계”라며 “CIO는 AI를 어떤 용도로...",
+    "originallink": "https://www.itworld.co.kr/article/4173456/디지털-주권부터-비용-절감까지-오픈-ai-모델의-부상.html",
+    "link": "https://www.itworld.co.kr/article/4173456/디지털-주권부터-비용-절감까지-오픈-ai-모델의-부상.html",
+    "published_at_kst": "2026-05-20T11:50:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "AI inference as a service",
+    "title": "Blackstone and Google Launch AI Cloud Venture, Pressuring CoreWeave and N...",
+    "description": "compute-as-a-service model. This gives enterprise customers another way to access Google’s advanced AI chips outside of the traditional Google Cloud platform. Industry analysts believe the...",
+    "originallink": "https://www.econotimes.com/Blackstone-and-Google-Launch-AI-Cloud-Venture-Pressuring-CoreWeave-and-Nebius-Shares-1742127",
+    "link": "https://www.econotimes.com/Blackstone-and-Google-Launch-AI-Cloud-Venture-Pressuring-CoreWeave-and-Nebius-Shares-1742127",
+    "published_at_kst": "2026-05-20T11:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "나라장터 AI 시스템 구축",
+    "title": "오픈네트웍시스템, AI EXPO KOREA 2026 참가…Dify 기반 AI Agent 사례 소...",
+    "description": "시스템은 Dify 운영사인 랭지니어스(LangGenius) K.K.와 국내 공식 파트너 계약을 맺고 플랫폼 공급 및 기술 지원 업무를 진행하고 있다. 현장에서는 AI 페르소나 스튜디오, 스마트 브로슈어 OCR 분석기, 나라장터...",
+    "originallink": "https://www.gokorea.kr/news/articleView.html?idxno=866999",
+    "link": "https://www.gokorea.kr/news/articleView.html?idxno=866999",
+    "published_at_kst": "2026-05-20T10:16:00+09:00",
+    "source": "naver_news_api"
+  },
+  {
+    "query": "나라장터 AI 시스템 구축",
+    "title": "\"수수료는 챙기고 민원은 나몰라라?\"...당근·번개장터 등 중고거래 플...",
+    "description": "내 AI 챗봇으로만 고객 문의를 처리하고 있는 점이 주요 원인으로 지적된다. 중고나라는 올 1분기 발생한 민원 10개 중 8건이 '안심결제' 정산 지연 등 미정산 관련 내용이다. 번개장터는 자체 검수 시스템에 대한 소비자...",
+    "originallink": "http://www.consumernews.co.kr/news/articleView.html?idxno=754479",
+    "link": "http://www.consumernews.co.kr/news/articleView.html?idxno=754479",
+    "published_at_kst": "2026-05-20T06:20:00+09:00",
+    "source": "naver_news_api"
+  }
+]
