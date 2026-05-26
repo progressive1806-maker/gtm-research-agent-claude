@@ -133,11 +133,15 @@ def naver_news_search(query: str, display: int = 5) -> list[dict[str, Any]]:
 
 
 def is_valid_linkedin_url(url: str) -> bool:
-    """Only linkedin.com/in/<slug> and linkedin.com/company/<slug> count as profile URLs."""
+    """
+    BD use case: we want INDIVIDUAL decision-maker profiles, not company pages.
+    Only linkedin.com/in/<slug> qualifies. linkedin.com/company/<slug> is
+    a company landing page and is explicitly rejected — it doesn't tell us
+    who to contact.
+    """
     if not url:
         return False
-    lower = url.lower()
-    return "linkedin.com/in/" in lower or "linkedin.com/company/" in lower
+    return "linkedin.com/in/" in url.lower()
 
 
 def classify_result(
@@ -146,10 +150,16 @@ def classify_result(
     role_terms: list[str],
 ) -> str:
     """
-    HIGH/MID/LOW require a real linkedin.com/in or linkedin.com/company URL.
-    News/blog/article URLs (venturesquare.net, sanctionlab.com, naver.com, …)
-    never reach HIGH/MID/LOW — they return UNKNOWN even if title/desc happen
-    to mention the company and a role.
+    Returns:
+      HIGH    — linkedin.com/in/<slug> URL whose title/desc mentions BOTH
+                the target company name and a role term.
+      MID     — linkedin.com/in/<slug> URL with EITHER company OR role match.
+      UNKNOWN — anything else: company pages (linkedin.com/company/...),
+                news/article URLs, bare individual profiles without context,
+                or profiles where neither the company nor a role appears.
+
+    LOW is no longer produced. A bare /in/ URL with no contextual match is
+    treated as UNKNOWN because we cannot tell whose profile it is.
     """
     url = (item.get("link") or "").lower()
     title = _strip_html(item.get("title", "")).lower()
@@ -163,16 +173,15 @@ def classify_result(
     if not is_valid_linkedin_url(url):
         return "UNKNOWN"
 
-    is_linkedin_profile = "linkedin.com/in/" in url
-    is_linkedin_company = "linkedin.com/company/" in url
+    # Now we know it's a linkedin.com/in/<slug> URL.
     company_match = company in blob or company in url
     role_match = any(role.strip().lower() in blob for role in role_terms if role)
 
-    if (is_linkedin_profile or is_linkedin_company) and company_match and role_match:
+    if company_match and role_match:
         return "HIGH"
-    if (is_linkedin_profile or is_linkedin_company) and (company_match or role_match):
+    if company_match or role_match:
         return "MID"
-    return "LOW"
+    return "UNKNOWN"
 
 
 def find_profile_for_candidate(

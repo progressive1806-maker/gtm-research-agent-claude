@@ -1877,7 +1877,7 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
 - LinkedIn/공개 프로필 후보 칸은 decision_maker_profile_url을 따릅니다.
-  - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 또는 linkedin.com/company/이면 마크다운 링크로 노출.
+  - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 개인 프로필이면 마크다운 링크로 노출. linkedin.com/company/ 같은 기업 페이지는 절대 노출하지 마세요 — BD는 개인 의사결정권자 프로필만 필요합니다.
   - 그 외(빈 URL, 뉴스/일반 사이트 URL, LOW/UNKNOWN)는 두 칸 모두 "확인 필요"로 표기.
 - 내부 시스템(Jira 등) 이름은 본문에 절대 노출하지 마세요. 기존 접점은 "기존 접점: <이름> ✅"로 간단히 표현.
 
@@ -1957,7 +1957,7 @@ target_type=="CSP 운영 기업" 또는 csp_routed_sales_possibility=="HIGH" 또
 표 헤더: 대상 | 담당자 힌트 | LinkedIn/공개 프로필 후보 | 신뢰도 | 기존 접점
 - decision_maker_hint는 직함/조직 단위로만 표현. 사람 이름 발명 금지.
 - LinkedIn/공개 프로필 후보 칸은 decision_maker_profile_url을 따릅니다.
-  - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 또는 linkedin.com/company/이면 마크다운 링크로 노출.
+  - decision_maker_profile_confidence가 HIGH/MID이고 URL이 linkedin.com/in/ 개인 프로필이면 마크다운 링크로 노출. linkedin.com/company/ 같은 기업 페이지는 절대 노출하지 마세요 — BD는 개인 의사결정권자 프로필만 필요합니다.
   - 그 외(빈 URL, 뉴스/일반 사이트 URL, LOW/UNKNOWN)는 두 칸 모두 "확인 필요"로 표기.
 - 내부 시스템(Jira 등) 이름은 본문에 절대 노출하지 마세요. 기존 접점은 "기존 접점: <이름> ✅"로 간단히 표현.
 
@@ -2819,18 +2819,7 @@ def build_business_report(
     )
 
     for c in candidates_sorted[:8]:
-        confidence = c.get("decision_maker_profile_confidence", "UNKNOWN")
-        if confidence in ("HIGH", "MID"):
-            url = c.get("decision_maker_profile_url") or ""
-            if url:
-                url_cell = f"[{url}]({url})"
-                confidence_cell = confidence
-            else:
-                url_cell = "확인 필요"
-                confidence_cell = "확인 필요"
-        else:
-            url_cell = "확인 필요"
-            confidence_cell = "확인 필요"
+        url_cell, confidence_cell = _decision_maker_cells(c)
         lines.append(
             f"| {c.get('name', '미확인')} "
             f"| {short_text(c.get('decision_maker_hint'), 80)} "
@@ -3840,6 +3829,7 @@ def run_selftest() -> int:
     if sl != "UNKNOWN":
         failures.append(f"sanctionlab.com URL은 LinkedIn 후보로 분류되면 안 된다 (got {sl}).")
 
+    # Company pages must be rejected — BD wants individual decision-makers.
     ln_company = classify_result(
         {
             "link": "https://www.linkedin.com/company/sample-co/",
@@ -3849,9 +3839,60 @@ def run_selftest() -> int:
         "샘플 CSP운영사",
         ["Head of Cloud"],
     )
-    if ln_company != "HIGH":
+    if ln_company != "UNKNOWN":
         failures.append(
-            f"linkedin.com/company + 회사명 + role은 HIGH여야 한다 (got {ln_company})."
+            f"linkedin.com/company URL은 (회사+role이 있어도) UNKNOWN이어야 한다 (got {ln_company})."
+        )
+
+    # Bare /in/ profile without company/role mention → cannot identify the person.
+    ln_bare = classify_result(
+        {
+            "link": "https://www.linkedin.com/in/unknown-person/",
+            "title": "Some unrelated headline",
+            "description": "no match",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if ln_bare != "UNKNOWN":
+        failures.append(
+            f"맥락 없는 linkedin.com/in URL은 UNKNOWN이어야 한다 (got {ln_bare})."
+        )
+
+    # Real individual profile with company + role mention → HIGH.
+    ln_individual = classify_result(
+        {
+            "link": "https://www.linkedin.com/in/jane-doe/",
+            "title": "Jane Doe – Head of Cloud at 샘플 CSP운영사",
+            "description": "Cloud Infrastructure 책임자",
+        },
+        "샘플 CSP운영사",
+        ["Head of Cloud"],
+    )
+    if ln_individual != "HIGH":
+        failures.append(
+            f"linkedin.com/in/ + 회사명 + role은 HIGH여야 한다 (got {ln_individual})."
+        )
+
+    # _decision_maker_cells: company URL even if structurally stored must not render.
+    from run import _decision_maker_cells
+    company_cand = {
+        "decision_maker_profile_url": "https://www.linkedin.com/company/idca/",
+        "decision_maker_profile_confidence": "MID",
+    }
+    cu, cc = _decision_maker_cells(company_cand)
+    if cu != "확인 필요" or cc != "확인 필요":
+        failures.append(
+            "결정자 셀: linkedin.com/company URL이 저장되어 있어도 본문에 노출되면 안 된다."
+        )
+    individual_cand = {
+        "decision_maker_profile_url": "https://www.linkedin.com/in/jane/",
+        "decision_maker_profile_confidence": "HIGH",
+    }
+    iu, ic = _decision_maker_cells(individual_cand)
+    if "linkedin.com/in/jane" not in iu or ic != "HIGH":
+        failures.append(
+            "결정자 셀: HIGH + linkedin.com/in/ URL은 마크다운 링크로 노출되어야 한다."
         )
 
     # Part C: conservative outreach_priority — unknown model + no strong GTM signal cannot stay HIGH.
@@ -4246,6 +4287,24 @@ def run_selftest() -> int:
     print(f"  candidates validated: {len(result['candidates'])}")
     print(f"  detector violations on sample report: {len(violations)}")
     return 0
+
+
+def _decision_maker_cells(candidate: dict[str, Any]) -> tuple[str, str]:
+    """
+    Return (url_cell, confidence_cell) for the §담당자 table.
+    BD use case: only individual linkedin.com/in/<slug> profiles are surfaced.
+    Company landing pages (linkedin.com/company/...) and bare news URLs are
+    rendered as "확인 필요" in both columns.
+    """
+    confidence = candidate.get("decision_maker_profile_confidence", "UNKNOWN")
+    url = (candidate.get("decision_maker_profile_url") or "").strip()
+    if (
+        confidence in ("HIGH", "MID")
+        and url
+        and "linkedin.com/in/" in url.lower()
+    ):
+        return f"[{url}]({url})", confidence
+    return "확인 필요", "확인 필요"
 
 
 def _apply_g2b_status_to_b2g_candidates(
