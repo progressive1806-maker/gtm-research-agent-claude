@@ -31,6 +31,10 @@ on:
         description: "G2B pre-spec service root (leave empty to disable)"
         required: false
         default: ""
+      google_cse_id:
+        description: "Google Programmable Search Engine ID (cx). Leave empty to use Naver only."
+        required: false
+        default: ""
 
   schedule:
     # Monday 08:07 KST = Sunday 23:07 UTC
@@ -73,6 +77,8 @@ jobs:
           G2B_SERVICE_KEY: ${{ secrets.G2B_SERVICE_KEY }}
           G2B_BID_ENDPOINT: ${{ github.event.inputs.g2b_bid_endpoint }}
           G2B_SPEC_ENDPOINT: ${{ github.event.inputs.g2b_spec_endpoint }}
+          GOOGLE_CSE_API_KEY: ${{ secrets.GOOGLE_CSE_API_KEY }}
+          GOOGLE_CSE_ID: ${{ github.event.inputs.google_cse_id }}
         run: |
           python agent/run.py
 

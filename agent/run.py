@@ -1927,7 +1927,7 @@ outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 표 헤더: 순위 | 대상 | 유형 | 확인 모델 | 핵심 이유 | 다음 액션 | 출처
 
 ## 3. B2B 후보 상세
-market != "B2G"인 후보 중 상위 6개. 후보마다 ### {대상명}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기. 머신 enum(priority_outreach, family_only, exact_supported, cloud_npuaas_lead, structure_check, unknown 등)을 그대로 노출하지 마세요.
+market != "B2G"인 후보 중 상위 6개. 후보마다 ### {{대상명}}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기. 머신 enum(priority_outreach, family_only, exact_supported, cloud_npuaas_lead, structure_check, unknown 등)을 그대로 노출하지 마세요.
 - 왜 지금 연락해야 하는가
 - 고객 win
 - Furiosa win
@@ -1938,7 +1938,7 @@ market != "B2G"인 후보 중 상위 6개. 후보마다 ### {대상명}으로 �
 - 출처: source_urls를 마크다운 링크로 1~3개
 
 ## 4. B2G/Nara 후보 상세
-market == "B2G"인 후보. 후보마다 ### {대상명}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기.
+market == "B2G"인 후보. 후보마다 ### {{대상명}}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기.
 - 사업/사업명: confirmed_project_or_signal
 - 발주 기관/연결 기관 힌트
 - 왜 지금 — 일정/RFP 단계 등
@@ -3874,6 +3874,52 @@ def run_selftest() -> int:
             f"linkedin.com/in/ + 회사명 + role은 HIGH여야 한다 (got {ln_individual})."
         )
 
+    # Google CSE backend wiring (no network — env-vars not set in selftest).
+    from decision_makers import (
+        google_cse_configured,
+        google_cse_search,
+        _cse_biased_query,
+        _run_search,
+    )
+    if google_cse_configured():
+        failures.append("selftest 환경에서 google_cse_configured()는 False여야 한다.")
+    try:
+        google_cse_search("test query")
+    except RuntimeError as exc:
+        if "not configured" not in str(exc).lower():
+            failures.append(f"google_cse_search 비활성 메시지가 예상과 다르다: {exc}")
+    except Exception as exc:
+        failures.append(f"google_cse_search가 RuntimeError 대신 다른 예외를 던졌다: {exc}")
+    else:
+        failures.append("google_cse_search가 비활성 상태에서 예외를 안 던졌다.")
+
+    biased = _cse_biased_query("삼성SDS Head of Cloud LinkedIn")
+    if "site:linkedin.com/in" not in biased:
+        failures.append(f"_cse_biased_query에 site:linkedin.com/in이 추가되지 않았다: {biased}")
+    # Idempotent — second pass shouldn't double-append.
+    if _cse_biased_query(biased) != biased:
+        failures.append("_cse_biased_query가 멱등성을 잃었다 (site: 중복 추가).")
+
+    # _run_search ladder: with CSE disabled, primary backend is naver_web.
+    # We can't make real network calls, but we can verify the backend label
+    # by stubbing the underlying functions.
+    import decision_makers as _dm
+    original_web = _dm.naver_web_search
+    original_news = _dm.naver_news_search
+    try:
+        _dm.naver_web_search = lambda q, display=5: [
+            {"link": "https://www.linkedin.com/in/jane/", "title": "Jane @ X", "description": ""}
+        ]
+        _dm.naver_news_search = lambda q, display=5: []
+        items, source, _err = _run_search("X CTO LinkedIn", prefer_cse=False)
+        if source != "naver_web":
+            failures.append(f"_run_search prefer_cse=False는 naver_web이 primary여야 한다 (got {source}).")
+        if not items or "linkedin.com/in/jane" not in items[0].get("link", ""):
+            failures.append("_run_search가 naver_web 결과를 전달하지 못했다.")
+    finally:
+        _dm.naver_web_search = original_web
+        _dm.naver_news_search = original_news
+
     # _decision_maker_cells: company URL even if structurally stored must not render.
     from run import _decision_maker_cells
     company_cand = {
@@ -4207,6 +4253,20 @@ def run_selftest() -> int:
     cleaned_anchor = apply_enum_labels(anchor_html)
     if "/unknown-path" not in cleaned_anchor:
         failures.append("apply_enum_labels이 anchor href URL path를 망가뜨렸다.")
+
+    # Regression: both scope prompts must build without NameError. The
+    # b2b_b2g sections block is an f-string, so any unescaped Korean
+    # placeholder like {대상명} blows up here BEFORE the LLM is called.
+    try:
+        build_report_writer_prompt(result, {}, scope=REPORT_SCOPE_B2B)
+    except Exception as exc:
+        failures.append(f"B2B 리포트 prompt 빌드 실패: {exc}")
+    try:
+        bbg_prompt = build_report_writer_prompt(result, {}, scope=REPORT_SCOPE_B2B_B2G)
+        if "{대상명}" not in bbg_prompt:
+            failures.append("b2b_b2g 프롬프트에 '{대상명}' 리터럴이 보존되지 않았다.")
+    except Exception as exc:
+        failures.append(f"B2B+B2G 리포트 prompt 빌드 실패: {exc}")
 
     # ---- Decision-maker URL gate (Part C) -------------------------------
     bad_dc = classify_result(

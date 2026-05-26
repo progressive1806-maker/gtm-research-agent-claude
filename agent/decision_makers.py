@@ -24,6 +24,7 @@ import requests
 
 NAVER_WEB_SEARCH_URL = "https://openapi.naver.com/v1/search/webkr.json"
 NAVER_NEWS_SEARCH_URL = "https://openapi.naver.com/v1/search/news.json"
+GOOGLE_CSE_URL = "https://www.googleapis.com/customsearch/v1"
 
 # Roles chosen by target_type. Mixed EN/KR so search snippets in both languages have a chance to match.
 ROLE_TERMS_BY_TARGET: dict[str, list[str]] = {
@@ -120,6 +121,56 @@ def naver_web_search(query: str, display: int = 5) -> list[dict[str, Any]]:
     return response.json().get("items", [])
 
 
+def google_cse_configured() -> bool:
+    """True when both GOOGLE_CSE_API_KEY (secret) and GOOGLE_CSE_ID are set."""
+    return bool(os.getenv("GOOGLE_CSE_API_KEY", "").strip()) and bool(
+        os.getenv("GOOGLE_CSE_ID", "").strip()
+    )
+
+
+def google_cse_search(query: str, display: int = 5) -> list[dict[str, Any]]:
+    """
+    Google Programmable Search Engine (Custom Search JSON API).
+
+    Why this exists: Naver web search rarely indexes linkedin.com/in/<slug>
+    profile pages — LinkedIn blocks most crawlers. Google indexes the public
+    profile snippets and CSE gives us official, API-rate-limited access.
+
+    Free tier: 100 queries/day. After that the API returns 429 and we fall
+    back to Naver. No scraping involved — this is Google's official API.
+
+    Returns items in the same {link, title, description} shape as the
+    Naver helpers so the rest of the pipeline doesn't care which backend
+    produced the result.
+    """
+    api_key = os.getenv("GOOGLE_CSE_API_KEY", "").strip()
+    cse_id = os.getenv("GOOGLE_CSE_ID", "").strip()
+    if not api_key or not cse_id:
+        raise RuntimeError("Google CSE is not configured")
+    response = requests.get(
+        GOOGLE_CSE_URL,
+        params={
+            "key": api_key,
+            "cx": cse_id,
+            "q": query,
+            "num": max(1, min(display, 10)),
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    payload = response.json() or {}
+    items_raw = payload.get("items") or []
+    return [
+        {
+            "link": it.get("link", ""),
+            "title": it.get("title", ""),
+            "description": it.get("snippet", ""),
+        }
+        for it in items_raw
+        if isinstance(it, dict)
+    ]
+
+
 def naver_news_search(query: str, display: int = 5) -> list[dict[str, Any]]:
     """Safe fallback when the web search endpoint is unavailable for this app."""
     response = requests.get(
@@ -184,14 +235,60 @@ def classify_result(
     return "UNKNOWN"
 
 
+def _cse_biased_query(query: str) -> str:
+    """Bias the CSE query toward LinkedIn individual profiles."""
+    if "site:" in query.lower():
+        return query
+    return f"{query} site:linkedin.com/in"
+
+
+def _run_search(query: str, prefer_cse: bool) -> tuple[list[dict[str, Any]], str, str | None]:
+    """
+    Backend ladder for a single query:
+      1. Google CSE (when configured) with site:linkedin.com/in bias
+      2. Naver web search (general)
+      3. Naver news search (last resort)
+
+    Returns (items, backend_label, soft_error). The soft_error captures the
+    first failure so the caller can record it; absence of a working backend
+    is itself recorded.
+    """
+    soft_error: str | None = None
+
+    if prefer_cse:
+        cse_query = _cse_biased_query(query)
+        try:
+            items = google_cse_search(cse_query)
+            return items, "google_cse", soft_error
+        except Exception as exc_cse:
+            soft_error = f"google_cse: {exc_cse.__class__.__name__}: {exc_cse}"
+
+    try:
+        items = naver_web_search(query)
+        return items, "naver_web", soft_error
+    except Exception as exc_web:
+        if soft_error is None:
+            soft_error = f"naver_web: {exc_web.__class__.__name__}: {exc_web}"
+        else:
+            soft_error = f"{soft_error}; naver_web: {exc_web}"
+
+    try:
+        items = naver_news_search(query)
+        return items, "naver_news_fallback", soft_error
+    except Exception as exc_news:
+        return [], "", f"{soft_error}; naver_news: {exc_news}"
+
+
 def find_profile_for_candidate(
     candidate: dict[str, Any],
     rate_limit_sleep: float = 0.25,
 ) -> tuple[dict[str, Any] | None, list[str], str | None]:
     """
     Returns (best_record, queries_used, error).
-      best_record is None when no useful items came back at all (e.g., total search failure).
-      Otherwise best_record["confidence"] is HIGH / MID / LOW / UNKNOWN.
+      best_record is None when no useful items came back at all.
+      Otherwise best_record["confidence"] is HIGH / MID / UNKNOWN.
+
+    Prefers Google CSE when configured; falls back to Naver web/news search.
     """
     queries = build_queries_for_candidate(candidate)
     if not queries:
@@ -199,6 +296,7 @@ def find_profile_for_candidate(
 
     roles = roles_for_candidate(candidate)
     company = (candidate.get("name") or "").strip()
+    prefer_cse = google_cse_configured()
 
     best: dict[str, Any] | None = None
     used_queries: list[str] = []
@@ -206,20 +304,11 @@ def find_profile_for_candidate(
 
     for query in queries:
         used_queries.append(query)
-        items: list[dict[str, Any]] = []
-        source = ""
-        try:
-            items = naver_web_search(query)
-            source = "naver_web"
-        except Exception as exc_web:
-            try:
-                items = naver_news_search(query)
-                source = "naver_news_fallback"
-                if error is None:
-                    error = f"naver_web unavailable: {exc_web}"
-            except Exception as exc_news:
-                error = f"naver_web: {exc_web}; naver_news: {exc_news}"
-                items = []
+        items, source, soft_error = _run_search(query, prefer_cse=prefer_cse)
+        if soft_error and error is None:
+            error = soft_error
+
+        matched_query = _cse_biased_query(query) if source == "google_cse" else query
 
         for item in items:
             confidence = classify_result(item, company, roles)
@@ -228,7 +317,7 @@ def find_profile_for_candidate(
                 "title": _strip_html(item.get("title", "")),
                 "source": source,
                 "confidence": confidence,
-                "matched_query": query,
+                "matched_query": matched_query,
                 "description_snippet": _strip_html(item.get("description", ""))[:200],
             }
             if best is None or CONFIDENCE_RANK[confidence] > CONFIDENCE_RANK[best["confidence"]]:
