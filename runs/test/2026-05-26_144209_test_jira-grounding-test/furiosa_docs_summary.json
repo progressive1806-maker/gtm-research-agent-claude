@@ -1,0 +1,1838 @@
+{
+  "fetched_at_kst": "2026-05-26T14:42:15.991019+09:00",
+  "docs_total": 11,
+  "docs_successful": 11,
+  "docs_failed": 0,
+  "successful_docs": [
+    {
+      "name": "Supported Models",
+      "url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html",
+      "category": "models",
+      "text_chars": 1603
+    },
+    {
+      "name": "Release 2026.2",
+      "url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html",
+      "category": "release",
+      "text_chars": 10480
+    },
+    {
+      "name": "RNGD Overview",
+      "url": "https://developer.furiosa.ai/latest/en/overview/rngd.html",
+      "category": "hardware",
+      "text_chars": 2548
+    },
+    {
+      "name": "Software Stack",
+      "url": "https://developer.furiosa.ai/latest/en/overview/software_stack.html",
+      "category": "software",
+      "text_chars": 3602
+    },
+    {
+      "name": "Roadmap",
+      "url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html",
+      "category": "roadmap",
+      "text_chars": 2750
+    },
+    {
+      "name": "Furiosa LLM Intro",
+      "url": "https://developer.furiosa.ai/latest/en/furiosa_llm/intro.html",
+      "category": "serving",
+      "text_chars": 1653
+    },
+    {
+      "name": "Cloud Native Toolkit",
+      "url": "https://developer.furiosa.ai/latest/en/cloud_native_toolkit/intro.html",
+      "category": "cloud_native",
+      "text_chars": 600
+    },
+    {
+      "name": "System Management Interface",
+      "url": "https://developer.furiosa.ai/latest/en/device_management/system_management_interface.html",
+      "category": "management",
+      "text_chars": 760
+    },
+    {
+      "name": "Hugging Face FuriosaAI Org",
+      "url": "https://huggingface.co/furiosa-ai",
+      "category": "huggingface",
+      "text_chars": 3619
+    },
+    {
+      "name": "Hugging Face FuriosaAI Models",
+      "url": "https://huggingface.co/furiosa-ai/models",
+      "category": "huggingface_models",
+      "text_chars": 1280
+    },
+    {
+      "name": "Hugging Face FuriosaAI Collections",
+      "url": "https://huggingface.co/furiosa-ai/collections",
+      "category": "huggingface_collections",
+      "text_chars": 1736
+    }
+  ],
+  "failed_docs": [],
+  "supported_model_entries": [
+    {
+      "model_name": "DeepSeek R1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "EXAONE-4.0",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Solar 1.0",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen 2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 Embedding",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 Reranker",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Release 2026.2",
+      "source_url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html"
+    },
+    {
+      "model_name": "Qwen2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen 2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "DeepSeek R1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.1",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen 2",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen2.5",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen3",
+      "status": "supported_architecture_or_model_family",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    }
+  ],
+  "planned_model_entries": [
+    {
+      "model_name": "GPT-OSS",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "K-EXAONE",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Solar Open",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 MoE",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3 VL",
+      "status": "planned_future_support",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "GPT-OSS",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "K-EXAONE",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Solar Open",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen3 MoE",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    },
+    {
+      "model_name": "Qwen3 VL",
+      "status": "planned_future_support",
+      "source_doc": "Roadmap",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/roadmap.html"
+    }
+  ],
+  "precompiled_model_entries": [
+    {
+      "model_name": "EXAONE-4.0-32B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.1-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen2.5-Coder-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Embedding-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Reranker-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-70B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "SOLAR-10.7B-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "SOLAR-10.7B-Instruct-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "LGAI-EXAONE/EXAONE-4.0-32B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "LGAI-EXAONE/EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.1-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen2-32B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-32B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Embedding-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Reranker-4B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "upstage/SOLAR-10.7B-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "upstage/SOLAR-10.7B-Instruct-v1.0",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Supported Models",
+      "source_url": "https://developer.furiosa.ai/latest/en/overview/supported_models.html"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Release 2026.2",
+      "source_url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html"
+    },
+    {
+      "model_name": "Qwen/Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Release 2026.2",
+      "source_url": "https://developer.furiosa.ai/docs-dev/PR-3475/en/whatsnew/release-2026.2.html"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "collections",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "LGAI-EXAONE/EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Embedding-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen3-Reranker-8B",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen/Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "collections",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Org",
+      "source_url": "https://huggingface.co/furiosa-ai"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Models",
+      "source_url": "https://huggingface.co/furiosa-ai/models"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_or_example_hf_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_artifact",
+      "source_doc": "Hugging Face FuriosaAI Collections",
+      "source_url": "https://huggingface.co/furiosa-ai/collections"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct-FP8",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Llama-3.1-8B-Instruct-FP8"
+    },
+    {
+      "model_name": "EXAONE-3.5-7.8B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/EXAONE-3.5-7.8B-Instruct"
+    },
+    {
+      "model_name": "Llama-3.1-8B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Llama-3.1-8B-Instruct"
+    },
+    {
+      "model_name": "EXAONE-3.5-32B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/EXAONE-3.5-32B-Instruct"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Llama-3.3-70B-Instruct"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-70B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/DeepSeek-R1-Distill-Llama-70B"
+    },
+    {
+      "model_name": "Llama-3.3-70B-Instruct-INT8",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Llama-3.3-70B-Instruct-INT8"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Llama-8B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/DeepSeek-R1-Distill-Llama-8B"
+    },
+    {
+      "model_name": "Qwen2.5-Coder-32B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-Coder-32B-Instruct"
+    },
+    {
+      "model_name": "Qwen2.5-Coder-14B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-Coder-14B-Instruct"
+    },
+    {
+      "model_name": "Qwen2.5-32B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-32B-Instruct"
+    },
+    {
+      "model_name": "Qwen2.5-7B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-7B-Instruct"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Qwen-7B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/DeepSeek-R1-Distill-Qwen-7B"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Qwen-14B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/DeepSeek-R1-Distill-Qwen-14B"
+    },
+    {
+      "model_name": "Qwen2.5-14B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-14B-Instruct"
+    },
+    {
+      "model_name": "Qwen2.5-Coder-7B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-Coder-7B-Instruct"
+    },
+    {
+      "model_name": "DeepSeek-R1-Distill-Qwen-32B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/DeepSeek-R1-Distill-Qwen-32B"
+    },
+    {
+      "model_name": "QwQ-32B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/QwQ-32B"
+    },
+    {
+      "model_name": "Qwen3-Embedding-8B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen3-Embedding-8B"
+    },
+    {
+      "model_name": "Qwen2.5-0.5B-Instruct",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen2.5-0.5B-Instruct"
+    },
+    {
+      "model_name": "Qwen3-Reranker-8B",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen3-Reranker-8B"
+    },
+    {
+      "model_name": "Qwen3-32B-FP8",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/Qwen3-32B-FP8"
+    },
+    {
+      "model_name": "EXAONE-4.0-32B-FP8",
+      "status": "precompiled_huggingface_api",
+      "source_doc": "HuggingFace API furiosa-ai",
+      "source_url": "https://huggingface.co/furiosa-ai/EXAONE-4.0-32B-FP8"
+    }
+  ],
+  "hf_model_entries": [
+    {
+      "model_id": "furiosa-ai/Llama-3.1-8B-Instruct-FP8",
+      "downloads": "7",
+      "last_modified": "",
+      "tags": "furiosa-llm,llama,furiosa-ai,llama-3,text-generation,conversational,en,base_model:meta-llama/Llama-3.1-8B-Instruct,base_"
+    },
+    {
+      "model_id": "furiosa-ai/EXAONE-3.5-7.8B-Instruct",
+      "downloads": "3",
+      "last_modified": "",
+      "tags": "furiosa-llm,exaone,furiosa-ai,exaone-3.5,text-generation,conversational,custom_code,en,ko,base_model:LGAI-EXAONE/EXAONE-"
+    },
+    {
+      "model_id": "furiosa-ai/Llama-3.1-8B-Instruct",
+      "downloads": "344",
+      "last_modified": "",
+      "tags": "furiosa-llm,llama,furiosa-ai,llama-3,text-generation,conversational,en,de,fr,it,pt,hi,es,th,base_model:meta-llama/Llama-"
+    },
+    {
+      "model_id": "furiosa-ai/EXAONE-3.5-32B-Instruct",
+      "downloads": "1",
+      "last_modified": "",
+      "tags": "furiosa-llm,exaone,furiosa-ai,exaone-3.5,text-generation,conversational,custom_code,en,ko,base_model:LGAI-EXAONE/EXAONE-"
+    },
+    {
+      "model_id": "furiosa-ai/Llama-3.3-70B-Instruct",
+      "downloads": "113",
+      "last_modified": "",
+      "tags": "furiosa-llm,llama,furiosa-ai,llama-3,text-generation,conversational,en,fr,it,pt,hi,es,th,de,base_model:meta-llama/Llama-"
+    },
+    {
+      "model_id": "furiosa-ai/DeepSeek-R1-Distill-Llama-70B",
+      "downloads": "1",
+      "last_modified": "",
+      "tags": "furiosa-llm,llama,furiosa-ai,text-generation,conversational,base_model:deepseek-ai/DeepSeek-R1-Distill-Llama-70B,base_mo"
+    },
+    {
+      "model_id": "furiosa-ai/Llama-3.3-70B-Instruct-INT8",
+      "downloads": "7",
+      "last_modified": "",
+      "tags": "furiosa-llm,llama,furiosa-ai,llama-3,text-generation,conversational,en,base_model:meta-llama/Llama-3.3-70B-Instruct,base"
+    },
+    {
+      "model_id": "furiosa-ai/DeepSeek-R1-Distill-Llama-8B",
+      "downloads": "1",
+      "last_modified": "",
+      "tags": "furiosa-llm,llama,furiosa-ai,text-generation,conversational,base_model:deepseek-ai/DeepSeek-R1-Distill-Llama-8B,base_mod"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-Coder-32B-Instruct",
+      "downloads": "1",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-Coder-32B-Instruct,"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-Coder-14B-Instruct",
+      "downloads": "1",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-Coder-14B-Instruct,"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-32B-Instruct",
+      "downloads": "2",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-32B-Instruct,base_m"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-7B-Instruct",
+      "downloads": "12",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-7B-Instruct,base_mo"
+    },
+    {
+      "model_id": "furiosa-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "downloads": "1",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,text-generation,conversational,base_model:deepseek-ai/DeepSeek-R1-Distill-Qwen-7B,base_mode"
+    },
+    {
+      "model_id": "furiosa-ai/DeepSeek-R1-Distill-Qwen-14B",
+      "downloads": "0",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,text-generation,conversational,base_model:deepseek-ai/DeepSeek-R1-Distill-Qwen-14B,base_mod"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-14B-Instruct",
+      "downloads": "3",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-14B-Instruct,base_m"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-Coder-7B-Instruct",
+      "downloads": "3",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-Coder-7B-Instruct,b"
+    },
+    {
+      "model_id": "furiosa-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "downloads": "3",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,text-generation,conversational,base_model:deepseek-ai/DeepSeek-R1-Distill-Qwen-32B,base_mod"
+    },
+    {
+      "model_id": "furiosa-ai/QwQ-32B",
+      "downloads": "2",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen2,furiosa-ai,qwen,qwen-2.5,chat,text-generation,conversational,en,base_model:Qwen/QwQ-32B,base_model:fin"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen3-Embedding-8B",
+      "downloads": "18",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen3,furiosa-ai,qwen,qwen-3,embedding,sentence-similarity,en,base_model:Qwen/Qwen3-Embedding-8B,base_model:"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen2.5-0.5B-Instruct",
+      "downloads": "105",
+      "last_modified": "",
+      "tags": "furiosa-llm,safetensors,qwen2,furiosa-ai,qwen,qwen-2.5,text-generation,conversational,en,base_model:Qwen/Qwen2.5-0.5B-In"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen3-Reranker-8B",
+      "downloads": "21",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen3,furiosa-ai,qwen,qwen-3,reranker,text-classification,en,base_model:Qwen/Qwen3-Reranker-8B,base_model:fi"
+    },
+    {
+      "model_id": "furiosa-ai/Qwen3-32B-FP8",
+      "downloads": "82",
+      "last_modified": "",
+      "tags": "furiosa-llm,qwen3,furiosa-ai,qwen,qwen-3,text-generation,conversational,en,base_model:Qwen/Qwen3-32B-FP8,base_model:quan"
+    },
+    {
+      "model_id": "furiosa-ai/EXAONE-4.0-32B-FP8",
+      "downloads": "334",
+      "last_modified": "",
+      "tags": "furiosa-llm,exaone4,furiosa-ai,exaone,exaone-4,text-generation,conversational,en,ko,base_model:LGAI-EXAONE/EXAONE-4.0-32"
+    }
+  ],
+  "github_repo_entries": [
+    {
+      "name": "furiosa-apps",
+      "description": "Furiosa Reference Applications",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-05-25",
+      "url": "https://github.com/furiosa-ai/furiosa-apps"
+    },
+    {
+      "name": "furiosa-opt",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-05-22",
+      "url": "https://github.com/furiosa-ai/furiosa-opt"
+    },
+    {
+      "name": "VLMEvalKit",
+      "description": "Open-source evaluation toolkit of large multi-modality models (LMMs), support 220+ LMMs, 80+ benchmarks",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-05-22",
+      "url": "https://github.com/furiosa-ai/VLMEvalKit"
+    },
+    {
+      "name": "furiosa-rngd-validator",
+      "description": "",
+      "language": "Shell",
+      "topics": "",
+      "updated_at": "2026-05-21",
+      "url": "https://github.com/furiosa-ai/furiosa-rngd-validator"
+    },
+    {
+      "name": "furiosa-smi-go",
+      "description": "",
+      "language": "Go",
+      "topics": "",
+      "updated_at": "2026-05-21",
+      "url": "https://github.com/furiosa-ai/furiosa-smi-go"
+    },
+    {
+      "name": "ParallelBench",
+      "description": "[ICLR 2026] ParallelBench: Understanding the Tradeoffs of Parallel Decoding in Diffusion LLMs",
+      "language": "Python",
+      "topics": "diffusion-llm,parallel-decoding",
+      "updated_at": "2026-05-16",
+      "url": "https://github.com/furiosa-ai/ParallelBench"
+    },
+    {
+      "name": "helm-charts",
+      "description": "",
+      "language": "Go Template",
+      "topics": "",
+      "updated_at": "2026-05-13",
+      "url": "https://github.com/furiosa-ai/helm-charts"
+    },
+    {
+      "name": "multi_npu_demo",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-05-11",
+      "url": "https://github.com/furiosa-ai/multi_npu_demo"
+    },
+    {
+      "name": "draft-based-approx-llm",
+      "description": "[ICLR 2026] Draft-based Approximate Inference for LLMs",
+      "language": "Python",
+      "topics": "speckv,speckv-pc,specpc",
+      "updated_at": "2026-05-11",
+      "url": "https://github.com/furiosa-ai/draft-based-approx-llm"
+    },
+    {
+      "name": "furiosa-sdk",
+      "description": "FuriosaAI SDK",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-05-10",
+      "url": "https://github.com/furiosa-ai/furiosa-sdk"
+    },
+    {
+      "name": "furiosa-ai.github.io",
+      "description": "",
+      "language": "HTML",
+      "topics": "",
+      "updated_at": "2026-05-04",
+      "url": "https://github.com/furiosa-ai/furiosa-ai.github.io"
+    },
+    {
+      "name": "vllm-compression-part",
+      "description": "A high-throughput and memory-efficient inference and serving engine for LLMs",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-04-29",
+      "url": "https://github.com/furiosa-ai/vllm-compression-part"
+    },
+    {
+      "name": "chrometracer",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-04-25",
+      "url": "https://github.com/furiosa-ai/chrometracer"
+    },
+    {
+      "name": "furiosa-feature-discovery",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-04-24",
+      "url": "https://github.com/furiosa-ai/furiosa-feature-discovery"
+    },
+    {
+      "name": "furiosa-metrics-exporter",
+      "description": "",
+      "language": "Go",
+      "topics": "",
+      "updated_at": "2026-04-24",
+      "url": "https://github.com/furiosa-ai/furiosa-metrics-exporter"
+    },
+    {
+      "name": "furiosa-device-plugin",
+      "description": "",
+      "language": "Go",
+      "topics": "",
+      "updated_at": "2026-04-24",
+      "url": "https://github.com/furiosa-ai/furiosa-device-plugin"
+    },
+    {
+      "name": "libfuriosa-kubernetes",
+      "description": "Library for the Furiosa NPU Kubernetes stack",
+      "language": "Go",
+      "topics": "",
+      "updated_at": "2026-04-24",
+      "url": "https://github.com/furiosa-ai/libfuriosa-kubernetes"
+    },
+    {
+      "name": "kubectl-view-rngd",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-04-20",
+      "url": "https://github.com/furiosa-ai/kubectl-view-rngd"
+    },
+    {
+      "name": "krew-index",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-04-20",
+      "url": "https://github.com/furiosa-ai/krew-index"
+    },
+    {
+      "name": "xgrammar-rs",
+      "description": "A Rust binding for XGrammar",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-04-18",
+      "url": "https://github.com/furiosa-ai/xgrammar-rs"
+    },
+    {
+      "name": "hf-hub",
+      "description": "Rust client for the huggingface hub aiming for minimal subset of features over `huggingface-hub` python package",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-04-16",
+      "url": "https://github.com/furiosa-ai/hf-hub"
+    },
+    {
+      "name": "K-EXAONE-evaluation-public",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-04-10",
+      "url": "https://github.com/furiosa-ai/K-EXAONE-evaluation-public"
+    },
+    {
+      "name": "eta-inversion",
+      "description": "[ECCV 2024] Official Pytorch Implementation for \"Eta Inversion: Designing an Optimal Eta Function for Diffusion-based Real Image Editing\"",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-04-09",
+      "url": "https://github.com/furiosa-ai/eta-inversion"
+    },
+    {
+      "name": "torch-fx-rs",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-04-08",
+      "url": "https://github.com/furiosa-ai/torch-fx-rs"
+    },
+    {
+      "name": "agent_skills",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-04-02",
+      "url": "https://github.com/furiosa-ai/agent_skills"
+    },
+    {
+      "name": "K-EXAONE-quantization-public",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-04-02",
+      "url": "https://github.com/furiosa-ai/K-EXAONE-quantization-public"
+    },
+    {
+      "name": "tch-rs",
+      "description": "Rust bindings for the C++ api of PyTorch.",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-03-27",
+      "url": "https://github.com/furiosa-ai/tch-rs"
+    },
+    {
+      "name": "docs",
+      "description": "Rendered Documentation of FuriosaAI SDK",
+      "language": "HTML",
+      "topics": "",
+      "updated_at": "2026-03-27",
+      "url": "https://github.com/furiosa-ai/docs"
+    },
+    {
+      "name": "tokio-rdma",
+      "description": "rdma for tokio runtime",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-03-20",
+      "url": "https://github.com/furiosa-ai/tokio-rdma"
+    },
+    {
+      "name": "tokio-uring",
+      "description": "An io_uring backed runtime for Rust",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-03-19",
+      "url": "https://github.com/furiosa-ai/tokio-uring"
+    },
+    {
+      "name": "nanoclaw",
+      "description": "A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail and other messaging apps,, has memory, scheduled jobs, and runs direct",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-03-17",
+      "url": "https://github.com/furiosa-ai/nanoclaw"
+    },
+    {
+      "name": "linux-rdma-perftest",
+      "description": "Infiniband Verbs Performance Tests",
+      "language": "C",
+      "topics": "",
+      "updated_at": "2026-03-17",
+      "url": "https://github.com/furiosa-ai/linux-rdma-perftest"
+    },
+    {
+      "name": "kotaemon",
+      "description": "An open-source RAG-based tool for chatting with your documents.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-03-11",
+      "url": "https://github.com/furiosa-ai/kotaemon"
+    },
+    {
+      "name": "gpt-oss",
+      "description": "gpt-oss-120b and gpt-oss-20b are two open-weight language models by OpenAI",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-03-09",
+      "url": "https://github.com/furiosa-ai/gpt-oss"
+    },
+    {
+      "name": "simple-evals",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-03-05",
+      "url": "https://github.com/furiosa-ai/simple-evals"
+    },
+    {
+      "name": "counting-guidance",
+      "description": "[WACV 2025 Oral] Counting Guidance for High Fidelity Text-to-Image Synthesis",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-03-03",
+      "url": "https://github.com/furiosa-ai/counting-guidance"
+    },
+    {
+      "name": "ssm-peft",
+      "description": "[ICML 2025] Parameter-Efficient Fine-Tuning of State Space Models",
+      "language": "Jupyter Notebook",
+      "topics": "",
+      "updated_at": "2026-03-03",
+      "url": "https://github.com/furiosa-ai/ssm-peft"
+    },
+    {
+      "name": "TABED",
+      "description": "[EACL 2026] TABED: Test-Time Adaptive Ensemble Drafting for Robust Speculative Decoding in LVLMs",
+      "language": "Python",
+      "topics": "large-vision-language-model,speculative-decoding,test-time-adapatation",
+      "updated_at": "2026-03-03",
+      "url": "https://github.com/furiosa-ai/TABED"
+    },
+    {
+      "name": "ssm-state-tuning",
+      "description": "[ACL 2025 Main] Official Pytorch Implementation for \"State-offset Tuning: State-based Parameter-Efficient Fine-Tuning for State Space Models\"",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-03-03",
+      "url": "https://github.com/furiosa-ai/ssm-state-tuning"
+    },
+    {
+      "name": "vllm",
+      "description": "A high-throughput and memory-efficient inference and serving engine for LLMs",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-02-24",
+      "url": "https://github.com/furiosa-ai/vllm"
+    },
+    {
+      "name": "warboy-vision-models",
+      "description": "Furiosa Warboy Vision Models",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-02-22",
+      "url": "https://github.com/furiosa-ai/warboy-vision-models"
+    },
+    {
+      "name": "furiosa-models",
+      "description": "FuriosaAI Model Zoo Project",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-02-12",
+      "url": "https://github.com/furiosa-ai/furiosa-models"
+    },
+    {
+      "name": "furiosa-version",
+      "description": "A simple CLI util to get version strings from furiosa-libhal, furiosa-libcompiler, and furiosa-libnux",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2026-02-12",
+      "url": "https://github.com/furiosa-ai/furiosa-version"
+    },
+    {
+      "name": "llm-compressor-compression-part",
+      "description": "Transformers-compatible library for applying various compression algorithms to LLMs for optimized deployment with vLLM",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-02-12",
+      "url": "https://github.com/furiosa-ai/llm-compressor-compression-part"
+    },
+    {
+      "name": "compressed-tensors-compression-part",
+      "description": "A safetensors extension to efficiently store sparse quantized tensors on disk",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-02-09",
+      "url": "https://github.com/furiosa-ai/compressed-tensors-compression-part"
+    },
+    {
+      "name": "transformers-compression-part",
+      "description": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. ",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-02-09",
+      "url": "https://github.com/furiosa-ai/transformers-compression-part"
+    },
+    {
+      "name": "rdma-sys",
+      "description": "Rust bindings for RDMA fundamental libraries: libibverbs-dev and librdmacm-dev",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-01-15",
+      "url": "https://github.com/furiosa-ai/rdma-sys"
+    },
+    {
+      "name": "chipyard",
+      "description": "An Agile RISC-V SoC Design Framework with in-order cores, out-of-order cores, accelerators, and more",
+      "language": "Scala",
+      "topics": "",
+      "updated_at": "2026-01-12",
+      "url": "https://github.com/furiosa-ai/chipyard"
+    },
+    {
+      "name": "riscv-dv",
+      "description": "Random instruction generator for RISC-V processor verification",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2026-01-12",
+      "url": "https://github.com/furiosa-ai/riscv-dv"
+    },
+    {
+      "name": "uncage",
+      "description": "UNCAGE: Contrastive Attention Guidance for Masked Generative Transformers in Text-to-Image Generation",
+      "language": "",
+      "topics": "",
+      "updated_at": "2026-01-05",
+      "url": "https://github.com/furiosa-ai/uncage"
+    },
+    {
+      "name": "onnxrt",
+      "description": "Mid-Level Rust Bindings to the C API for Microsoft's ONNX Runtime",
+      "language": "Rust",
+      "topics": "onnx,onnxruntime,rust",
+      "updated_at": "2026-01-05",
+      "url": "https://github.com/furiosa-ai/onnxrt"
+    },
+    {
+      "name": "lm-evaluation-harness",
+      "description": "A framework for few-shot evaluation of language models.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-12-29",
+      "url": "https://github.com/furiosa-ai/lm-evaluation-harness"
+    },
+    {
+      "name": "LiveBench",
+      "description": "LiveBench: A Challenging, Contamination-Free LLM Benchmark",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-12-21",
+      "url": "https://github.com/furiosa-ai/LiveBench"
+    },
+    {
+      "name": "rocket-chip-dv-team",
+      "description": "Rocket Chip Generator",
+      "language": "Scala",
+      "topics": "",
+      "updated_at": "2025-12-18",
+      "url": "https://github.com/furiosa-ai/rocket-chip-dv-team"
+    },
+    {
+      "name": "Qwen3",
+      "description": "Qwen3 is the large language model series developed by Qwen team, Alibaba Cloud.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-12-13",
+      "url": "https://github.com/furiosa-ai/Qwen3"
+    },
+    {
+      "name": "cocotbext-fcov",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2025-11-27",
+      "url": "https://github.com/furiosa-ai/cocotbext-fcov"
+    },
+    {
+      "name": "Qwen3-Embedding",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-11-25",
+      "url": "https://github.com/furiosa-ai/Qwen3-Embedding"
+    },
+    {
+      "name": "fio",
+      "description": "Flexible I/O Tester",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-11-17",
+      "url": "https://github.com/furiosa-ai/fio"
+    },
+    {
+      "name": "riscv-isa-sim",
+      "description": "Spike, a RISC-V ISA Simulator",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-11-13",
+      "url": "https://github.com/furiosa-ai/riscv-isa-sim"
+    },
+    {
+      "name": "claude-squad-rs",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-10-27",
+      "url": "https://github.com/furiosa-ai/claude-squad-rs"
+    },
+    {
+      "name": "trl",
+      "description": "Train transformer language models with reinforcement learning.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-09-22",
+      "url": "https://github.com/furiosa-ai/trl"
+    },
+    {
+      "name": "sglang",
+      "description": "SGLang is a fast serving framework for large language models and vision language models.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-09-22",
+      "url": "https://github.com/furiosa-ai/sglang"
+    },
+    {
+      "name": "furiosa-dra-driver-guide",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-08-13",
+      "url": "https://github.com/furiosa-ai/furiosa-dra-driver-guide"
+    },
+    {
+      "name": "rust",
+      "description": "Empowering everyone to build reliable and efficient software.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-08-13",
+      "url": "https://github.com/furiosa-ai/rust"
+    },
+    {
+      "name": "evalplus",
+      "description": "Rigourous evaluation of LLM-synthesized code - NeurIPS 2023 & COLM 2024",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2025-08-04",
+      "url": "https://github.com/furiosa-ai/evalplus"
+    },
+    {
+      "name": "ciborium",
+      "description": "CBOR utilities",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-08-04",
+      "url": "https://github.com/furiosa-ai/ciborium"
+    },
+    {
+      "name": "production-stack",
+      "description": "vLLM’s reference system for K8S-native cluster-wide deployment with community-driven performance optimization",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-08-01",
+      "url": "https://github.com/furiosa-ai/production-stack"
+    },
+    {
+      "name": "synstructure",
+      "description": "Utilities for dealing with substructures within syn macros",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-07-10",
+      "url": "https://github.com/furiosa-ai/synstructure"
+    },
+    {
+      "name": "tektoncd-actions",
+      "description": "Hold \"official\" Tekton GitHub Action (to be used in workflows)",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-07-01",
+      "url": "https://github.com/furiosa-ai/tektoncd-actions"
+    },
+    {
+      "name": "serde-lite",
+      "description": "A general-purpose serialization/de-serialization library",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-06-26",
+      "url": "https://github.com/furiosa-ai/serde-lite"
+    },
+    {
+      "name": "LongBench",
+      "description": "LongBench v2 and LongBench (ACL 2024)",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2025-06-02",
+      "url": "https://github.com/furiosa-ai/LongBench"
+    },
+    {
+      "name": "furiosa-metadata",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-05-30",
+      "url": "https://github.com/furiosa-ai/furiosa-metadata"
+    },
+    {
+      "name": "libbpf-rs",
+      "description": "Minimal and opinionated eBPF tooling for the Rust ecosystem",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-05-20",
+      "url": "https://github.com/furiosa-ai/libbpf-rs"
+    },
+    {
+      "name": "shippie",
+      "description": "an extensible code review agent 🚢",
+      "language": "TypeScript",
+      "topics": "",
+      "updated_at": "2025-05-12",
+      "url": "https://github.com/furiosa-ai/shippie"
+    },
+    {
+      "name": "furiosa-cli",
+      "description": "Command Line Tool for Furiosa Webservice API (compiler, perf estimator)",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2025-04-30",
+      "url": "https://github.com/furiosa-ai/furiosa-cli"
+    },
+    {
+      "name": "gorilla",
+      "description": "Gorilla: Training and Evaluating LLMs for Function Calls (Tool Calls)",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-04-27",
+      "url": "https://github.com/furiosa-ai/gorilla"
+    },
+    {
+      "name": "libbpf-sys",
+      "description": "Rust bindings to libbpf from the Linux kernel",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-03-24",
+      "url": "https://github.com/furiosa-ai/libbpf-sys"
+    },
+    {
+      "name": "libbpf",
+      "description": "Automated upstream mirror for libbpf stand-alone build.",
+      "language": "C",
+      "topics": "",
+      "updated_at": "2025-03-24",
+      "url": "https://github.com/furiosa-ai/libbpf"
+    },
+    {
+      "name": "llmperf",
+      "description": "LLMPerf is a library for validating and benchmarking LLMs",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2025-03-21",
+      "url": "https://github.com/furiosa-ai/llmperf"
+    },
+    {
+      "name": "dot-viewer",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2025-02-12",
+      "url": "https://github.com/furiosa-ai/dot-viewer"
+    },
+    {
+      "name": "unicorn",
+      "description": "Unicorn CPU emulator framework (ARM, AArch64, M68K, Mips, Sparc, PowerPC, RiscV, S390x, TriCore, X86)",
+      "language": "C",
+      "topics": "",
+      "updated_at": "2025-01-17",
+      "url": "https://github.com/furiosa-ai/unicorn"
+    },
+    {
+      "name": "IbED",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2025-01-13",
+      "url": "https://github.com/furiosa-ai/IbED"
+    },
+    {
+      "name": "mlperf-log-parser",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2024-12-09",
+      "url": "https://github.com/furiosa-ai/mlperf-log-parser"
+    },
+    {
+      "name": "systemc",
+      "description": "SystemC Reference Implementation",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-11-13",
+      "url": "https://github.com/furiosa-ai/systemc"
+    },
+    {
+      "name": "onnxruntime",
+      "description": "ONNX Runtime: cross-platform, high performance ML inferencing and training accelerator",
+      "language": "C++",
+      "topics": "",
+      "updated_at": "2024-11-03",
+      "url": "https://github.com/furiosa-ai/onnxruntime"
+    },
+    {
+      "name": "onnxrt-sys",
+      "description": "Low-Level Rust Bindings to the C API for Microsoft's ONNX Runtime",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2024-11-03",
+      "url": "https://github.com/furiosa-ai/onnxrt-sys"
+    },
+    {
+      "name": "inference",
+      "description": "Reference implementations of MLPerf™ inference benchmarks",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2024-10-08",
+      "url": "https://github.com/furiosa-ai/inference"
+    },
+    {
+      "name": "makefile-modifier",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-10-04",
+      "url": "https://github.com/furiosa-ai/makefile-modifier"
+    },
+    {
+      "name": "git-sync-maestro",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-09-19",
+      "url": "https://github.com/furiosa-ai/git-sync-maestro"
+    },
+    {
+      "name": "yolov5m",
+      "description": "YOLOv5 🚀 in PyTorch > ONNX > CoreML > TFLite",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-09-06",
+      "url": "https://github.com/furiosa-ai/yolov5m"
+    },
+    {
+      "name": "wheel_repairer",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2024-09-03",
+      "url": "https://github.com/furiosa-ai/wheel_repairer"
+    },
+    {
+      "name": "transformers_llama3",
+      "description": "🤗 Transformers: State-of-the-art Machine Learning for Pytorch, TensorFlow, and JAX.",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-07-30",
+      "url": "https://github.com/furiosa-ai/transformers_llama3"
+    },
+    {
+      "name": "power-dev",
+      "description": "Dev repo for power measurement for the MLPerf™ benchmarks",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-07-09",
+      "url": "https://github.com/furiosa-ai/power-dev"
+    },
+    {
+      "name": "inference-compression",
+      "description": "Reference implementations of MLPerf™ inference benchmarks",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2024-07-05",
+      "url": "https://github.com/furiosa-ai/inference-compression"
+    },
+    {
+      "name": "dot-graph",
+      "description": "",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2024-06-14",
+      "url": "https://github.com/furiosa-ai/dot-graph"
+    },
+    {
+      "name": "device-api",
+      "description": "APIs that offers NPU devices' information and allow to control the devices",
+      "language": "Rust",
+      "topics": "",
+      "updated_at": "2024-06-10",
+      "url": "https://github.com/furiosa-ai/device-api"
+    },
+    {
+      "name": "yolov5s",
+      "description": "",
+      "language": "Python",
+      "topics": "",
+      "updated_at": "2024-04-15",
+      "url": "https://github.com/furiosa-ai/yolov5s"
+    },
+    {
+      "name": "dvcon2024-functional-coverage-closure-with-python",
+      "description": "",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-03-14",
+      "url": "https://github.com/furiosa-ai/dvcon2024-functional-coverage-closure-with-python"
+    },
+    {
+      "name": "llama2",
+      "description": "Inference code for LLaMA models",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-03-13",
+      "url": "https://github.com/furiosa-ai/llama2"
+    },
+    {
+      "name": "llama",
+      "description": "Inference code for LLaMA models",
+      "language": "",
+      "topics": "",
+      "updated_at": "2024-03-13",
+      "url": "https://github.com/furiosa-ai/llama"
+    }
+  ],
+  "keyword_hits": {
+    "serving_stack": [
+      "Release 2026.2: OpenAI",
+      "Release 2026.2: API",
+      "RNGD Overview: Kubernetes",
+      "Software Stack: vLLM",
+      "Software Stack: OpenAI",
+      "Software Stack: OpenAI-Compatible",
+      "Software Stack: Kubernetes",
+      "Software Stack: container",
+      "Software Stack: API",
+      "Software Stack: server",
+      "Roadmap: Kubernetes",
+      "Roadmap: container",
+      "Roadmap: API",
+      "Furiosa LLM Intro: vLLM",
+      "Furiosa LLM Intro: OpenAI",
+      "Furiosa LLM Intro: OpenAI-Compatible",
+      "Furiosa LLM Intro: Kubernetes",
+      "Furiosa LLM Intro: API",
+      "Furiosa LLM Intro: server",
+      "Cloud Native Toolkit: Kubernetes",
+      "Cloud Native Toolkit: container",
+      "Hugging Face FuriosaAI Org: API",
+      "Hugging Face FuriosaAI Org: server"
+    ],
+    "hardware_ops": [
+      "Release 2026.2: RNGD",
+      "RNGD Overview: RNGD",
+      "RNGD Overview: HBM",
+      "RNGD Overview: power",
+      "RNGD Overview: SR-IOV",
+      "RNGD Overview: virtualization",
+      "RNGD Overview: PCIe",
+      "RNGD Overview: thermal",
+      "Software Stack: power",
+      "Roadmap: RNGD",
+      "Hugging Face FuriosaAI Org: RNGD"
+    ]
+  },
+  "model_compatibility_note": "Use exact model/version matching for GTM evaluation. EXAONE 4.0 and EXAONE 4.5 must be treated as different. Qwen 2.5 and Qwen 3 must be treated as different. Llama 3.1 and Llama 3.3 must be treated as different. Supported model architecture/family, planned future support, and precompiled Hugging Face artifacts are different evidence types."
+}

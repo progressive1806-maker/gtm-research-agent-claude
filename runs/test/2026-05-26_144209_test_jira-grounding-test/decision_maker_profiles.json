@@ -1,0 +1,195 @@
+{
+  "called": true,
+  "valid_count": 0,
+  "suppressed_count": 8,
+  "unknown_count": 2,
+  "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li",
+  "records": [
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "삼성SDS Head of Cloud LinkedIn",
+        "삼성SDS Head of Infrastructure LinkedIn",
+        "삼성SDS Data Center LinkedIn",
+        "삼성SDS Platform Lead LinkedIn"
+      ],
+      "best": null,
+      "error": null
+    },
+    {
+      "name": "NHN클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "NHN클라우드 Head of Cloud LinkedIn",
+        "NHN클라우드 Head of Infrastructure LinkedIn",
+        "NHN클라우드 Data Center LinkedIn",
+        "NHN클라우드 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.workato.com/ko-KR/integrations/linked2pay",
+        "title": "linked2pay integration and workflow automation",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "NHN클라우드 Platform Lead LinkedIn",
+        "description_snippet": "Build Powerful Workflows, fast ; Triggers : When this happens…, Actions : Do this…"
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "오픈네트웍시스템",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "오픈네트웍시스템 Head of Cloud LinkedIn",
+        "오픈네트웍시스템 Head of Infrastructure LinkedIn",
+        "오픈네트웍시스템 Data Center LinkedIn",
+        "오픈네트웍시스템 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/alibaba-cloud-computing-company",
+        "title": "Alibaba Cloud",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "오픈네트웍시스템 Head of Cloud LinkedIn",
+        "description_snippet": "Alibaba Cloud is the largest provider of public cloud services in China and Asia Pacific. With its large scale and strong foundation in IaaS and PaaS infrastructure, Alibaba Cloud provides enterprises"
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "우리은행",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "우리은행 Head of AI LinkedIn",
+        "우리은행 Product AI lead LinkedIn",
+        "우리은행 CTO LinkedIn",
+        "우리은행 Platform lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH0LIIeixDYp-WogBeHLWUcFAe6U7Y0scSMHUefPO3a8wxxMlgkiAs2B6vJ7cLpzRJdvnfuz4wHR95ue_0MroxIEpvscvxrR7pAo1tGTi7fNgf1ncSaTwX8sHs=",
+        "title": "daum.net",
+        "source": "gemini_grounding",
+        "confidence": "UNKNOWN",
+        "matched_query": "우리은행 Product AI lead LinkedIn site:linkedin.com/in",
+        "description_snippet": ""
+      },
+      "error": null
+    },
+    {
+      "name": "시스트란",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "시스트란 CIO LinkedIn",
+        "시스트란 CTO LinkedIn",
+        "시스트란 CISO LinkedIn",
+        "시스트란 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/wired-cio/",
+        "title": "Wired CIO",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "시스트란 CIO LinkedIn",
+        "description_snippet": "소개 ; 웹사이트 : wiredcio.com, 업계 : IT 서비스 및 IT 컨설팅, 회사 규모 : 직원 2-10명, 유형 : 비상장기업"
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "네이버클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "네이버클라우드 Head of Cloud LinkedIn",
+        "네이버클라우드 Head of Infrastructure LinkedIn",
+        "네이버클라우드 Data Center LinkedIn",
+        "네이버클라우드 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.ncloud.com/support/faq/prod/1213?categoryCode2=DB&categoryCode3=SV_0029",
+        "title": "자주하는 질문 - 네이버 클라우드 플랫폼",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "네이버클라우드 Head of Cloud LinkedIn",
+        "description_snippet": "Q Cloud DB for MSSQL에서 linked server를 사용할 수 있나요? ; 안타깝게도 Cloud DB for MSSQL은 linked server 를 사용할 수 없습니다. MSSQL 로 linked server 를 사용하시려면, 일반 설치형 MSSQL을 사용하여 직접 구성하셔야 되는 점 참고 부탁드립니다."
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "인공지능산업융합사업단",
+      "market": "B2G",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "인공지능산업융합사업단 procurement LinkedIn",
+        "인공지능산업융합사업단 정보화 담당관 LinkedIn",
+        "인공지능산업융합사업단 AI 사업 책임자 LinkedIn",
+        "인공지능산업융합사업단 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.aica-gj.kr/sub.php?PID=0105",
+        "title": "인공지능산업융합사업단 > 사업단소개 > 오시는길",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "인공지능산업융합사업단 procurement LinkedIn",
+        "description_snippet": "세계 최고 수준의 인공지능산업융합 생태계 조성 오시는길 인공지능산업융합사업단 인공지능산업융합사업단 100m 주소 광주광역시 북구 치촌마을길 1-6 (오룡동 1013) 전화 062-610-3900 FAX 062-974-1943..."
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "베슬에이아이",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "베슬에이아이 Head of Cloud LinkedIn",
+        "베슬에이아이 Head of Infrastructure LinkedIn",
+        "베슬에이아이 Data Center LinkedIn",
+        "베슬에이아이 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/pixisai",
+        "title": "Pixis - LinkedIn",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "베슬에이아이 Head of Cloud LinkedIn",
+        "description_snippet": "Pixis is a complete, AI-powered advertising solution helping consumer brands improve ad performance and streamline workflows."
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "KB금융그룹",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "KB금융그룹 CIO LinkedIn",
+        "KB금융그룹 CTO LinkedIn",
+        "KB금융그룹 CISO LinkedIn",
+        "KB금융그룹 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.kbfg.com/",
+        "title": "KB금융그룹",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "KB금융그룹 CIO LinkedIn",
+        "description_snippet": "국민의 평생 금융파트너 KB금융그룹의 기업소개 부터, 투자정보, ESG 경영, PR, 인재채용 정보를 제공합니다."
+      },
+      "error": "gemini_grounding: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-li"
+    },
+    {
+      "name": "브레인치즈",
+      "market": "B2G",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "브레인치즈 procurement LinkedIn",
+        "브레인치즈 정보화 담당관 LinkedIn",
+        "브레인치즈 AI 사업 책임자 LinkedIn",
+        "브레인치즈 디지털정부 담당 LinkedIn"
+      ],
+      "best": null,
+      "error": null
+    }
+  ]
+}
