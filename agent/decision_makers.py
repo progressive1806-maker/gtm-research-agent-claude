@@ -99,6 +99,30 @@ def _strip_html(text: str) -> str:
     return unescape(cleaned).strip()
 
 
+# Patterns that strip credentials out of any error message we record.
+# requests.HTTPError formats include the full request URL with ?key=... &cx=...
+_REDACT_PATTERNS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"(?i)(key=)[^&\s\"']+"), r"\1***"),
+    (re.compile(r"(?i)(cx=)[^&\s\"']+"), r"\1***"),
+    (re.compile(r"(?i)(X-Naver-Client-Secret:\s*)[^\s\"']+"), r"\1***"),
+    (re.compile(r"(?i)(serviceKey=)[^&\s\"']+"), r"\1***"),
+    (re.compile(r"(AIza[0-9A-Za-z_-]{20,})"), "***"),
+]
+
+
+def _safe_exc(exc: BaseException) -> str:
+    """
+    Format an exception for logging/metadata while stripping anything that
+    looks like a credential — Google API keys, CSE cx, Naver client secret,
+    G2B service keys. Never put raw exc into telemetry.
+    """
+    cls = exc.__class__.__name__
+    msg = str(exc).strip().splitlines()[0] if str(exc).strip() else ""
+    for pattern, replacement in _REDACT_PATTERNS:
+        msg = pattern.sub(replacement, msg)
+    return f"{cls}: {msg}"[:240] if msg else cls
+
+
 def _naver_headers() -> dict[str, str]:
     client_id = os.getenv("NAVER_CLIENT_ID", "")
     client_secret = os.getenv("NAVER_CLIENT_SECRET", "")
@@ -261,22 +285,22 @@ def _run_search(query: str, prefer_cse: bool) -> tuple[list[dict[str, Any]], str
             items = google_cse_search(cse_query)
             return items, "google_cse", soft_error
         except Exception as exc_cse:
-            soft_error = f"google_cse: {exc_cse.__class__.__name__}: {exc_cse}"
+            soft_error = f"google_cse: {_safe_exc(exc_cse)}"
 
     try:
         items = naver_web_search(query)
         return items, "naver_web", soft_error
     except Exception as exc_web:
         if soft_error is None:
-            soft_error = f"naver_web: {exc_web.__class__.__name__}: {exc_web}"
+            soft_error = f"naver_web: {_safe_exc(exc_web)}"
         else:
-            soft_error = f"{soft_error}; naver_web: {exc_web}"
+            soft_error = f"{soft_error}; naver_web: {_safe_exc(exc_web)}"
 
     try:
         items = naver_news_search(query)
         return items, "naver_news_fallback", soft_error
     except Exception as exc_news:
-        return [], "", f"{soft_error}; naver_news: {exc_news}"
+        return [], "", f"{soft_error}; naver_news: {_safe_exc(exc_news)}"
 
 
 def find_profile_for_candidate(

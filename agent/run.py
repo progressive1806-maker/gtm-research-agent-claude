@@ -1444,6 +1444,9 @@ Tone rules:
 - Do not promise that RNGD will cut cost, power, rack space, latency, or headcount unless a provided source or Furiosa doc states that exact claim.
 - Korean grammar must be natural. Do not produce awkward direct-translation phrases or broken endings.
 
+Model-first filter for 온프레미스 / CSP 고객:
+- If target_type is "온프레미스 기업" or "CSP 고객 기업" AND the available sources do not name a concrete model (EXAONE/Qwen/Llama/DeepSeek/Solar/QwQ/GPT-OSS or specific HuggingFace artifact) tied to that company, AND there is no other strong GTM signal (direct procurement / confirmed CSP partnership / capacity expansion announcement), classify the candidate as "watchlist" and set outreach_priority to "LOW". Do NOT put model-unconfirmed 온프레미스/고객 후보들 at priority_outreach. This rule does NOT apply to "CSP 운영 기업" (channel-driven) or B2G (procurement-driven) — those keep their own classification logic.
+
 Competitor signal rules:
 - Populate the top-level "competitor_signals" array from sources that talk about competitors' GTM moves.
 - Tracked competitors: 리벨리온 (Rebellions), 사피온 (Sapeon), 하이퍼엑셀 (HyperAccel), 딥엑스 (DeepX), NVIDIA Korea / GPUaaS, and domestic CSP GPU/NPU cloud services.
@@ -1601,15 +1604,24 @@ def _add_verification_note(candidate: dict[str, Any], note: str) -> None:
     candidate["verification_needed"] = existing
 
 
+_MODEL_FIRST_TARGET_TYPES = ("온프레미스 기업", "CSP 고객 기업")
+
+
 def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
     """
     Structural validation only. Adjusts score fields when they contradict
     the declared model_match_status / confirmed_model_name, and refuses
     outreach_priority=HIGH when no concrete GTM buying signal exists.
+
+    Model-first filter: 온프레미스 기업 / CSP 고객 기업 후보는 모델명이 미확인이고
+    강한 GTM 시그널도 없으면 watchlist로 강등합니다. (CSP 운영 기업과 B2G는
+    인프라/채널 관점이므로 모델 무관해도 됩니다.)
     No phrase rewriting.
     """
     model_status = str(candidate.get("model_match_status", "")).lower()
     confirmed_model = str(candidate.get("confirmed_model_name", "")).strip()
+    target_type = str(candidate.get("target_type", "")).strip()
+    market = str(candidate.get("market", "")).strip().upper()
     unknown_model = confirmed_model in ["", "미확인"] or model_status == "unknown"
 
     if unknown_model:
@@ -1619,10 +1631,26 @@ def enforce_candidate_fit_rules(candidate: dict[str, Any]) -> dict[str, Any]:
 
         # CSP-operator-alone or weak news evidence cannot justify HIGH outreach.
         # Require at least one explicit strong GTM signal.
-        if not _has_strong_gtm_signal(candidate):
+        has_strong = _has_strong_gtm_signal(candidate)
+        if not has_strong:
             if candidate.get("outreach_priority") == "HIGH":
                 candidate["outreach_priority"] = "MID"
                 _add_verification_note(candidate, "직접 NPU/가속기 도입 근거 확인 필요")
+
+        # Model-first filter for 온프레미스 기업 / CSP 고객 기업 (not for CSP 운영 or B2G).
+        if (
+            target_type in _MODEL_FIRST_TARGET_TYPES
+            and market != "B2G"
+            and not has_strong
+        ):
+            if candidate.get("classification") in ("priority_outreach", "structure_check"):
+                candidate["classification"] = "watchlist"
+            if candidate.get("outreach_priority") in ("HIGH", "MID"):
+                candidate["outreach_priority"] = "LOW"
+            _add_verification_note(
+                candidate,
+                "온프레미스/CSP 고객 후보 모델명 미확인 — 다음 사이클에서 모델 매칭 확인 필요",
+            )
 
     if model_status == "family_only":
         if candidate.get("model_fit_score") == "HIGH":
@@ -1860,13 +1888,16 @@ outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 
 ## 3. 후보 상세
 상위 후보 최대 6개. 후보마다 ### {대상명}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기. 머신 enum(priority_outreach, family_only, exact_supported, cloud_npuaas_lead, structure_check, unknown 등)을 그대로 노출하지 마세요. 사람이 읽는 라벨로 옮기세요.
+- 확인된 모델: confirmed_model_name 값을 그대로. "미확인"이면 "미확인"으로 표기.
+- 모델 매칭 상태: model_match_status를 한국어 라벨로(exact_supported→지원 모델 확인, precompiled→사전 컴파일 모델, planned→향후 지원 예정, family_only→계열 모델만 확인, unknown→확인 필요, none→해당 없음).
 - 왜 지금 연락해야 하는가
 - 고객 win
 - Furiosa win
 - 제안 경로: 직접판매 / CSP 경유 / NPUaaS 중 가장 가능성 있는 경로를 1~2개 한국어로 설명
 - 매출화 타이밍: 단기 / 중기 / 장기 중 하나
+- 제안 토크 트랙(컨택 시 할 말): outreach_talk_track을 1~3문장의 자연스러운 BD 대화체로. 단정/홍보 금지.
 - 다음 액션
-- 기존 접점: existing_touchpoint 값이 비어 있지 않으면 "기존 접점: <이름> ✅"로 한 줄 표기, 비어 있으면 생략
+- 기존 접점: existing_touchpoint 값이 비어 있지 않고 "확인 필요"가 아니면 "기존 접점: <이름> ✅"로 한 줄 표기, 그 외에는 생략
 - 출처: source_urls를 마크다운 링크로 1~3개. "링크 1" 같은 표현 금지, "출처 1/기사 1/매체명" 사용
 
 ## 4. CSP/NPUaaS 경로 후보
@@ -1928,13 +1959,16 @@ outreach_priority HIGH 우선, 그다음 MID. 노이즈 제외. 최대 3개.
 
 ## 3. B2B 후보 상세
 market != "B2G"인 후보 중 상위 6개. 후보마다 ### {{대상명}}으로 시작한 뒤 아래 항목을 한국어 자연문으로 풀어쓰기. 머신 enum(priority_outreach, family_only, exact_supported, cloud_npuaas_lead, structure_check, unknown 등)을 그대로 노출하지 마세요.
+- 확인된 모델: confirmed_model_name 값. "미확인"이면 "미확인"으로 표기.
+- 모델 매칭 상태: model_match_status를 한국어 라벨로(exact_supported→지원 모델 확인, precompiled→사전 컴파일 모델, planned→향후 지원 예정, family_only→계열 모델만 확인, unknown→확인 필요, none→해당 없음).
 - 왜 지금 연락해야 하는가
 - 고객 win
 - Furiosa win
 - 제안 경로: 직접판매 / CSP 경유 / NPUaaS 중 가장 가능성 있는 경로를 1~2개 한국어로 설명
 - 매출화 타이밍: 단기 / 중기 / 장기 중 하나
+- 제안 토크 트랙(컨택 시 할 말): outreach_talk_track을 1~3문장의 자연스러운 BD 대화체로. 단정/홍보 금지.
 - 다음 액션
-- 기존 접점: existing_touchpoint 값이 비어 있지 않으면 "기존 접점: <이름> ✅"로, 비어 있으면 생략
+- 기존 접점: existing_touchpoint 값이 비어 있지 않고 "확인 필요"가 아니면 "기존 접점: <이름> ✅"로, 그 외에는 생략
 - 출처: source_urls를 마크다운 링크로 1~3개
 
 ## 4. B2G/Nara 후보 상세
@@ -3880,7 +3914,32 @@ def run_selftest() -> int:
         google_cse_search,
         _cse_biased_query,
         _run_search,
+        _safe_exc as _dm_safe_exc,
     )
+
+    # Credential redaction: a fake HTTPError-style message must lose key/cx.
+    class _FakeHTTPError(Exception):
+        pass
+    redacted = _dm_safe_exc(
+        _FakeHTTPError(
+            "403 Client Error: Forbidden for url: "
+            "https://www.googleapis.com/customsearch/v1?key=AIzaSyABC123secret&cx=80abcdef&q=foo"
+        )
+    )
+    if "AIzaSyABC123secret" in redacted:
+        failures.append(f"_safe_exc가 API 키를 마스킹하지 못했다: {redacted}")
+    if "80abcdef" in redacted:
+        failures.append(f"_safe_exc가 cx 값을 마스킹하지 못했다: {redacted}")
+    if "key=***" not in redacted or "cx=***" not in redacted:
+        failures.append(f"_safe_exc 마스킹 결과 형식 이상: {redacted}")
+
+    from g2b import _short_exc as _g2b_safe_exc
+    g2b_redacted = _g2b_safe_exc(
+        _FakeHTTPError("403 Forbidden for url: https://apis.data.go.kr/x?serviceKey=secretXYZ&pageNo=1")
+    )
+    if "secretXYZ" in g2b_redacted:
+        failures.append(f"g2b _short_exc가 serviceKey를 마스킹하지 못했다: {g2b_redacted}")
+
     if google_cse_configured():
         failures.append("selftest 환경에서 google_cse_configured()는 False여야 한다.")
     try:
@@ -4006,6 +4065,79 @@ def run_selftest() -> int:
     strong_after = enforce_candidate_fit_rules(json.loads(json.dumps(strong)))
     if strong_after.get("outreach_priority") != "HIGH":
         failures.append("강한 GTM 시그널(직접 도입 HIGH)이 있는 후보는 outreach=HIGH를 유지해야 한다.")
+
+    # Model-first filter: 온프레미스 + 모델 미확인 + 약한 시그널 → watchlist.
+    onprem_unknown = {
+        "name": "샘플 온프레미스",
+        "market": "B2B",
+        "target_type": "온프레미스 기업",
+        "classification": "priority_outreach",
+        "confirmed_model_name": "미확인",
+        "model_match_status": "unknown",
+        "outreach_priority": "HIGH",
+        "direct_sales_possibility": "MID",
+        "csp_routed_sales_possibility": "MID",
+        "npuaas_adoption_possibility": "LOW",
+        "csp_capacity_expansion_possibility": "LOW",
+        "hook_type": "NONE",
+    }
+    onprem_after = enforce_candidate_fit_rules(json.loads(json.dumps(onprem_unknown)))
+    if onprem_after.get("classification") != "watchlist":
+        failures.append(
+            f"온프레미스 + 모델 미확인 + 약한 시그널 → watchlist여야 한다 (got {onprem_after.get('classification')})."
+        )
+    if onprem_after.get("outreach_priority") != "LOW":
+        failures.append(
+            f"온프레미스 + 모델 미확인 + 약한 시그널 → outreach=LOW여야 한다 (got {onprem_after.get('outreach_priority')})."
+        )
+
+    # CSP 운영 기업은 모델 미확인이어도 watchlist로 강등하지 않음 (channel-driven).
+    csp_op_unknown = {
+        "name": "샘플 CSP 운영",
+        "market": "B2B",
+        "target_type": "CSP 운영 기업",
+        "classification": "priority_outreach",
+        "confirmed_model_name": "미확인",
+        "model_match_status": "unknown",
+        "outreach_priority": "MID",
+        "direct_sales_possibility": "MID",
+        "csp_routed_sales_possibility": "MID",
+        "npuaas_adoption_possibility": "MID",
+        "csp_capacity_expansion_possibility": "MID",
+        "hook_type": "CLOUD",
+    }
+    csp_op_after = enforce_candidate_fit_rules(json.loads(json.dumps(csp_op_unknown)))
+    if csp_op_after.get("classification") == "watchlist":
+        failures.append("CSP 운영 기업은 모델 미확인이어도 watchlist로 강등되면 안 된다.")
+
+    # CSP 고객 기업은 모델 미확인 + 약한 시그널이면 watchlist로 강등.
+    csp_cust_unknown = {
+        "name": "샘플 CSP 고객",
+        "market": "B2B",
+        "target_type": "CSP 고객 기업",
+        "classification": "priority_outreach",
+        "confirmed_model_name": "미확인",
+        "model_match_status": "unknown",
+        "outreach_priority": "HIGH",
+        "direct_sales_possibility": "MID",
+        "csp_routed_sales_possibility": "MID",
+        "npuaas_adoption_possibility": "MID",
+        "csp_capacity_expansion_possibility": "MID",
+        "hook_type": "NONE",
+    }
+    csp_cust_after = enforce_candidate_fit_rules(json.loads(json.dumps(csp_cust_unknown)))
+    if csp_cust_after.get("classification") != "watchlist":
+        failures.append(
+            f"CSP 고객 + 모델 미확인 + 약한 시그널 → watchlist여야 한다 (got {csp_cust_after.get('classification')})."
+        )
+
+    # 온프레미스 + 모델 확인됨 → 강등 안 됨.
+    onprem_with_model = json.loads(json.dumps(onprem_unknown))
+    onprem_with_model["confirmed_model_name"] = "EXAONE-3.5-32B"
+    onprem_with_model["model_match_status"] = "precompiled"
+    onprem_after2 = enforce_candidate_fit_rules(onprem_with_model)
+    if onprem_after2.get("classification") == "watchlist":
+        failures.append("모델이 확인된 온프레미스 후보는 강등되면 안 된다.")
 
     # Part E: G2B label flip when verified.
     g2b_off_sample = [

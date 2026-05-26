@@ -28,6 +28,7 @@ Constraints:
 from __future__ import annotations
 
 import os
+import re
 import time
 from datetime import datetime, timedelta
 from typing import Any
@@ -341,9 +342,20 @@ def _normalize_spec(item: dict[str, Any], keyword: str) -> dict[str, Any]:
     }
 
 
+_REDACT_PATTERNS: list[tuple[Any, str]] = [
+    (re.compile(r"(?i)(serviceKey=)[^&\s\"']+"), r"\1***"),
+    (re.compile(r"(?i)(key=)[^&\s\"']+"), r"\1***"),
+    (re.compile(r"(?i)(cx=)[^&\s\"']+"), r"\1***"),
+    (re.compile(r"(AIza[0-9A-Za-z_-]{20,})"), "***"),
+]
+
+
 def _short_exc(exc: BaseException) -> str:
+    """Format exc for logs/metadata; strips credentials from any embedded URL."""
     cls = exc.__class__.__name__
     msg = str(exc).strip().splitlines()[0] if str(exc).strip() else ""
+    for pattern, replacement in _REDACT_PATTERNS:
+        msg = pattern.sub(replacement, msg)
     return f"{cls}: {msg}"[:240] if msg else cls
 
 
