@@ -91,7 +91,10 @@ jobs:
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LLM_PROVIDER: gemini
-          LLM_MODEL: gemini-3.5-flash
+          # Main LLM — used for candidate JSON, report writer, and rewrite loop.
+          # gemini-3.1-flash-lite: cheapest paid tier ($0.25/$1.50) and free input/output.
+          # Grounding tool is paid-only on this model, so we never call it with grounding.
+          LLM_MODEL: gemini-3.1-flash-lite
           MAX_LLM_SOURCES: 40
           MAX_SOURCE_CHARS: 800
           MAX_OUTPUT_CANDIDATES: 12

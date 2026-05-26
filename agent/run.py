@@ -4671,24 +4671,16 @@ def run_selftest() -> int:
     if any(c.get("existing_touchpoint") != "확인 필요" for c in sample_candidates):
         failures.append("_enforce_existing_touchpoint_when_jira_off가 '확인 필요'로 강제하지 못했다.")
 
-    # ---- Grounding model is pinned to 2.5 -------------------------------
-    # Even when LLM_GROUNDING_MODEL would resolve to a 3.5 string, the grounded
-    # search helper must downgrade to 2.5 to stay in the free tier.
-    os.environ["GEMINI_API_KEY"] = "selftest-fake"
-    os.environ["LLM_GROUNDING_MODEL"] = "gemini-3.5-flash"
-    try:
-        from decision_makers import gemini_grounded_search as _g
-        # We don't actually want to hit the network — we only care that the
-        # model-pinning logic resolves to 2.5. The call will fail at the
-        # network step, but inspecting that the chosen model would be 2.5 is
-        # easiest via the source string.
-        import inspect as _inspect
-        src = _inspect.getsource(_g)
-        if "gemini-2.5-flash" not in src:
-            failures.append("gemini_grounded_search이 2.5 flash로 핀되어 있지 않다.")
-    finally:
-        os.environ.pop("GEMINI_API_KEY", None)
-        os.environ.pop("LLM_GROUNDING_MODEL", None)
+    # ---- Grounding model is pinned to 2.5 family ------------------------
+    # Free grounding only exists on the 2.5 family. Anything else
+    # (3.5 Flash, 3.1 Flash-Lite, etc.) must be downgraded to 2.5-flash.
+    from decision_makers import gemini_grounded_search as _g
+    import inspect as _inspect
+    src = _inspect.getsource(_g)
+    if 'if "2.5" not in model' not in src:
+        failures.append("gemini_grounded_search이 2.5 family 외 모델을 downgrade하지 않는다.")
+    if "gemini-2.5-flash" not in src:
+        failures.append("gemini_grounded_search default가 gemini-2.5-flash가 아니다.")
 
     # ---- Competitor list refresh (사피온 제거, DEEPX/Groq/Tenstorrent 추가) -
     if "사피온" in " ".join(COMPETITOR_GTM_QUERIES) or "sapeon" in " ".join(COMPETITOR_GTM_QUERIES).lower():
