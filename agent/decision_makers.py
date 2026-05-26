@@ -152,6 +152,118 @@ def google_cse_configured() -> bool:
     )
 
 
+def gemini_grounding_configured() -> bool:
+    """
+    True when GEMINI_API_KEY is set AND grounding is not explicitly disabled.
+    Gemini search grounding has no per-day quota (it's part of the model call
+    quota), so this is the preferred LinkedIn discovery backend.
+    """
+    if not os.getenv("GEMINI_API_KEY", "").strip():
+        return False
+    return os.getenv("ENABLE_GEMINI_GROUNDING", "true").strip().lower() != "false"
+
+
+def gemini_grounded_search(query: str, display: int = 5) -> list[dict[str, Any]]:
+    """
+    Use Gemini's built-in google_search grounding tool to find URLs for a query.
+    Returns items in the same {link, title, description} shape as the other
+    backends so _run_search can treat them uniformly.
+
+    The grounding tool is part of the standard Gemini model call — no extra
+    API key, no per-day search quota beyond the model call budget itself.
+    """
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is not configured for grounded search")
+
+    model = os.getenv("LLM_GROUNDING_MODEL", os.getenv("LLM_MODEL", "gemini-2.5-flash")).strip()
+    # Some configs still carry the placeholder "gemini-3.5-flash" — fall back.
+    if "3.5" in model:
+        model = "gemini-2.5-flash"
+
+    # Lazy import to keep selftest fast and avoid pulling SDK if disabled.
+    from google import genai as _genai
+
+    try:
+        from google.genai import types as _types
+        tools = [_types.Tool(google_search=_types.GoogleSearch())]
+        config = _types.GenerateContentConfig(tools=tools)
+    except Exception:
+        tools = [{"google_search": {}}]
+        config = {"tools": tools}
+
+    client = _genai.Client(api_key=api_key)
+    prompt = (
+        f"Search the web for: {query}\n\n"
+        "Return only a JSON array of up to "
+        f"{max(1, min(display, 10))} results, each with keys "
+        "{\"link\": <url>, \"title\": <title>, \"description\": <snippet>}. "
+        "Strongly prefer linkedin.com/in/<slug> individual profile URLs."
+    )
+    response = client.models.generate_content(
+        model=model,
+        contents=prompt,
+        config=config,
+    )
+
+    text = (response.text or "").strip()
+    items_from_json: list[dict[str, Any]] = []
+    if text:
+        cleaned = re.sub(r"^```(?:json)?\s*", "", text.strip())
+        cleaned = re.sub(r"\s*```$", "", cleaned)
+        try:
+            import json as _json
+            parsed = _json.loads(cleaned)
+            if isinstance(parsed, list):
+                for entry in parsed:
+                    if not isinstance(entry, dict):
+                        continue
+                    items_from_json.append(
+                        {
+                            "link": entry.get("link") or entry.get("url") or "",
+                            "title": entry.get("title") or "",
+                            "description": entry.get("description") or entry.get("snippet") or "",
+                        }
+                    )
+        except Exception:
+            pass
+
+    # Also harvest URLs from the grounding metadata (the SDK exposes them on
+    # response.candidates[0].grounding_metadata.grounding_chunks). Combining
+    # both surfaces gives us the broadest coverage.
+    items_from_metadata: list[dict[str, Any]] = []
+    try:
+        candidates = getattr(response, "candidates", None) or []
+        for cand in candidates:
+            gm = getattr(cand, "grounding_metadata", None)
+            chunks = getattr(gm, "grounding_chunks", None) or []
+            for ch in chunks:
+                web = getattr(ch, "web", None)
+                if not web:
+                    continue
+                items_from_metadata.append(
+                    {
+                        "link": getattr(web, "uri", "") or "",
+                        "title": getattr(web, "title", "") or "",
+                        "description": "",
+                    }
+                )
+    except Exception:
+        pass
+
+    merged: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items_from_json + items_from_metadata:
+        link = (item.get("link") or "").strip()
+        if not link or link in seen:
+            continue
+        seen.add(link)
+        merged.append(item)
+        if len(merged) >= max(1, min(display, 10)):
+            break
+    return merged
+
+
 def google_cse_search(query: str, display: int = 5) -> list[dict[str, Any]]:
     """
     Google Programmable Search Engine (Custom Search JSON API).
@@ -266,12 +378,17 @@ def _cse_biased_query(query: str) -> str:
     return f"{query} site:linkedin.com/in"
 
 
-def _run_search(query: str, prefer_cse: bool) -> tuple[list[dict[str, Any]], str, str | None]:
+def _run_search(
+    query: str,
+    prefer_cse: bool,
+    prefer_grounding: bool = False,
+) -> tuple[list[dict[str, Any]], str, str | None]:
     """
     Backend ladder for a single query:
-      1. Google CSE (when configured) with site:linkedin.com/in bias
-      2. Naver web search (general)
-      3. Naver news search (last resort)
+      1. Gemini search grounding (when GEMINI_API_KEY set; cheap, large quota)
+      2. Google CSE (when configured) with site:linkedin.com/in bias
+      3. Naver web search (general)
+      4. Naver news search (last resort)
 
     Returns (items, backend_label, soft_error). The soft_error captures the
     first failure so the caller can record it; absence of a working backend
@@ -279,13 +396,24 @@ def _run_search(query: str, prefer_cse: bool) -> tuple[list[dict[str, Any]], str
     """
     soft_error: str | None = None
 
+    if prefer_grounding:
+        grounded_query = _cse_biased_query(query)
+        try:
+            items = gemini_grounded_search(grounded_query)
+            return items, "gemini_grounding", soft_error
+        except Exception as exc_g:
+            soft_error = f"gemini_grounding: {_safe_exc(exc_g)}"
+
     if prefer_cse:
         cse_query = _cse_biased_query(query)
         try:
             items = google_cse_search(cse_query)
             return items, "google_cse", soft_error
         except Exception as exc_cse:
-            soft_error = f"google_cse: {_safe_exc(exc_cse)}"
+            if soft_error is None:
+                soft_error = f"google_cse: {_safe_exc(exc_cse)}"
+            else:
+                soft_error = f"{soft_error}; google_cse: {_safe_exc(exc_cse)}"
 
     try:
         items = naver_web_search(query)
@@ -320,6 +448,7 @@ def find_profile_for_candidate(
 
     roles = roles_for_candidate(candidate)
     company = (candidate.get("name") or "").strip()
+    prefer_grounding = gemini_grounding_configured()
     prefer_cse = google_cse_configured()
 
     best: dict[str, Any] | None = None
@@ -328,11 +457,18 @@ def find_profile_for_candidate(
 
     for query in queries:
         used_queries.append(query)
-        items, source, soft_error = _run_search(query, prefer_cse=prefer_cse)
+        items, source, soft_error = _run_search(
+            query,
+            prefer_cse=prefer_cse,
+            prefer_grounding=prefer_grounding,
+        )
         if soft_error and error is None:
             error = soft_error
 
-        matched_query = _cse_biased_query(query) if source == "google_cse" else query
+        if source in ("google_cse", "gemini_grounding"):
+            matched_query = _cse_biased_query(query)
+        else:
+            matched_query = query
 
         for item in items:
             confidence = classify_result(item, company, roles)

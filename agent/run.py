@@ -150,6 +150,39 @@ for _q, _cat in JAPAN_ENTERPRISE_QUERIES + JAPAN_CSP_QUERIES:
     RSS_FEEDS.append(_jp_news_feed(_q, _q, _cat))
 
 
+# Additional Japan B2B sources — corporate press releases & AI-focused tech press.
+# Note: feeds without category="japan_*" still get routed there by categorize_source()
+# via country=JP, but we set explicit categories for clarity.
+RSS_FEEDS.extend(
+    [
+        {
+            "name": "PR TIMES JP (AI keyword)",
+            "url": "https://prtimes.jp/index.rdf",
+            "country": "JP",
+            "category": "japan_enterprise",
+        },
+        {
+            "name": "ITmedia AI+",
+            "url": "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml",
+            "country": "JP",
+            "category": "japan_enterprise",
+        },
+        {
+            "name": "ITmedia Enterprise",
+            "url": "https://rss.itmedia.co.jp/rss/2.0/enterprise.xml",
+            "country": "JP",
+            "category": "japan_enterprise",
+        },
+        {
+            "name": "ASCII.jp Tech",
+            "url": "https://ascii.jp/rss.xml",
+            "country": "JP",
+            "category": "japan_enterprise",
+        },
+    ]
+)
+
+
 FURIOSA_DOCS = [
     {
         "name": "Supported Models",
@@ -492,15 +525,29 @@ B2G_ROUTE_QUERIES = [
 ]
 
 COMPETITOR_GTM_QUERIES = [
+    # 리벨리온 (Rebellions) — 사피온 합병 이후 통합 브랜드.
     "리벨리온 고객 납품",
     "리벨리온 클라우드 파트너십",
     "리벨리온 NPUaaS",
     "리벨리온 공공 수주",
-    "사피온 고객 납품",
-    "사피온 클라우드 파트너십",
-    "사피온 공공 수주",
+    # 하이퍼엑셀 (HyperAccel) — 추론 가속기 스타트업.
     "하이퍼엑셀 고객 납품",
     "하이퍼엑셀 CSP 파트너십",
+    # 딥엑스 (DEEPX) — 추론 NPU, 망분리/공공 영역에서 겹침.
+    "딥엑스 고객 납품",
+    "딥엑스 공공 수주",
+    "딥엑스 클라우드 파트너십",
+    "DEEPX 추론 NPU 납품",
+    # NVIDIA Korea — GPUaaS / DGX Cloud 채널.
+    "NVIDIA Korea 데이터센터 수주",
+    "엔비디아 GPU 클라우드 파트너십",
+    "엔비디아 DGX Cloud 한국",
+    # Groq — LPU 추론 서비스.
+    "Groq LPU 추론 서비스",
+    "Groq 고객 도입",
+    # Tenstorrent — Wormhole / Blackhole 칩.
+    "Tenstorrent 고객 납품",
+    "Tenstorrent 데이터센터",
     "퓨리오사 경쟁사 NPU 클라우드",
 ]
 
@@ -752,6 +799,53 @@ def collect_furiosa_docs() -> list[dict[str, Any]]:
     return docs
 
 
+def fetch_furiosa_hf_models() -> list[dict[str, Any]]:
+    """
+    JSON-native source: every model the furiosa-ai HuggingFace org has
+    published (compiled artifacts, quantized variants, examples).
+    Each entry: {id, modelId, downloads, lastModified, tags, ...}
+    """
+    try:
+        response = requests.get(
+            "https://huggingface.co/api/models",
+            params={"author": "furiosa-ai", "limit": 200},
+            headers={"User-Agent": "gtm-research-agent/0.8"},
+            timeout=15,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        if isinstance(payload, list):
+            return [m for m in payload if isinstance(m, dict)]
+    except Exception as exc:
+        print(f"HuggingFace API fetch failed: {exc}")
+    return []
+
+
+def fetch_furiosa_github_repos() -> list[dict[str, Any]]:
+    """
+    JSON-native source: every public repo under the furiosa-ai GitHub org.
+    Each entry: {name, full_name, description, topics, updated_at, language, ...}
+    Repo names + descriptions often reveal example models / supported workloads.
+    """
+    try:
+        response = requests.get(
+            "https://api.github.com/orgs/furiosa-ai/repos",
+            params={"per_page": 100, "type": "public", "sort": "updated"},
+            headers={
+                "User-Agent": "gtm-research-agent/0.8",
+                "Accept": "application/vnd.github+json",
+            },
+            timeout=15,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        if isinstance(payload, list):
+            return [r for r in payload if isinstance(r, dict)]
+    except Exception as exc:
+        print(f"GitHub org repos fetch failed: {exc}")
+    return []
+
+
 def build_furiosa_snapshot(docs: list[dict[str, Any]]) -> str:
     lines = [
         "# FuriosaAI Public Docs Snapshot",
@@ -853,7 +947,13 @@ def extract_model_entries_from_text(text: str) -> dict[str, list[str]]:
     }
 
 
-def build_furiosa_summary(docs: list[dict[str, Any]]) -> dict[str, Any]:
+def build_furiosa_summary(
+    docs: list[dict[str, Any]],
+    hf_models: list[dict[str, Any]] | None = None,
+    github_repos: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    hf_models = hf_models or []
+    github_repos = github_repos or []
     successful = [doc for doc in docs if doc.get("ok")]
     failed = [doc for doc in docs if not doc.get("ok")]
 
@@ -969,6 +1069,44 @@ def build_furiosa_summary(docs: list[dict[str, Any]]) -> dict[str, Any]:
                     },
                 )
 
+    # JSON-native sources fed in from the HF API and GitHub org.
+    hf_model_entries: list[dict[str, str]] = []
+    for m in hf_models:
+        mid = m.get("id") or m.get("modelId") or ""
+        if not mid:
+            continue
+        model_name = mid.split("/", 1)[1] if "/" in mid else mid
+        add_unique(
+            precompiled_model_entries,
+            {
+                "model_name": model_name,
+                "status": "precompiled_huggingface_api",
+                "source_doc": "HuggingFace API furiosa-ai",
+                "source_url": f"https://huggingface.co/{mid}",
+            },
+        )
+        hf_model_entries.append(
+            {
+                "model_id": mid,
+                "downloads": str(m.get("downloads", "")),
+                "last_modified": str(m.get("lastModified", ""))[:10],
+                "tags": ",".join(m.get("tags", []) or [])[:120],
+            }
+        )
+
+    github_repo_entries: list[dict[str, str]] = []
+    for r in github_repos:
+        github_repo_entries.append(
+            {
+                "name": r.get("name", ""),
+                "description": (r.get("description") or "")[:200],
+                "language": r.get("language", "") or "",
+                "topics": ",".join(r.get("topics", []) or [])[:120],
+                "updated_at": str(r.get("updated_at", ""))[:10],
+                "url": r.get("html_url", "") or "",
+            }
+        )
+
     return {
         "fetched_at_kst": now_kst().isoformat(),
         "docs_total": len(docs),
@@ -996,6 +1134,8 @@ def build_furiosa_summary(docs: list[dict[str, Any]]) -> dict[str, Any]:
         "supported_model_entries": supported_model_entries,
         "planned_model_entries": planned_model_entries,
         "precompiled_model_entries": precompiled_model_entries,
+        "hf_model_entries": hf_model_entries,
+        "github_repo_entries": github_repo_entries,
         "keyword_hits": hits,
         "model_compatibility_note": (
             "Use exact model/version matching for GTM evaluation. "
@@ -1230,10 +1370,12 @@ CATEGORY_QUOTAS: dict[str, int] = {
 
 _COMPETITOR_TOKENS = [
     "리벨리온", "rebellion", "rebellions",
-    "사피온", "sapeon",
     "하이퍼엑셀", "hyperaccel",
     "딥엑스", "deepx",
     "nvidia", "엔비디아",
+    "groq",
+    "tenstorrent",
+    "preferred networks",  # JP, light monitoring only
 ]
 _JP_CSP_TOKENS = [
     "さくら", "sakura internet",
@@ -1384,6 +1526,8 @@ def build_llm_prompt(
             "supported_model_entries": furiosa_docs_summary.get("supported_model_entries", []),
             "planned_model_entries": furiosa_docs_summary.get("planned_model_entries", []),
             "precompiled_model_entries": furiosa_docs_summary.get("precompiled_model_entries", []),
+            "hf_model_entries": furiosa_docs_summary.get("hf_model_entries", [])[:60],
+            "github_repo_entries": furiosa_docs_summary.get("github_repo_entries", [])[:40],
             "model_compatibility_note": furiosa_docs_summary.get("model_compatibility_note", ""),
             "keyword_hits": furiosa_docs_summary.get("keyword_hits", {}),
         },
@@ -1444,8 +1588,42 @@ Tone rules:
 - Do not promise that RNGD will cut cost, power, rack space, latency, or headcount unless a provided source or Furiosa doc states that exact claim.
 - Korean grammar must be natural. Do not produce awkward direct-translation phrases or broken endings.
 
-Model-first filter for 온프레미스 / CSP 고객:
-- If target_type is "온프레미스 기업" or "CSP 고객 기업" AND the available sources do not name a concrete model (EXAONE/Qwen/Llama/DeepSeek/Solar/QwQ/GPT-OSS or specific HuggingFace artifact) tied to that company, AND there is no other strong GTM signal (direct procurement / confirmed CSP partnership / capacity expansion announcement), classify the candidate as "watchlist" and set outreach_priority to "LOW". Do NOT put model-unconfirmed 온프레미스/고객 후보들 at priority_outreach. This rule does NOT apply to "CSP 운영 기업" (channel-driven) or B2G (procurement-driven) — those keep their own classification logic.
+Per-target-type evaluation axis (use distinct criteria, do NOT score them all the same way):
+
+- target_type == "온프레미스 기업":
+  * Model fit matters most (does the candidate use a model in supported_model_entries / precompiled_model_entries / hf_model_entries? Match exact version when possible.)
+  * Infra fit also matters: 망분리 / 폐쇄망 / 온프레미스 / SR-IOV / 전력 제약 / HBM 키워드가 후보 자료에 있으면 RNGD spec 어필 가능.
+  * If no concrete model AND no strong GTM signal → classification "watchlist", outreach_priority "LOW".
+
+- target_type == "CSP 고객 기업" (consumes cloud AI):
+  * Model fit matters: same supported-model check as 온프레미스.
+  * Workload fit: RAG / chat / 검색 / 추론 에이전트 / inference service 키워드가 보이는가.
+  * If no model AND no strong GTM signal → watchlist / LOW (same rule as 온프레미스).
+
+- target_type == "CSP 운영 기업" (Samsung SDS SCP, NHN Cloud, KT Cloud, etc.):
+  * Model fit is NOT the primary axis. They sell capacity, they don't pick models for their own apps.
+  * Primary signals to weight HIGH:
+    - Data center capacity expansion / power constraint mentions
+    - NPUaaS / GPUaaS launch or partnership announcements
+    - Their downstream customers' AI inference demand (creates pull-through for our NPU)
+    - Public CSP procurement / multi-vendor diversification beyond NVIDIA H100
+  * Decision-maker hint: Head of Cloud, Head of Infrastructure, NPUaaS/GPUaaS Product Lead, Data Center Lead.
+  * outreach_priority can be HIGH even when confirmed_model_name is "미확인", as long as one of the above CSP-operator signals is concrete.
+
+- market == "B2G" (public procurement):
+  * Model fit is mostly irrelevant. What matters is sajeong / 사업 유형:
+    AI CCTV / 지능형 관제 / 영상분석 / RAG / 폐쇄망 LLM / AI 플랫폼 구축 / GPU 서버 / 추론 서버 / 정보화 사업.
+  * G2B verification status flips the evidence label (handled downstream).
+
+Outreach talk-track generation rules:
+- outreach_talk_track MUST cite a specific Furiosa capability from the furiosa_ground_truth payload (keyword_hits / supported_model_entries / planned_model_entries / hf_model_entries / github_repo_entries). Do NOT invent features.
+- Match the candidate's keyword to the most relevant Furiosa feature found in the ground truth:
+  * Candidate mentions 망분리 / 폐쇄망 / 온프레미스 / 가상화 / multi-tenant → reference SR-IOV / virtualization features if they appear in keyword_hits.
+  * Candidate mentions RAG / vLLM / OpenAI-compatible / inference service → reference Furiosa LLM (vLLM compatible) if confirmed in supported_docs.
+  * Candidate is CSP 운영 (SCP / NHN Cloud / KT Cloud / IDC operator) → reference Cloud Native Toolkit (Kubernetes integration) / NPUaaS deployment fit.
+  * Candidate mentions data center / 전력 / power constraint → reference RNGD power-efficiency talking point only if rngd.html keyword_hits include "power"/"Watt".
+- 2~3 문장의 자연스러운 BD 대화체로 작성. 단정/홍보 금지. "검토 가능", "확인 필요", "구조 확인 필요" 같은 보수 표현 사용.
+- If no clear feature match is available in the ground truth, write a calm "현재 사업 단계와 인프라 요구 사항을 함께 확인하고 싶다" 류의 중립적 오프닝만 작성하고 기능을 발명하지 마세요.
 
 Competitor signal rules:
 - Populate the top-level "competitor_signals" array from sources that talk about competitors' GTM moves.
@@ -4499,6 +4677,28 @@ def _decision_maker_cells(candidate: dict[str, Any]) -> tuple[str, str]:
     return "확인 필요", "확인 필요"
 
 
+def jira_enabled() -> bool:
+    """
+    Jira DMD integration is a placeholder until the intern has token access.
+    Until ENABLE_JIRA=true with creds, every existing_touchpoint should be
+    "확인 필요" — otherwise the LLM hallucinates "삼성SDS ✅" / "엘리스 ✅" etc.
+    """
+    return os.getenv("ENABLE_JIRA", "false").strip().lower() == "true" and bool(
+        os.getenv("JIRA_BASE_URL", "").strip()
+    ) and bool(os.getenv("JIRA_TOKEN", "").strip())
+
+
+def _enforce_existing_touchpoint_when_jira_off(candidates: list[dict[str, Any]]) -> None:
+    """Strips LLM-fabricated existing_touchpoint values when Jira isn't wired."""
+    if jira_enabled():
+        return
+    for c in candidates:
+        if not isinstance(c, dict):
+            continue
+        # Whatever the LLM wrote (often the company's own name), override.
+        c["existing_touchpoint"] = "확인 필요"
+
+
 def _apply_g2b_status_to_b2g_candidates(
     candidates: list[dict[str, Any]],
     g2b_verified: bool,
@@ -4541,7 +4741,18 @@ def main() -> None:
 
     furiosa_docs = collect_furiosa_docs()
     furiosa_docs_snapshot = build_furiosa_snapshot(furiosa_docs)
-    furiosa_docs_summary = build_furiosa_summary(furiosa_docs)
+    # JSON-native sources — refreshed every run. Failure is non-fatal.
+    furiosa_hf_models = fetch_furiosa_hf_models()
+    furiosa_github_repos = fetch_furiosa_github_repos()
+    print(
+        f"Furiosa JSON sources: hf_models={len(furiosa_hf_models)} "
+        f"github_repos={len(furiosa_github_repos)}"
+    )
+    furiosa_docs_summary = build_furiosa_summary(
+        furiosa_docs,
+        hf_models=furiosa_hf_models,
+        github_repos=furiosa_github_repos,
+    )
 
     dynamic_model_queries = build_dynamic_model_queries(furiosa_docs_summary)
 
@@ -4683,6 +4894,11 @@ def main() -> None:
             eval_result.get("candidates", []),
             g2b_verified=bool(g2b_meta["verified"]),
         )
+
+        # Jira-DMD integration is not wired yet (intern lacks token). Until it is,
+        # every existing_touchpoint must read "확인 필요" so the LLM cannot
+        # fabricate "삼성SDS ✅" or "엘리스 ✅" from the company name alone.
+        _enforce_existing_touchpoint_when_jira_off(eval_result.get("candidates", []))
 
         try:
             dm_meta["called"] = True
