@@ -1,0 +1,39 @@
+{
+  "called": true,
+  "valid_count": 0,
+  "suppressed_count": 0,
+  "unknown_count": 3,
+  "error": "",
+  "records": [
+    {
+      "name": "NHN클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "site:linkedin.com/in \"NHN클라우드\" (\"Head of Cloud\" OR \"Head of Infrastructure\" OR \"Data Center\" OR \"Platform Lead\" OR \"GPU service lead\" OR \"NPU service lead\") decision maker"
+      ],
+      "best": null,
+      "error": null
+    },
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "site:linkedin.com/in \"삼성SDS\" (\"Head of Cloud\" OR \"Head of Infrastructure\" OR \"Data Center\" OR \"Platform Lead\" OR \"GPU service lead\" OR \"NPU service lead\") decision maker"
+      ],
+      "best": null,
+      "error": null
+    },
+    {
+      "name": "KB금융그룹",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "site:linkedin.com/in \"KB금융그룹\" (\"CIO\" OR \"CTO\" OR \"CISO\" OR \"Head of Infrastructure\" OR \"Head of AI\" OR \"정보화 본부장\") decision maker"
+      ],
+      "best": null,
+      "error": null
+    }
+  ]
+}
