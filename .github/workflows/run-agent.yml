@@ -44,13 +44,17 @@ on:
           - "true"
           - "false"
       enable_jira:
-        description: "Enable Jira DMD existing-touchpoint lookup (requires JIRA_BASE_URL + JIRA_TOKEN secrets)"
+        description: "Enable Jira DMD lookup (needs JIRA_URL / JIRA_EMAIL / JIRA_API_TOKEN secrets)"
         required: false
         default: "false"
         type: choice
         options:
           - "false"
           - "true"
+      jira_dmd_project_key:
+        description: "Jira project key for DMD board (default: DMD)"
+        required: false
+        default: "DMD"
 
   # Scheduled run is paused while the pipeline is being refactored.
   # Re-enable by uncommenting the block below once new architecture is ready.
@@ -98,9 +102,14 @@ jobs:
           GOOGLE_CSE_API_KEY: ${{ secrets.GOOGLE_CSE_API_KEY }}
           GOOGLE_CSE_ID: ${{ github.event.inputs.google_cse_id }}
           ENABLE_GEMINI_GROUNDING: ${{ github.event.inputs.enable_gemini_grounding }}
+          # Grounding only works free on Gemini 2.5 Flash (500 RPD).
+          # 3.5 Flash grounding is paid-only — keep this pinned to 2.5.
+          LLM_GROUNDING_MODEL: "gemini-2.5-flash"
           ENABLE_JIRA: ${{ github.event.inputs.enable_jira }}
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_DMD_PROJECT_KEY: ${{ github.event.inputs.jira_dmd_project_key }}
         run: |
           python agent/run.py
 

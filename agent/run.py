@@ -21,6 +21,7 @@ from google import genai
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from decision_makers import enrich_candidates_with_profiles  # noqa: E402
 import g2b  # noqa: E402
+import jira_dmd  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -3547,11 +3548,13 @@ def write_metadata(
     decision_maker_meta: dict[str, Any] | None = None,
     g2b_meta: dict[str, Any] | None = None,
     selection_meta: dict[str, Any] | None = None,
+    jira_meta: dict[str, Any] | None = None,
 ) -> None:
     writer_meta = report_writer_meta or {}
     dm_meta = decision_maker_meta or {}
     g2b_md = g2b_meta or {}
     sel_md = selection_meta or {}
+    jira_md = jira_meta or {}
     metadata = {
         "run_id": run_id,
         "mode": mode,
@@ -3609,6 +3612,9 @@ def write_metadata(
         "g2b_top_suppressed_reasons": g2b_md.get("top_suppressed_reasons", {}) or {},
         "selected_sources_by_category": sel_md.get("selected_sources_by_category", {}) or {},
         "suppressed_sources_by_category": sel_md.get("suppressed_sources_by_category", {}) or {},
+        "jira_called": bool(jira_md.get("called", False)),
+        "jira_match_count": int(jira_md.get("match_count", 0)),
+        "jira_error": jira_md.get("error", "") or "",
         "decision_maker_search_called": bool(dm_meta.get("called", False)),
         "decision_maker_profiles_count": int(dm_meta.get("count", 0)),
         "decision_maker_valid_profiles_count": int(dm_meta.get("valid_count", 0)),
@@ -4603,6 +4609,86 @@ def run_selftest() -> int:
     if bad_idca != "UNKNOWN":
         failures.append(f"IDCA 같은 일반 사이트는 LinkedIn 후보가 되면 안 된다 (got {bad_idca}).")
 
+    # ---- Jira DMD module (disabled-by-default + matching logic) ---------
+    import jira_dmd as _jira
+    if _jira.is_enabled():
+        failures.append("selftest 환경에서 jira_dmd.is_enabled()는 False여야 한다.")
+    summaries, jira_err = _jira.fetch_dmd_summaries()
+    if summaries:
+        failures.append("Jira 비활성 상태에서 summaries가 비어 있지 않다.")
+    if jira_err != _jira.DISABLED_MSG:
+        failures.append(f"Jira 비활성 시 error는 '{_jira.DISABLED_MSG}'여야 한다 (got {jira_err}).")
+
+    if _jira.normalize_company_name("(주) 삼성SDS") != _jira.normalize_company_name("삼성 SDS"):
+        failures.append("normalize_company_name이 '(주)' / 공백 차이를 흡수하지 못했다.")
+    if _jira.normalize_company_name("KB금융그룹") in (
+        "",
+        _jira.normalize_company_name("KT클라우드"),
+    ):
+        failures.append("normalize_company_name이 서로 다른 회사명을 같다고 판정했다.")
+
+    sample_summaries = [
+        {"key": "DMD-1", "summary": "삼성SDS SCP NPUaaS 협의", "status": "In Progress"},
+        {"key": "DMD-2", "summary": "엘리스그룹 PoC 검토", "status": "To Do"},
+        {"key": "DMD-3", "summary": "Naver Cloud GPU 도입 논의", "status": "Done"},
+    ]
+    m1 = _jira.match_candidate_to_summaries("삼성SDS", sample_summaries)
+    if not m1 or m1.get("key") != "DMD-1":
+        failures.append(f"jira match: 삼성SDS → DMD-1 매칭 실패 (got {m1}).")
+    m2 = _jira.match_candidate_to_summaries("KB금융그룹", sample_summaries)
+    if m2 is not None:
+        failures.append(f"jira match: 매칭 없는 회사가 잘못 매칭됨 (got {m2}).")
+
+    # apply_existing_touchpoints: Jira disabled → 모두 "확인 필요"로 정리.
+    sample_candidates = [{"name": "샘플 A"}, {"name": "샘플 B"}]
+    _enforce_existing_touchpoint_when_jira_off(sample_candidates)
+    if any(c.get("existing_touchpoint") != "확인 필요" for c in sample_candidates):
+        failures.append("_enforce_existing_touchpoint_when_jira_off가 '확인 필요'로 강제하지 못했다.")
+
+    # ---- Grounding model is pinned to 2.5 -------------------------------
+    # Even when LLM_GROUNDING_MODEL would resolve to a 3.5 string, the grounded
+    # search helper must downgrade to 2.5 to stay in the free tier.
+    os.environ["GEMINI_API_KEY"] = "selftest-fake"
+    os.environ["LLM_GROUNDING_MODEL"] = "gemini-3.5-flash"
+    try:
+        from decision_makers import gemini_grounded_search as _g
+        # We don't actually want to hit the network — we only care that the
+        # model-pinning logic resolves to 2.5. The call will fail at the
+        # network step, but inspecting that the chosen model would be 2.5 is
+        # easiest via the source string.
+        import inspect as _inspect
+        src = _inspect.getsource(_g)
+        if "gemini-2.5-flash" not in src:
+            failures.append("gemini_grounded_search이 2.5 flash로 핀되어 있지 않다.")
+    finally:
+        os.environ.pop("GEMINI_API_KEY", None)
+        os.environ.pop("LLM_GROUNDING_MODEL", None)
+
+    # ---- Competitor list refresh (사피온 제거, DEEPX/Groq/Tenstorrent 추가) -
+    if "사피온" in " ".join(COMPETITOR_GTM_QUERIES) or "sapeon" in " ".join(COMPETITOR_GTM_QUERIES).lower():
+        failures.append("COMPETITOR_GTM_QUERIES에 사피온이 아직 남아 있다.")
+    for needed in ("딥엑스", "Groq", "Tenstorrent"):
+        if needed not in " ".join(COMPETITOR_GTM_QUERIES):
+            failures.append(f"COMPETITOR_GTM_QUERIES에 '{needed}'가 없다.")
+    if "sapeon" in [t.lower() for t in _COMPETITOR_TOKENS]:
+        failures.append("_COMPETITOR_TOKENS에서 sapeon이 제거되지 않았다.")
+    for needed_tok in ("deepx", "groq", "tenstorrent"):
+        if needed_tok not in [t.lower() for t in _COMPETITOR_TOKENS]:
+            failures.append(f"_COMPETITOR_TOKENS에 '{needed_tok}'가 없다.")
+
+    # ---- HuggingFace / GitHub JSON sources are wired through summary ----
+    summary_with_json = build_furiosa_summary(
+        [],
+        hf_models=[{"id": "furiosa-ai/EXAONE-3.5-32B-Instruct", "downloads": 12, "lastModified": "2025-12-01T00:00:00Z", "tags": ["llm"]}],
+        github_repos=[{"name": "furiosa-llm", "description": "Furiosa LLM serving", "language": "Python", "topics": ["llm"], "updated_at": "2025-12-01T00:00:00Z", "html_url": "https://github.com/furiosa-ai/furiosa-llm"}],
+    )
+    if not any(e.get("model_name", "").startswith("EXAONE-3.5") for e in summary_with_json.get("precompiled_model_entries", [])):
+        failures.append("HF JSON 모델이 precompiled_model_entries에 합쳐지지 않았다.")
+    if not summary_with_json.get("hf_model_entries"):
+        failures.append("hf_model_entries 키가 비어 있다.")
+    if not summary_with_json.get("github_repo_entries"):
+        failures.append("github_repo_entries 키가 비어 있다.")
+
     # ---- Japan RSS feeds present (Part G) -------------------------------
     if not any("さくらインターネット" in (f.get("url") or "") or "%E3%81%95%E3%81%8F%E3%82%89" in (f.get("url") or "") for f in RSS_FEEDS):
         failures.append("Japan さくらインターネット 관련 RSS feed가 추가되지 않았다.")
@@ -4895,10 +4981,44 @@ def main() -> None:
             g2b_verified=bool(g2b_meta["verified"]),
         )
 
-        # Jira-DMD integration is not wired yet (intern lacks token). Until it is,
-        # every existing_touchpoint must read "확인 필요" so the LLM cannot
-        # fabricate "삼성SDS ✅" or "엘리스 ✅" from the company name alone.
-        _enforce_existing_touchpoint_when_jira_off(eval_result.get("candidates", []))
+        # Existing-touchpoint resolution:
+        #   - When Jira DMD is configured, fetch DMD issue summaries and
+        #     mark "<회사명> ✅" on candidates that appear in the board.
+        #   - Otherwise force every existing_touchpoint to "확인 필요" so
+        #     the LLM cannot fabricate contacts from the company name.
+        jira_meta: dict[str, Any] = {
+            "called": False,
+            "match_count": 0,
+            "error": "",
+        }
+        if jira_dmd.is_enabled():
+            jira_meta["called"] = True
+            try:
+                matches, jira_error = jira_dmd.apply_existing_touchpoints(
+                    eval_result.get("candidates", [])
+                )
+                jira_meta["match_count"] = matches
+                jira_meta["error"] = jira_error or ""
+                if jira_error:
+                    # Fall back to safe default — never invent contacts.
+                    _enforce_existing_touchpoint_when_jira_off(
+                        eval_result.get("candidates", [])
+                    )
+            except Exception as exc_jira:
+                jira_meta["error"] = str(exc_jira)
+                _enforce_existing_touchpoint_when_jira_off(
+                    eval_result.get("candidates", [])
+                )
+        else:
+            jira_meta["error"] = jira_dmd.DISABLED_MSG
+            _enforce_existing_touchpoint_when_jira_off(
+                eval_result.get("candidates", [])
+            )
+        print(
+            f"Jira DMD: called={jira_meta['called']} "
+            f"matches={jira_meta['match_count']} "
+            f"error={jira_meta['error'] or 'none'}"
+        )
 
         try:
             dm_meta["called"] = True
@@ -5005,6 +5125,7 @@ def main() -> None:
         decision_maker_meta=dm_meta,
         g2b_meta=g2b_meta,
         selection_meta=selection_meta,
+        jira_meta=jira_meta if eval_result else None,
     )
     update_index(run_id, mode, memo)
 

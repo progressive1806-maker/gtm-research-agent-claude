@@ -176,9 +176,14 @@ def gemini_grounded_search(query: str, display: int = 5) -> list[dict[str, Any]]
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is not configured for grounded search")
 
-    model = os.getenv("LLM_GROUNDING_MODEL", os.getenv("LLM_MODEL", "gemini-2.5-flash")).strip()
-    # Some configs still carry the placeholder "gemini-3.5-flash" — fall back.
+    # Search grounding is FREE on Gemini 2.5 Flash (up to 500 RPD shared with
+    # Flash-Lite). On Gemini 3.5 Flash grounding is paid-only ($14/1000 after
+    # 5,000 shared prompts). For an intern budget we pin 2.5 unless the user
+    # explicitly overrides via LLM_GROUNDING_MODEL.
+    model = os.getenv("LLM_GROUNDING_MODEL", "").strip() or "gemini-2.5-flash"
     if "3.5" in model:
+        # Even if someone sets LLM_GROUNDING_MODEL=gemini-3.5-..., we refuse to
+        # use 3.5 for grounding so the workflow can't accidentally hit paid usage.
         model = "gemini-2.5-flash"
 
     # Lazy import to keep selftest fast and avoid pulling SDK if disabled.
