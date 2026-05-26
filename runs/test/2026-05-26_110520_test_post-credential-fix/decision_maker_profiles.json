@@ -1,0 +1,169 @@
+{
+  "called": true,
+  "valid_count": 0,
+  "suppressed_count": 8,
+  "unknown_count": 0,
+  "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=%EC%82%BC%EC%84%B1SDS+Head+of+Cloud+LinkedIn+site%3Alinkedin.com%2Fin&num=5",
+  "records": [
+    {
+      "name": "삼성SDS",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "삼성SDS Head of Cloud LinkedIn",
+        "삼성SDS Head of Infrastructure LinkedIn",
+        "삼성SDS Data Center LinkedIn",
+        "삼성SDS Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/samsung-sds",
+        "title": "삼성SDS - LinkedIn",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "삼성SDS Head of Cloud LinkedIn",
+        "description_snippet": "한국어 ; 웹사이트 : http://www.samsungsds.com, 업계 : IT 서비스 및 IT 컨설팅, 회사 규모 : 직원 10,001명 이상, 본사 : Seoul, 유형 : 상장기업, 전문 분야 : Cloud Computing, Digital Logistics, Artificial Intelligence, Digital Transformation "
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=%EC%82%BC%EC%84%B1SDS+Head+of+Cloud+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    },
+    {
+      "name": "NHN클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "NHN클라우드 Head of Cloud LinkedIn",
+        "NHN클라우드 Head of Infrastructure LinkedIn",
+        "NHN클라우드 Data Center LinkedIn",
+        "NHN클라우드 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/sush-global-solutions-limited",
+        "title": "Sush Labs",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "NHN클라우드 Head of Cloud LinkedIn",
+        "description_snippet": "We design and develop amazing cloud-backed digital solutions for mobile and web."
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=NHN%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C+Head+of+Cloud+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    },
+    {
+      "name": "KT클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "KT클라우드 Head of Cloud LinkedIn",
+        "KT클라우드 Head of Infrastructure LinkedIn",
+        "KT클라우드 Data Center LinkedIn",
+        "KT클라우드 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/voicecloud",
+        "title": "VoiceCloud",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "KT클라우드 Head of Cloud LinkedIn",
+        "description_snippet": "VoiceCloud leverages Cloud based infrastructure, technology and personnel for mass deployment of V2T applications by providing highly accurate transcriptions at the absolute lowest cost in the industr"
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=KT%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C+Head+of+Cloud+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    },
+    {
+      "name": "네이버클라우드",
+      "market": "B2B",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "네이버클라우드 Head of Cloud LinkedIn",
+        "네이버클라우드 Head of Infrastructure LinkedIn",
+        "네이버클라우드 Data Center LinkedIn",
+        "네이버클라우드 Platform Lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.ncloud.com/support/faq/prod/1213?categoryCode2=DB&categoryCode3=SV_0029",
+        "title": "자주하는 질문 - 네이버 클라우드 플랫폼",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "네이버클라우드 Head of Cloud LinkedIn",
+        "description_snippet": "Q Cloud DB for MSSQL에서 linked server를 사용할 수 있나요? ; 안타깝게도 Cloud DB for MSSQL은 linked server 를 사용할 수 없습니다. MSSQL 로 linked server 를 사용하시려면, 일반 설치형 MSSQL을 사용하여 직접 구성하셔야 되는 점 참고 부탁드립니다."
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=%EB%84%A4%EC%9D%B4%EB%B2%84%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C+Head+of+Cloud+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    },
+    {
+      "name": "광주 국가 AI데이터센터",
+      "market": "B2G",
+      "target_type": "CSP 운영 기업",
+      "queries": [
+        "광주 국가 AI데이터센터 procurement LinkedIn",
+        "광주 국가 AI데이터센터 정보화 담당관 LinkedIn",
+        "광주 국가 AI데이터센터 AI 사업 책임자 LinkedIn",
+        "광주 국가 AI데이터센터 디지털정부 담당 LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.aitimes.kr/news/articleView.html?idxno=29384",
+        "title": "광주시, 세계 수준 국가AI데이터센터 서비스 시작... 인공지능 생태계 활성화 기대",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "광주 국가 AI데이터센터 procurement LinkedIn",
+        "description_snippet": "인공지능 모델은 점점 더 복잡해지고 개발에 필요한 데이터량이 커지고 있는 상황에서, 메모리 용량과 데이터 처리 속도를 높인 초고성능 컴퓨팅 자원의 필요성이 커지고 있는 가운데 세계적 수준의 국가인공지능(AI)데이터센터가 본격 서비스를 시작한다.광주광역시(시장 강기정)는 첨단3지구 인공지능중심산업융합집적단지(이하, AI집적단지) 내 핵심시설인 세계적 수..."
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=%EA%B4%91%EC%A3%BC+%EA%B5%AD%EA%B0%80+AI%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%84%BC%ED%84%B0+procurement+LinkedIn+site%3Alinkedin.com%2Fin&"
+    },
+    {
+      "name": "우리은행",
+      "market": "B2B",
+      "target_type": "CSP 고객 기업",
+      "queries": [
+        "우리은행 Head of AI LinkedIn",
+        "우리은행 Product AI lead LinkedIn",
+        "우리은행 CTO LinkedIn",
+        "우리은행 Platform lead LinkedIn"
+      ],
+      "best": {
+        "url": "https://www.linkedin.com/company/stockinsights-ai",
+        "title": "stockinsights.ai",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "우리은행 Head of AI LinkedIn",
+        "description_snippet": "웹사이트 : https://www.stockinsights.ai/ 업계 : 금융 서비스, 회사 규모 : 직원 2-10명, 유형 : 비상장기업, 설립 : 2023, 전문 분야 : Generative AI, Finance, LLMs, Equity Research, Fundamental Analysis, Value Investing, Portfolio Manag"
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=%EC%9A%B0%EB%A6%AC%EC%9D%80%ED%96%89+Head+of+AI+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    },
+    {
+      "name": "KB금융",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "KB금융 CIO LinkedIn",
+        "KB금융 CTO LinkedIn",
+        "KB금융 CISO LinkedIn",
+        "KB금융 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://kr.linkedin.com/posts/haejin-jeong-ko_marcus-evance-cio-activity-7123078676874756096-k_6Z",
+        "title": "#marcus #evance #cio #korea #summit | Haejin Jeong | 댓글 25",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "KB금융 CIO LinkedIn",
+        "description_snippet": "I had the privilege of participating in Marcus Evans' CIO Korea Summit 2023. It marked a significant milestone for me as it was my inaugural experience contributing to a panel discussion and sharing m"
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=KB%EA%B8%88%EC%9C%B5+CIO+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    },
+    {
+      "name": "서울아산병원",
+      "market": "B2B",
+      "target_type": "온프레미스 기업",
+      "queries": [
+        "서울아산병원 CIO LinkedIn",
+        "서울아산병원 CTO LinkedIn",
+        "서울아산병원 CISO LinkedIn",
+        "서울아산병원 Head of Infrastructure LinkedIn"
+      ],
+      "best": {
+        "url": "https://kr.linkedin.com/company/asan-medical-center",
+        "title": "Asan Medical Center (AMC)",
+        "source": "naver_web",
+        "confidence": "UNKNOWN",
+        "matched_query": "서울아산병원 CIO LinkedIn",
+        "description_snippet": "Asan Medical Center (AMC) was established by ASAN Chung Ju-yung, the founder of Hyundai Group and Asan Foundation, in 1989. With the founder's mission of \"helping the underprivileged members of our so"
+      },
+      "error": "google_cse: HTTPError: 403 Client Error: Forbidden for url: https://www.googleapis.com/customsearch/v1?key=***&cx=***&q=%EC%84%9C%EC%9A%B8%EC%95%84%EC%82%B0%EB%B3%91%EC%9B%90+CIO+LinkedIn+site%3Alinkedin.com%2Fin&num=5"
+    }
+  ]
+}
